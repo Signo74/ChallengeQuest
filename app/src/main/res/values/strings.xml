@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App specific -->
+    <string name="app_name">ChallengeQuest</string>
+    <string name="title_challenge_detail">Challenge Detail</string>
+
+    <!-- Common -->
+    <string name="common_label_xp">XP:</string>
+    <string name="common_suffix">XP</string>
+    <string name="common_label_level_progress">Current level progress</string>
+    <string name="common_label_inventory_title">Inventory:</string>
+    <string name="common_button_new_quest">New Quest!</string>
+    <string name="common_label_hero_name_default">HeroNameGoesHere</string>
+
+    <!-- Default strings -->
+    <string name="challenge_default_fragment_title">New Challenge Fragment!</string>
+    <string name="recent_activity">Recent activity</string>
+
+    <!-- Start Page -->
+    <string name="start_page_welcome">Welcome</string>
+    <string name="start_page_active_quests">Currently active quests</string>
+    <string name="start_page_past_quests">Completed quests</string>
+
+    <!-- Hero creation -->
+    <string name="hero_creation_welcome">Welcome to Challenge Quests!</string>
+    <string name="hero_creation_name">Choose your name: </string>
+    <string name="hero_creation_gender">Choose your gender: </string>
+    <string name="hero_creation_class">Choose your class: </string>
+    <string name="hero_creation_button_create">Create</string>
+    <string name="hero_creation_button_reset">Reset</string>
+
+    <!-- Quest list & Quest overview -->
+    <string name="quest_title_default">New Quest</string>
+    <string name="loot_default">Latest loot: None</string>
+    <string name="quest_chapter_select">Chapter select:</string>
+    <string name="quest_description">A quest into the uknown world of getting fit!
+Builds up the physical prowess and refreshes the mind. Each chapter requires several feats from our mighty hero HeroNameGoesHere with increasing difficulty over time.
+
+The disciplines in which you are going to be tested are:
+Crunches
+Push ups
+Plank
+Running</string>
+    <string name="chapter_select">Chapter select:</string>
+
+    <!-- Chapter overview -->
+    <string name="chapter_title_default">Chapter 1: Beginning</string>
+    <string name="chapter_button_stop">Stop</string>
+    <string name="chapter_button_reset">Reset</string>
+    <string name="chapter_button_pause">Pause</string>
+    <string name="chapter_button_retry">Retry</string>
+    <string name="chapter_label_record">Record:</string>
+    <string name="chapter_label_rank">Rank</string>
+    <string name="chapter_label_rewards">Rewards</string>
+
+    <!-- Hero overview -->
+    <string name="hero_label_stats">Stats</string>
+    <string name="hero_label_strength">Strength</string>
+    <string name="hero_label_agility">Agility</string>
+    <string name="hero_label_wisdom">Wisdom</string>
+    <string name="hero_label_vitality">Vitality</string>
+    <string name="hero_label_damage">Damage</string>
+    <string name="hero_label_evade">Evade</string>
+    <string name="hero_label_luck">Luck</string>
+    <string name="hero_label_hit_points">Hit points</string>
+    <string name="hero_label_helmet">Helmet</string>
+    <string name="hero_label_armor">Armor</string>
+    <string name="hero_label_weapon">Weapon</string>
+    <string name="hero_label_shield">Shield</string>
+    <string name="hero_label_boots">Boots</string>
+    <string name="hero_label_amulet">Amulet</string>
+    <string name="hero_label_ring">Ring</string>
+
+</resources>
