@@ -1,4 +1,4 @@
-package com.swinginpenguin.vmarinov.challengequest;
+package com.swinginpenguin.vmarinov.challengequest.activities.questslist;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import com.swinginpenguin.vmarinov.challengequest.dummy.DummyContent;
  * A list fragment representing a list of Challenges. This fragment
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is
- * currently being viewed in a {@link ChallengeDetailFragment}.
+ * currently being viewed in a {@link com.swinginpenguin.vmarinov.challengequest.activities.questdetails.ChallengeDetailFragment}.
  * <p>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.

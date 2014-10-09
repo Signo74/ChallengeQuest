@@ -8,8 +8,33 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".QuestsListActivity"
+            android:name=".activities.questslist.QuestsListActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activities.questdetails.QuestOverviewActivity"
+            android:label="@string/title_challenge_detail"
+            android:parentActivityName=".activities.questslist.QuestsListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ChallengeListActivity" />
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ChallengeQuests" />
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".activities.startup.ChallengeQuests"
+            android:label="@string/title_activity_challenge_quests" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,13 +42,36 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".QuestOverviewActivity"
-            android:label="@string/title_challenge_detail"
-            android:parentActivityName=".QuestsListActivity" >
+            android:name=".activities.character.CharacterOverview"
+            android:label="@string/title_activity_character_overview"
+            android:parentActivityName=".activities.startup.ChallengeQuests" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ChallengeListActivity" />
+                android:value="com.swinginpenguin.vmarinov.challengequest.activities.startup.ChallengeQuests" />
+        </activity>
+        <activity
+            android:name=".activities.character.CharacterCreation"
+            android:label="@string/title_activity_character_creation"
+            android:parentActivityName=".activities.startup.ChallengeQuests" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.swinginpenguin.vmarinov.challengequest.activities.startup.ChallengeQuests" />
         </activity>
     </application>
+    <!-- To access Google+ APIs: -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--
+     To retrieve OAuth 2.0 tokens or invalidate tokens to disconnect a user. This disconnect
+     option is required to comply with the Google+ Sign-In developer policies
+    -->
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
+    <!-- To retrieve the account name (email) as part of sign-in: -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
 </manifest>

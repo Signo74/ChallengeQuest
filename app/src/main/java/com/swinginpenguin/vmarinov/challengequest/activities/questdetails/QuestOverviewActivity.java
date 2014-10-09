@@ -1,4 +1,4 @@
-package com.swinginpenguin.vmarinov.challengequest;
+package com.swinginpenguin.vmarinov.challengequest.activities.questdetails;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.swinginpenguin.vmarinov.challengequest.activities.questslist.QuestsListActivity;
+import com.swinginpenguin.vmarinov.challengequest.R;
 import com.swinginpenguin.vmarinov.challengequest.adapters.GridAdapter;
 
 
@@ -17,7 +19,7 @@ import com.swinginpenguin.vmarinov.challengequest.adapters.GridAdapter;
  * An activity representing a single Challenge detail screen. This
  * activity is only used on handset devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link QuestsListActivity}.
+ * in a {@link com.swinginpenguin.vmarinov.challengequest.activities.questslist.QuestsListActivity}.
  * <p>
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link ChallengeDetailFragment}.

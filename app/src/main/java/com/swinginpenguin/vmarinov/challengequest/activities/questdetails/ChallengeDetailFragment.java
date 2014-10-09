@@ -1,4 +1,4 @@
-package com.swinginpenguin.vmarinov.challengequest;
+package com.swinginpenguin.vmarinov.challengequest.activities.questdetails;
 
 import android.os.Bundle;
 import android.app.Fragment;
@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.swinginpenguin.vmarinov.challengequest.R;
 import com.swinginpenguin.vmarinov.challengequest.dummy.DummyContent;
 
 /**
  * A fragment representing a single Challenge detail screen.
- * This fragment is either contained in a {@link QuestsListActivity}
+ * This fragment is either contained in a {@link com.swinginpenguin.vmarinov.challengequest.activities.questslist.QuestsListActivity}
  * in two-pane mode (on tablets) or a {@link QuestOverviewActivity}
  * on handsets.
  */
