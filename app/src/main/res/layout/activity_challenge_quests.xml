@@ -9,7 +9,7 @@
     tools:context="com.swinginpenguin.vmarinov.challengequest.activities.startup.ChallengeQuests">
 
     <TextView
-        android:id="@+id/loading_label"
+        android:id="@+id/label_loading"
         android:text="@string/common_label_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:layout_centerHorizontal="true"/>
 
     <Button
-        android:id="@+id/game_start"
+        android:id="@+id/button_game_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/common_button_start"
@@ -27,7 +27,7 @@
         android:onClick="startButtonClicked"/>
 
     <Button
-        android:id="@+id/google_plus_login"
+        android:id="@+id/button_google_plus_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/common_button_g_plus"

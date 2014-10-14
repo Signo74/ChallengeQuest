@@ -41,8 +41,6 @@ public class CharacterOverview extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_overview);
 
-
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
@@ -95,7 +93,7 @@ public class CharacterOverview extends Activity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override

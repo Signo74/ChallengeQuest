@@ -7,8 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
+import com.swinginpenguin.vmarinov.challengequest.activities.character.CharacterCreation;
+import com.swinginpenguin.vmarinov.challengequest.activities.character.CharacterOverview;
 import com.swinginpenguin.vmarinov.challengequest.activities.login.LoginActivity;
 
 public class ChallengeQuests extends Activity {
@@ -31,6 +34,11 @@ public class ChallengeQuests extends Activity {
     @Override
     public void onStart() {
         super.onStart();
+        final Button startButton = (Button) findViewById(R.id.button_game_start);
+        startButton.setVisibility(View.VISIBLE);
+
+        final TextView loadingLabel = (TextView)findViewById(R.id.label_loading);
+        loadingLabel.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -46,18 +54,19 @@ public class ChallengeQuests extends Activity {
     }
 
     public void startButtonClicked(View button) {
+        Intent startButtonIntent = null;
         if (_characterCreated) {
-            //TODO: launch character creation activity.
-            //Intent startButtonIntent = new Intent(this, );
+            startButtonIntent = new Intent(this, CharacterOverview.class);
         } else {
-            //TODO: launch overview activity.
-            //Intent startButtonIntent = new Intent(this, );
+            //TODO make it intent with result so that _characterCreated can be set properly
+            startButtonIntent =  new Intent(this, CharacterCreation.class);
+            _characterCreated = true;
         }
+        startActivity(startButtonIntent);
     }
 
     public void loginButtonClicked(View button) {
         Intent loginIntent = new Intent(this, LoginActivity.class);
         startActivity(loginIntent);
-        //TODO: launch login activity.
     }
 }

@@ -38,7 +38,7 @@ public class CharacterCreation extends Activity {
     }
 
     public void createHero(View button) {
-        Intent createHeroIntent = new Intent(this, CharacterCreation.class);
+        Intent createHeroIntent = new Intent(this, CharacterOverview.class);
         startActivity(createHeroIntent);
     }
 }
