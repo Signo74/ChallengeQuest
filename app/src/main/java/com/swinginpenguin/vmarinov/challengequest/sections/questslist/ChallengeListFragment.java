@@ -1,4 +1,4 @@
-package com.swinginpenguin.vmarinov.challengequest.activities.questslist;
+package com.swinginpenguin.vmarinov.challengequest.sections.questslist;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,13 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-import com.swinginpenguin.vmarinov.challengequest.dummy.DummyContent;
+import com.swinginpenguin.vmarinov.challengequest.dummy.ChallengeDetailDummyContent;
 
 /**
  * A list fragment representing a list of Challenges. This fragment
  * also supports tablet devices by allowing list items to be given an
  * 'activated' state upon selection. This helps indicate which item is
- * currently being viewed in a {@link com.swinginpenguin.vmarinov.challengequest.activities.questdetails.ChallengeDetailFragment}.
+ * currently being viewed in a {@link com.swinginpenguin.vmarinov.challengequest.sections.questdetails.ChallengeDetailFragment}.
  * <p>
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
@@ -72,11 +72,11 @@ public class ChallengeListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
+        setListAdapter(new ArrayAdapter<ChallengeDetailDummyContent.DummyItem>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                DummyContent.ITEMS));
+                ChallengeDetailDummyContent.ITEMS));
     }
 
     @Override
@@ -116,7 +116,7 @@ public class ChallengeListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(ChallengeDetailDummyContent.ITEMS.get(position).id);
     }
 
     @Override

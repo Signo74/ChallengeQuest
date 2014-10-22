@@ -1,4 +1,4 @@
-package com.swinginpenguin.vmarinov.challengequest.activities.login;
+package com.swinginpenguin.vmarinov.challengequest.sections.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

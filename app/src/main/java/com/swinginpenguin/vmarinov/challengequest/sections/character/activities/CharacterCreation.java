@@ -1,4 +1,4 @@
-package com.swinginpenguin.vmarinov.challengequest.activities.character;
+package com.swinginpenguin.vmarinov.challengequest.sections.character.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
+import com.swinginpenguin.vmarinov.challengequest.sections.character.activities.CharacterOverview;
 
 public class CharacterCreation extends Activity {
 

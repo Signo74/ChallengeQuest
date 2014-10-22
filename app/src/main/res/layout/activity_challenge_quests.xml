@@ -6,7 +6,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.swinginpenguin.vmarinov.challengequest.activities.startup.ChallengeQuests">
+    tools:context="com.swinginpenguin.vmarinov.challengequest.sections.startup.ChallengeQuests">
 
     <TextView
         android:id="@+id/label_loading"

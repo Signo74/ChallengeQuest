@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/challenge_list"
-        android:name="com.swinginpenguin.vmarinov.challengequest.activities.questslist.ChallengeListFragment"
+        android:name="com.swinginpenguin.vmarinov.challengequest.sections.questslist.ChallengeListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

@@ -1,4 +1,4 @@
-package com.swinginpenguin.vmarinov.challengequest.activities.startup;
+package com.swinginpenguin.vmarinov.challengequest.sections.startup;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,9 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
-import com.swinginpenguin.vmarinov.challengequest.activities.character.CharacterCreation;
-import com.swinginpenguin.vmarinov.challengequest.activities.character.CharacterOverview;
-import com.swinginpenguin.vmarinov.challengequest.activities.login.LoginActivity;
+import com.swinginpenguin.vmarinov.challengequest.sections.character.activities.CharacterCreation;
+import com.swinginpenguin.vmarinov.challengequest.sections.character.activities.CharacterOverview;
+import com.swinginpenguin.vmarinov.challengequest.sections.login.LoginActivity;
 
 public class ChallengeQuests extends Activity {
 
@@ -54,7 +54,7 @@ public class ChallengeQuests extends Activity {
     }
 
     public void startButtonClicked(View button) {
-        Intent startButtonIntent = null;
+        Intent startButtonIntent;
         if (_characterCreated) {
             startButtonIntent = new Intent(this, CharacterOverview.class);
         } else {

@@ -1,4 +1,4 @@
-package com.swinginpenguin.vmarinov.challengequest.activities.questdetails;
+package com.swinginpenguin.vmarinov.challengequest.sections.questdetails;
 
 import android.os.Bundle;
 import android.app.Fragment;
@@ -9,11 +9,11 @@ import android.widget.TextView;
 
 
 import com.swinginpenguin.vmarinov.challengequest.R;
-import com.swinginpenguin.vmarinov.challengequest.dummy.DummyContent;
+import com.swinginpenguin.vmarinov.challengequest.dummy.ChallengeDetailDummyContent;
 
 /**
  * A fragment representing a single Challenge detail screen.
- * This fragment is either contained in a {@link com.swinginpenguin.vmarinov.challengequest.activities.questslist.QuestsListActivity}
+ * This fragment is either contained in a {@link com.swinginpenguin.vmarinov.challengequest.sections.questslist.QuestsListActivity}
  * in two-pane mode (on tablets) or a {@link QuestOverviewActivity}
  * on handsets.
  */
@@ -27,7 +27,7 @@ public class ChallengeDetailFragment extends Fragment {
     /**
      * The dummy content this fragment is presenting.
      */
-    private DummyContent.DummyItem mItem;
+    private ChallengeDetailDummyContent.DummyItem mItem;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -44,7 +44,7 @@ public class ChallengeDetailFragment extends Fragment {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            mItem = ChallengeDetailDummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
         }
     }
 

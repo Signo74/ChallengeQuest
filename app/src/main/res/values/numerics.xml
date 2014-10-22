@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <integer name="character_overview_pages_count">3</integer>
     <integer name="quest_chapters_columns">10</integer>
     <dimen name="common_grid_column_width">90dp</dimen>
     <dimen name="common_grid_spacing">10dp</dimen>

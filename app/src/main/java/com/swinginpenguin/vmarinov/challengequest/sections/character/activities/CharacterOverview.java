@@ -1,25 +1,34 @@
-package com.swinginpenguin.vmarinov.challengequest.activities.character;
+package com.swinginpenguin.vmarinov.challengequest.sections.character.activities;
 
 import java.util.Locale;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import com.swinginpenguin.vmarinov.challengequest.R;
 
-public class CharacterOverview extends Activity {
+import com.swinginpenguin.vmarinov.challengequest.R;
+import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestFragment;
+import com.swinginpenguin.vmarinov.challengequest.sections.questdetails.QuestOverviewActivity;
+import com.swinginpenguin.vmarinov.challengequest.sections.questslist.ChallengeListFragment;
+
+public class CharacterOverview extends Activity implements QuestFragment.OnFragmentInteractionListener{
+
+    // Defines the index of the page in which we'll show a character overview.
+    private final static int CHARACTER_OVERVIEW_PAGE = 0;
+    // Defines the index of the starting page in the ViewPager
+    private final static int PROGRESS_OVERVIEW = 1;
+    // Defines the index of the page in which we'll show the quest list
+    private final static int LIST_PAGE = 2;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -48,7 +57,7 @@ public class CharacterOverview extends Activity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
+        mViewPager.setCurrentItem(PROGRESS_OVERVIEW);
     }
 
 
@@ -71,7 +80,14 @@ public class CharacterOverview extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    
+    @Override
+    public void onFragmentInteraction(String id) {
+        //TODO add the correct extra content
+        Intent openQuestDetailsIntent = new Intent(this, QuestOverviewActivity.class);
+        openQuestDetailsIntent.putExtra("QUEST_ID", id);
+        startActivity(openQuestDetailsIntent);
+    }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -85,15 +101,26 @@ public class CharacterOverview extends Activity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            Fragment pageFragment = null;
+            switch (position) {
+                case CHARACTER_OVERVIEW_PAGE:
+                    pageFragment = PlaceholderFragment.newInstance(position + 1);
+                    break;
+                case PROGRESS_OVERVIEW:
+                    pageFragment = PlaceholderFragment.newInstance(position + 1);
+                    break;
+                case LIST_PAGE:
+                    String str1 = "";
+                    String str2 = "";
+                    pageFragment = QuestFragment.newInstance(str1, str2);
+                    break;
+            }
+            return pageFragment;
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 2;
+            return R.integer.character_overview_pages_count;
         }
 
         @Override
@@ -139,8 +166,7 @@ public class CharacterOverview extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_character_overview, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.fragment_character_overview, container, false);
         }
     }
 
