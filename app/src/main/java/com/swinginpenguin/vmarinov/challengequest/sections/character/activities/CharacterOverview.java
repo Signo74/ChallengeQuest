@@ -6,29 +6,34 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
-import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestFragment;
+import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.CharacterFragment;
+import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestsListFragment;
+import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestProgressOverviewFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.questdetails.QuestOverviewActivity;
-import com.swinginpenguin.vmarinov.challengequest.sections.questslist.ChallengeListFragment;
 
-public class CharacterOverview extends Activity implements QuestFragment.OnFragmentInteractionListener{
+public class CharacterOverview
+    extends Activity
+    implements QuestsListFragment.OnFragmentInteractionListener,
+               CharacterFragment.OnFragmentInteractionListener,
+               QuestProgressOverviewFragment.OnFragmentInteractionListener{
+
 
     // Defines the index of the page in which we'll show a character overview.
     private final static int CHARACTER_OVERVIEW_PAGE = 0;
     // Defines the index of the starting page in the ViewPager
     private final static int PROGRESS_OVERVIEW = 1;
     // Defines the index of the page in which we'll show the quest list
-    private final static int LIST_PAGE = 2;
+    private final static int LIST_PAGE = 3;
+
+    private int pageCount;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -58,6 +63,7 @@ public class CharacterOverview extends Activity implements QuestFragment.OnFragm
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(PROGRESS_OVERVIEW);
+        pageCount = R.integer.character_overview_pages_count;
     }
 
 
@@ -81,13 +87,17 @@ public class CharacterOverview extends Activity implements QuestFragment.OnFragm
     }
 
     @Override
-    public void onFragmentInteraction(String id) {
-        //TODO add the correct extra content
-        Intent openQuestDetailsIntent = new Intent(this, QuestOverviewActivity.class);
-        openQuestDetailsIntent.putExtra("QUEST_ID", id);
-        startActivity(openQuestDetailsIntent);
+    public void onFragmentInteraction(Uri uri) {
+        // TODO change Character and Progress Fragments to send different parameters and therefore
+        // different handlers!
     }
 
+    @Override
+    public void onFragmentInteraction(String id) {
+        Intent listItemClickedIntent = new Intent(this, QuestOverviewActivity.class);
+        listItemClickedIntent.putExtra("targetId", id);
+        startActivity(listItemClickedIntent);
+    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -102,17 +112,20 @@ public class CharacterOverview extends Activity implements QuestFragment.OnFragm
         @Override
         public Fragment getItem(int position) {
             Fragment pageFragment = null;
+            String str1 = "";
+            String str2 = "";
             switch (position) {
                 case CHARACTER_OVERVIEW_PAGE:
-                    pageFragment = PlaceholderFragment.newInstance(position + 1);
+                    pageFragment = CharacterFragment.newInstance(str1, str2);
                     break;
                 case PROGRESS_OVERVIEW:
-                    pageFragment = PlaceholderFragment.newInstance(position + 1);
+                    pageFragment = QuestProgressOverviewFragment.newInstance(str1, str2);
                     break;
                 case LIST_PAGE:
-                    String str1 = "";
-                    String str2 = "";
-                    pageFragment = QuestFragment.newInstance(str1, str2);
+                    pageFragment = QuestsListFragment.newInstance(str1, str2);
+                    break;
+                default:
+                    pageFragment = QuestsListFragment.newInstance(str1, str2);
                     break;
             }
             return pageFragment;
@@ -120,54 +133,21 @@ public class CharacterOverview extends Activity implements QuestFragment.OnFragm
 
         @Override
         public int getCount() {
-            return R.integer.character_overview_pages_count;
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
             switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+                case CHARACTER_OVERVIEW_PAGE:
+                    return getString(R.string.common_label_character_overview).toUpperCase(l);
+                case PROGRESS_OVERVIEW:
+                    return getString(R.string.progress_title).toUpperCase(l);
+                case LIST_PAGE:
+                    return getString(R.string.quest_list_title).toUpperCase(l);
             }
             return null;
         }
     }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_character_overview, container, false);
-        }
-    }
-
 }

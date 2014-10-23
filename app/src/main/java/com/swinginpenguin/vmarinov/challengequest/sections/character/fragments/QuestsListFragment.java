@@ -24,7 +24,7 @@ import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.d
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class QuestFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class QuestsListFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,8 +49,8 @@ public class QuestFragment extends Fragment implements AbsListView.OnItemClickLi
     private ListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
-    public static QuestFragment newInstance(String param1, String param2) {
-        QuestFragment fragment = new QuestFragment();
+    public static QuestsListFragment newInstance(String param1, String param2) {
+        QuestsListFragment fragment = new QuestsListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,7 +62,7 @@ public class QuestFragment extends Fragment implements AbsListView.OnItemClickLi
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public QuestFragment() {
+    public QuestsListFragment() {
     }
 
     @Override

@@ -7,6 +7,7 @@
     tools:ignore="MergeRootFrame"
     android:orientation="vertical">
 
+    <!-- TODO make this a scrollable view as content in landscape orientation might exceed screen.-->
     <TextView android:id="@+id/quest_title"
         android:layout_height="24dp"
         android:layout_width="match_parent"

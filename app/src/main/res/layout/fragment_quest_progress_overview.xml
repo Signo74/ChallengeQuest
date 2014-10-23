@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestProgressOverviewFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/progress_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/progress_title" />
+
+    <LinearLayout
+        android:id="@+id/xp_bar_labels"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <TextView
+            android:id="@+id/current_xp_value"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="100" />
+        <TextView
+            android:id="@+id/current_xp_suffix"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/common_suffix" />
+        <TextView
+            android:id="@+id/target_xp_value"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="1000" />
+        <TextView
+            android:id="@+id/target_xp_suffix"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/common_suffix" />
+    </LinearLayout>
+
+</LinearLayout>
