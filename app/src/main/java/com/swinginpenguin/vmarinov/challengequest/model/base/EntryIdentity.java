@@ -8,4 +8,37 @@ public class EntryIdentity {
     private int type;
     private String title;
     private String description;
+
+    public EntryIdentity(long id, int type, String title, String description) {
+        this.id = id;
+        this.type = type;
+        this.title = title;
+        this.description = description;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String toString() {
+        return "EntryIdentity{" +
+                "id=" + id +
+                ", type=" + type +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

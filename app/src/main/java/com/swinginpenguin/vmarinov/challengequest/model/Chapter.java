@@ -12,5 +12,17 @@ public class Chapter {
     private int experienceGranted;
     private int percentageCompleted;
     private int rank;
+    private int possibleRank;
     private long record;
+
+    public Chapter(EntryIdentity identity, int experienceGranted, int percentageCompleted, int rank, int possibleRank, long record) {
+        this.identity = identity;
+        this.experienceGranted = experienceGranted;
+        this.percentageCompleted = percentageCompleted;
+        this.rank = rank;
+        this.possibleRank = possibleRank;
+        this.record = record;
+    }
+
+
 }

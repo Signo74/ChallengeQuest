@@ -11,6 +11,7 @@ public class Quest {
     private EntryIdentity identity;
     private List<Chapter> chapters;
     private int experienceGranted;
+    private int rank;
+    private int possibleRank;
     private int percentageCompleted;
-
 }
