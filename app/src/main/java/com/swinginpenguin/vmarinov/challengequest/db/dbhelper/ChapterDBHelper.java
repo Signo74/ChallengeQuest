@@ -5,21 +5,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by victorm on 10/23/2014..
+ * Created by vmarinov on 11/7/2014.
  */
-public class QuestsDBHelper extends SQLiteOpenHelper {
-    public static final String TABLE_NAME = "quests";
+public class ChapterDBHelper extends SQLiteOpenHelper{
+    public static final String TABLE_NAME = "chapters";
     public static final String DATABASE_NAME = "main.db";
     private static int DATABASE_VERSION = 1;
     public static final String ID_COLUMN = "_id";
     public static final String TYPE_COLUMN = "type";
     public static final String TITLE_COLUMN = "title";
     public static final String DESCRIPTION_COLUMN = "description";
-    public static final String CHAPTERS = "chapters";
     public static final String EXP_REWARD = "experienceGranted";
     public static final String RANK = "rank";
     public static final String MAX_RANK = "maxrank";
+    public static final String RECORD = "record";
     public static final String COMPLETION = "percentagecompleted";
+
 
     //TODO: Modify initial creation string to insert all necessary fields.
     private static final String DATABASE_CREATE = "create table " + TABLE_NAME + "("
@@ -27,14 +28,14 @@ public class QuestsDBHelper extends SQLiteOpenHelper {
             + TITLE_COLUMN + " text not null, "
             + TYPE_COLUMN + " integer, "
             + DESCRIPTION_COLUMN + " text, "
-            + CHAPTERS + " text, "
             + EXP_REWARD + " text, "
             + RANK + " text, "
             + MAX_RANK + " text, "
+            + RECORD + " text, "
             + COMPLETION + " text, "
             + ");";
 
-    public QuestsDBHelper(Context context) {
+    public ChapterDBHelper(Context context) {
         super(context, TABLE_NAME, null, DATABASE_VERSION);
     }
 

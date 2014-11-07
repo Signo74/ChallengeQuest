@@ -1,25 +1,14 @@
 package com.swinginpenguin.vmarinov.challengequest.utils;
 
+import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
 
-import com.example.tasker.R;
-import com.example.tasker.controller.dao.TasksDAO;
-import com.example.tasker.model.CustomizationSettings;
-import com.example.tasker.model.SharingSettings;
-import com.example.tasker.model.Task;
-import com.example.tasker.model.base.EntryTypes;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.QuestsDAO;
 import com.swinginpenguin.vmarinov.challengequest.model.Quest;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryTypes;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by victorm on 10/23/2014..
@@ -28,23 +17,30 @@ public class QuestDBUtils {
 
     private final static Calendar dueDateCalendar = Calendar.getInstance();
 
-    public void QuestDBUtils() {
+    private QuestsDAO dao;
+
+    public QuestDBUtils(Context ctx){
+        dao = new QuestsDAO(ctx);
+        try {
+            dao.open();
+        } catch (Exception ex ){
+            Log.e("QuestDBUtils","Error: " + ex + "while opening QuestsDAO!");
+        }
     }
 
-    public Quest quickAddQuest(QuestsDAO dao, String title){
+    public Quest quickAddQuest(String title){
         Log.d("QuestDBUtils.quickAddTask","Adding quest with title: " + title);
-        Quest quest = new Quest();
-        return quest;
+        return dao.insertQuest(EntryTypes.QUEST.getEntryId(), title, "", null, 0, 0, 0, 0);
     }
 
-    public void deleteAllQuests(QuestsDAO dao){
+    public void deleteAllQuests(){
         Log.d("QuestDBUtils.deleteAllQuests","Deleting all tasks from Data base");
         dao.deleteAll();
     }
 
-    public List<Quest> getAllQuests(QuestsDAO dao){
-        List<Quest> childItemTitles = dao.getAllTasks();
-        Log.d("QuestDBUtils.getAllQuests","All quests in DB: " + childItemTitles);
+    public List<Quest> getAllQuests(){
+        List<Quest> childItemTitles = dao.getAllQuests();
+        Log.d("QuestDBUtils.getAllChapters","All quests in DB: " + childItemTitles);
 
         return childItemTitles;
     }

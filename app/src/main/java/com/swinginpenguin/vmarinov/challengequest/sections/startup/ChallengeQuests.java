@@ -13,6 +13,7 @@ import com.swinginpenguin.vmarinov.challengequest.R;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.activities.CharacterCreation;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.activities.CharacterOverview;
 import com.swinginpenguin.vmarinov.challengequest.sections.login.LoginActivity;
+import com.swinginpenguin.vmarinov.challengequest.utils.QuestDBUtils;
 
 public class ChallengeQuests extends Activity {
 

@@ -1,4 +1,4 @@
-package com.swinginpenguin.vmarinov.challengequest.utils;
+package com.swinginpenguin.vmarinov.challengequest.model.base;
 
 /**
  * Created by vmarinov on 10/23/2014.

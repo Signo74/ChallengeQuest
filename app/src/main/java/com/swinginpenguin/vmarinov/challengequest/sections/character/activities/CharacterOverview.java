@@ -18,6 +18,7 @@ import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.C
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestsListFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestProgressOverviewFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.questdetails.QuestOverviewActivity;
+import com.swinginpenguin.vmarinov.challengequest.utils.QuestDBUtils;
 
 public class CharacterOverview
     extends Activity
@@ -34,6 +35,7 @@ public class CharacterOverview
     private final static int LIST_PAGE = 3;
 
     private int pageCount;
+    private QuestDBUtils questUtils = new QuestDBUtils(this);
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide

@@ -10,8 +10,77 @@ import java.util.List;
 public class Quest {
     private EntryIdentity identity;
     private List<Chapter> chapters;
-    private int experienceGranted;
+    private int experienceReward;
     private int rank;
-    private int possibleRank;
+    private int maxRank;
     private int percentageCompleted;
+
+    public Quest(EntryIdentity identity) {
+        this.identity = identity;
+    }
+
+    public Quest(EntryIdentity identity, List<Chapter> chapters, int experienceReward, int rank, int maxRank, int percentageCompleted) {
+        this.identity = identity;
+        this.chapters = chapters;
+        this.experienceReward = experienceReward;
+        this.rank = rank;
+        this.maxRank = maxRank;
+        this.percentageCompleted = percentageCompleted;
+    }
+
+    public EntryIdentity getIdentity() {
+        return identity;
+    }
+
+    public List<Chapter> getChapters() {
+        return chapters;
+    }
+
+    public void setChapters(List<Chapter> chapters) {
+        this.chapters = chapters;
+    }
+
+    public int getExperienceReward() {
+        return experienceReward;
+    }
+
+    public void setExperienceReward(int experienceReward) {
+        this.experienceReward = experienceReward;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public int getMaxRank() {
+        return maxRank;
+    }
+
+    public void setMaxRank(int maxRank) {
+        this.maxRank = maxRank;
+    }
+
+    public int getPercentageCompleted() {
+        return percentageCompleted;
+    }
+
+    public void setPercentageCompleted(int percentageCompleted) {
+        this.percentageCompleted = percentageCompleted;
+    }
+
+    @Override
+    public String toString() {
+        return "Quest{" +
+                "percentageCompleted=" + percentageCompleted +
+                ", maxRank=" + maxRank +
+                ", rank=" + rank +
+                ", experienceReward=" + experienceReward +
+                ", chapters=" + chapters +
+                ", identity=" + identity +
+                '}';
+    }
 }
