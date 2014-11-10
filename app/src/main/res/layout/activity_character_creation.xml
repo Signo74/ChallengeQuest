@@ -9,15 +9,115 @@
     tools:context="com.swinginpenguin.vmarinov.challengequest.sections.character.CharacterCreation">
 
     <TextView
+        android:id="@+id/header"
         android:text="@string/hero_creation_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"/>
+
+    <!-- Character name label and input -->
+    <TextView
+        android:id="@+id/hero_name_label"
+        android:text="@string/hero_creation_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_alignParentLeft="true"/>
+
+    <EditText
+        android:id="@+id/hero_name_input"
+        android:inputType="textCapWords"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/hero_name_label"/>
+
+    <!-- Character gender label and input -->
+    <TextView
+        android:id="@+id/hero_gender_label"
+        android:text="@string/hero_creation_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hero_name_label"
+        android:layout_alignParentLeft="true"/>
+
+    <RadioGroup
+        android:id="@+id/hero_gender_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_toLeftOf="@+id/hero_gender_label">
+        <RadioButton
+            android:id="@+id/hero_gender_selector_female"
+            android:text="@string/hero_creation_gender_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onGenderSelectorClicked"/>
+
+        <RadioButton
+            android:id="@+id/hero_gender_selector_male"
+            android:text="@string/hero_creation_gender_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onGenderSelectorClicked"/>
+    </RadioGroup>
+
+
+    <!-- Character class label and input -->
+    <TextView
+        android:id="@+id/hero_class_label"
+        android:text="@string/hero_creation_class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hero_gender_label"
+        android:layout_centerInParent="true"/>
+
+    <RadioGroup
+        android:id="@+id/hero_class_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/hero_class_label"
+        android:layout_centerInParent="true">
+        <RadioButton
+            android:id="@+id/hero_class_selector_fighter"
+            android:text="@string/hero_creation_class_fighter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClassSelectorClicked"/>
+        <RadioButton
+            android:id="@+id/hero_class_selector_wizard"
+            android:text="@string/hero_creation_class_wizard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClassSelectorClicked"/>
+        <RadioButton
+            android:id="@+id/hero_class_selector_rouge"
+            android:text="@string/hero_creation_class_rouge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClassSelectorClicked"/>
+        <RadioButton
+            android:id="@+id/hero_class_selector_monk"
+            android:text="@string/hero_creation_class_monk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClassSelectorClicked"/>
+    </RadioGroup>
 
     <Button
         android:id="@+id/create_hero"
+        android:text="@string/hero_creation_button_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hero_creation_button_create"
+        android:layout_alignParentBottom="true"
+        android:onClick="createHero"/>
+
+    <Button
+        android:id="@+id/create_hero_reset"
+        android:text="@string/hero_creation_button_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:onClick="createHero"/>
 
 </RelativeLayout>

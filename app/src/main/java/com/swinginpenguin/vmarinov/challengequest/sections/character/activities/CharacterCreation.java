@@ -42,4 +42,8 @@ public class CharacterCreation extends Activity {
         Intent createHeroIntent = new Intent(this, CharacterOverview.class);
         startActivity(createHeroIntent);
     }
+
+    public void onGenderSelectorClicked(View view) {
+        //TODO implement gender logic here
+    }
 }

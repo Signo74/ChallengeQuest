@@ -12,14 +12,24 @@ public enum EntryTypes {
     TODO_LIST(5),
     SETTINGS_ITEM(6),
 
-
     //Settings item types -> 100+
     SETTINGS_ITEM_CHECKBOX(100),
     SETTINGS_ITEM_RADIO(101),
     SETTINGS_ITEM_COMBO(102),
     SETTINGS_ITEM_BUTTON(103),
     SETTINGS_ITEM_DIALOG(104),
-    SETTINGS_ITEM_STRING_VALUE(105);
+    SETTINGS_ITEM_STRING_VALUE(105),
+
+    //1000+ Creatures
+    //1000 - 1010 - Characters
+    NPC(1000),
+    FIGHTER(1001),
+    WIZARD(1002),
+    ROUGE(1003),
+    MONK(1004),
+
+    //1100+ Enemy creatures
+    ENEMY(1100);
 
     private int entryId;
 
