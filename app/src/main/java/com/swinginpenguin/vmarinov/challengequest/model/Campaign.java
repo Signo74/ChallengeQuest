@@ -8,6 +8,8 @@ import java.util.List;
  * Created by vmarinov on 10/23/2014.
  */
 public class Campaign {
+    //TODO create and implement ICampaignBehaviour
+    //TODO or create a Campaign controller and delegate quest functionality to it.
     private EntryIdentity identity;
     private List<Quest> quests;
     private int experienceReward;

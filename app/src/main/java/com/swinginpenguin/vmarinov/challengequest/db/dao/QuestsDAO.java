@@ -39,6 +39,7 @@ public class QuestsDAO {
 
     public Quest insertQuest(int type, String title, String description, List<Chapter> chapters,
                              int expReward, int rank, int maxRank, int completion) {
+        //TODO replace .toString with DBUtils method
         ContentValues values = new ContentValues();
         values.put(dbHelper.TYPE_COLUMN, type);
         values.put(dbHelper.TITLE_COLUMN, title);
@@ -76,6 +77,7 @@ public class QuestsDAO {
     }
 
     public boolean updateQuestById(Quest quest) {
+        //TODO replace .toString with DBUtils method
         ContentValues values = new ContentValues();
         int updateCount = 0;
         values.put(dbHelper.TYPE_COLUMN, quest.getIdentity().getType());
@@ -86,16 +88,16 @@ public class QuestsDAO {
         values.put(dbHelper.RANK, quest.getRank());
         values.put(dbHelper.MAX_RANK, quest.getRank());
         values.put(dbHelper.COMPLETION, quest.getPercentageCompleted());
-        Log.d("QuestsDAO.updateQuestById", "Values " + values.valueSet() +
+        Log.d("QuestsDAO.updateCreatureById", "Values " + values.valueSet() +
                 " for updating existing entry with Id: " + quest.getIdentity().getId());
         database.beginTransaction();
         try {
-            Log.d("QuestsDAO.updateQuestById", "Updating quest entry with Id "+ quest.getIdentity().getId());
+            Log.d("QuestsDAO.updateCreatureById", "Updating quest entry with Id "+ quest.getIdentity().getId());
             updateCount = database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN + " = " + quest.getIdentity().getId(), null);
             database.setTransactionSuccessful();
 
         } catch (Exception ex) {
-            Log.e("QuestsDAO.updateQuestById", "Error: " + ex + " was thrown while updating quest in DB.");
+            Log.e("QuestsDAO.updateCreatureById", "Error: " + ex + " was thrown while updating quest in DB.");
             return false;
         } finally {
             database.endTransaction();
@@ -105,6 +107,7 @@ public class QuestsDAO {
     }
 
     public int updateListOfQuestsById(List<Quest> quests) {
+        //TODO replace .toString with DBUtils method
         ListIterator<Quest> iterator = quests.listIterator();
         int updateCount = 0;
         database.beginTransaction();
@@ -148,7 +151,7 @@ public class QuestsDAO {
                 cursor.moveToNext();
             }
         } catch (Exception ex) {
-            Log.e("QuestsDAO.getAllChapters", "Error " + ex +" was thrown while processing all quests.");
+            Log.e("QuestsDAO.getAllCreatures", "Error " + ex +" was thrown while processing all quests.");
             return new ArrayList();
         } finally {
             cursor.close();

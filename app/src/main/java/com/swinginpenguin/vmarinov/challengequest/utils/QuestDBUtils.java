@@ -40,7 +40,7 @@ public class QuestDBUtils {
 
     public List<Quest> getAllQuests(){
         List<Quest> childItemTitles = dao.getAllQuests();
-        Log.d("QuestDBUtils.getAllChapters","All quests in DB: " + childItemTitles);
+        Log.d("QuestDBUtils.getAllCreatures","All quests in DB: " + childItemTitles);
 
         return childItemTitles;
     }

@@ -6,6 +6,8 @@ import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
  * Created by vmarinov on 10/23/2014.
  */
 public class Chapter {
+    //TODO create and implement IChapterBehaviour
+    //TODO or create a Chapter controller and delegate quest functionality to it.
     private EntryIdentity identity;
     private int experienceReward;
     private int rank;

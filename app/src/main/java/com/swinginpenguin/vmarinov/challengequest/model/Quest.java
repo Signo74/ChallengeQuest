@@ -8,6 +8,8 @@ import java.util.List;
  * Created by vmarinov on 10/23/2014.
  */
 public class Quest {
+    //TODO create and implement IQuestBehaviour
+    //TODO or create a Quest controller and delegate quest functionality to it.
     private EntryIdentity identity;
     private List<Chapter> chapters;
     private int experienceReward;

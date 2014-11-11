@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by victorm on 10/23/2014..
  */
-public class QuestsDBHelper extends SQLiteOpenHelper {
+public class QuestsDBHelper
+        extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "quests";
     public static final String DATABASE_NAME = "main.db";
     private static int DATABASE_VERSION = 1;
@@ -21,17 +22,16 @@ public class QuestsDBHelper extends SQLiteOpenHelper {
     public static final String MAX_RANK = "maxrank";
     public static final String COMPLETION = "percentagecompleted";
 
-    //TODO: Modify initial creation string to insert all necessary fields.
     private static final String DATABASE_CREATE = "create table " + TABLE_NAME + "("
             + ID_COLUMN + " integer primary key autoincrement, "
             + TITLE_COLUMN + " text not null, "
             + TYPE_COLUMN + " integer, "
             + DESCRIPTION_COLUMN + " text, "
             + CHAPTERS + " text, "
-            + EXP_REWARD + " text, "
-            + RANK + " text, "
-            + MAX_RANK + " text, "
-            + COMPLETION + " text, "
+            + EXP_REWARD + " integer, "
+            + RANK + " integer, "
+            + MAX_RANK + " integer, "
+            + COMPLETION + " integer, "
             + ");";
 
     public QuestsDBHelper(Context context) {
