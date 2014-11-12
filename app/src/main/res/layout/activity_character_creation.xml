@@ -29,7 +29,8 @@
         android:inputType="textCapWords"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/hero_name_label"/>
+        android:layout_toRightOf="@+id/hero_name_label"
+        />
 
     <!-- Character gender label and input -->
     <TextView
@@ -47,15 +48,14 @@
         android:orientation="horizontal"
         android:layout_toLeftOf="@+id/hero_gender_label">
         <RadioButton
-            android:id="@+id/hero_gender_selector_female"
-            android:text="@string/hero_creation_gender_female"
+            android:id="@+id/hero_gender_selector_male"
+            android:text="@string/hero_creation_gender_male"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onGenderSelectorClicked"/>
-
         <RadioButton
-            android:id="@+id/hero_gender_selector_male"
-            android:text="@string/hero_creation_gender_male"
+            android:id="@+id/hero_gender_selector_female"
+            android:text="@string/hero_creation_gender_female"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onGenderSelectorClicked"/>
@@ -118,6 +118,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:onClick="createHero"/>
+        android:onClick="resetData"/>
 
 </RelativeLayout>

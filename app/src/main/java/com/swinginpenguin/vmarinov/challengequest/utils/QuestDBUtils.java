@@ -30,7 +30,7 @@ public class QuestDBUtils {
 
     public Quest quickAddQuest(String title){
         Log.d("QuestDBUtils.quickAddTask","Adding quest with title: " + title);
-        return dao.insertQuest(EntryTypes.QUEST.getEntryId(), title, "", null, 0, 0, 0, 0);
+        return dao.insertQuest(EntryTypes.QUEST.getId(), title, "", null, 0, 0, 0, 0);
     }
 
     public void deleteAllQuests(){

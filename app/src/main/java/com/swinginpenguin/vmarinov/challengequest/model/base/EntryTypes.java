@@ -4,7 +4,7 @@ package com.swinginpenguin.vmarinov.challengequest.model.base;
  * Created by vmarinov on 10/23/2014.
  */
 public enum EntryTypes {
-    //1-100 base entries
+    // 1-100 base entries
     CHAPTER(1),
     QUEST(2),
     CAMPAIGN(3),
@@ -12,24 +12,13 @@ public enum EntryTypes {
     TODO_LIST(5),
     SETTINGS_ITEM(6),
 
-    //Settings item types -> 100+
+    // Settings item types -> 100+
     SETTINGS_ITEM_CHECKBOX(100),
     SETTINGS_ITEM_RADIO(101),
     SETTINGS_ITEM_COMBO(102),
     SETTINGS_ITEM_BUTTON(103),
     SETTINGS_ITEM_DIALOG(104),
-    SETTINGS_ITEM_STRING_VALUE(105),
-
-    //1000+ Creatures
-    //1000 - 1010 - Characters
-    NPC(1000),
-    FIGHTER(1001),
-    WIZARD(1002),
-    ROUGE(1003),
-    MONK(1004),
-
-    //1100+ Enemy creatures
-    ENEMY(1100);
+    SETTINGS_ITEM_STRING_VALUE(105);
 
     private int entryId;
 
@@ -37,7 +26,7 @@ public enum EntryTypes {
         this.entryId = value;
     }
 
-    public int getEntryId() {
+    public int getId() {
         return entryId;
     }
 }

@@ -13,7 +13,7 @@ public enum PageId {
         this.pageId = value;
     }
 
-    public int getPageId() {
+    public int getId() {
         return pageId;
     }
 
