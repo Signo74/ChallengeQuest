@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.ChapterDBHelper;
 import com.swinginpenguin.vmarinov.challengequest.model.Chapter;
-import com.swinginpenguin.vmarinov.challengequest.model.Quest;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
 import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
 
@@ -36,8 +35,8 @@ public class ChaptersDAO {
         dbHelper.close();
     }
 
-    public Chapter insertChapter(int type, String title, String description,
-                             int expReward, int rank, int maxRank, long record, int completion) {
+    public Chapter insert(int type, String title, String description,
+                          int expReward, int rank, int maxRank, long record, int completion) {
         //TODO replace .toString with DBUtils method
         ContentValues values = new ContentValues();
         values.put(dbHelper.TYPE_COLUMN, type);
@@ -63,7 +62,7 @@ public class ChaptersDAO {
 
             return newChapter;
         } catch (Exception ex) {
-            Log.e("ChaptersDAO.insertChapter", "Error: " + ex + " was thrown while inserting chapter in DB.");
+            Log.e("ChaptersDAO.insert", "Error: " + ex + " was thrown while inserting chapter in DB.");
             EntryIdentity errorEntry = new EntryIdentity(-1, ErrorCodes.DB_ERROR.getErrorCode(), "", "");
             Chapter errorChpater = new Chapter(errorEntry);
             return errorChpater;
@@ -72,7 +71,7 @@ public class ChaptersDAO {
         }
     }
 
-    public boolean updateQuestById(Chapter chapter) {
+    public boolean updateById(Chapter chapter) {
         //TODO replace .toString with DBUtils method
         ContentValues values = new ContentValues();
         int updateCount = 0;
@@ -84,16 +83,16 @@ public class ChaptersDAO {
         values.put(dbHelper.MAX_RANK, chapter.getRank());
         values.put(dbHelper.RECORD, chapter.getRecord());
         values.put(dbHelper.COMPLETION, chapter.getPercentageCompleted());
-        Log.d("ChaptersDAO.updateCreatureById", "Values " + values.valueSet() +
+        Log.d("ChaptersDAO.updateById", "Values " + values.valueSet() +
                 " for updating existing entry with Id: " + chapter.getIdentity().getId());
         database.beginTransaction();
         try {
-            Log.d("ChaptersDAO.updateCreatureById", "Updating chapter entry with Id " + chapter.getIdentity().getId());
+            Log.d("ChaptersDAO.updateById", "Updating chapter entry with Id " + chapter.getIdentity().getId());
             updateCount = database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN + " = " + chapter.getIdentity().getId(), null);
             database.setTransactionSuccessful();
 
         } catch (Exception ex) {
-            Log.e("ChaptersDAO.updateCreatureById", "Error: " + ex + " was thrown while updating chapter in DB.");
+            Log.e("ChaptersDAO.updateById", "Error: " + ex + " was thrown while updating chapter in DB.");
             return false;
         } finally {
             database.endTransaction();
@@ -102,7 +101,7 @@ public class ChaptersDAO {
         return updateCount > 0;
     }
 
-    public int updateListOfChaptersById(List<Chapter> chapters) {
+    public int updateListById(List<Chapter> chapters) {
         //TODO replace .toString with DBUtils method
         ListIterator<Chapter> iterator = chapters.listIterator();
         int updateCount = 0;
@@ -119,14 +118,14 @@ public class ChaptersDAO {
                 values.put(dbHelper.MAX_RANK, chapter.getMaxRank());
                 values.put(dbHelper.RECORD, chapter.getRecord());
                 values.put(dbHelper.COMPLETION, chapter.getPercentageCompleted());
-                Log.d("ChaptersDAO.updateListOfChaptersById", "Updating chapter entry with id " +
+                Log.d("ChaptersDAO.updateListById", "Updating chapter entry with id " +
                         chapter.getIdentity().getId() + " with values {}" + values.valueSet());
                 updateCount += database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN +
                         " = " + chapter.getIdentity().getId(), null);
                 database.setTransactionSuccessful();
             }
         } catch (Exception ex) {
-            Log.e("ChaptersDAO.updateListOfChaptersById", "Error: " + ex +
+            Log.e("ChaptersDAO.updateListById", "Error: " + ex +
                     " was thrown while updating list of chapters in DB.");
             return -1;
         } finally {
@@ -136,18 +135,18 @@ public class ChaptersDAO {
         return updateCount;
     }
 
-    public List<Chapter> getAllChapters() {
+    public List<Chapter> getAll() {
         List<Chapter> allChapters = new ArrayList<Chapter>();
         Cursor cursor = database.query(dbHelper.TABLE_NAME, null, null, null, null, null, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                Chapter chapter = cursorToChapter(cursor);
+                Chapter chapter = cursorToObject(cursor);
                 allChapters.add(chapter);
                 cursor.moveToNext();
             }
         } catch (Exception ex) {
-            Log.e("ChaptersDAO.getAllCreatures", "Error " + ex +" was thrown while processing all chapters.");
+            Log.e("ChaptersDAO.getAll", "Error " + ex +" was thrown while processing all chapters.");
             return new ArrayList();
         } finally {
             cursor.close();
@@ -155,7 +154,7 @@ public class ChaptersDAO {
         return allChapters;
     }
 
-    public void deleteChapter(Chapter chapter) {
+    public void delete(Chapter chapter) {
         long id = chapter.getIdentity().getId();
         database.beginTransaction();
         try {
@@ -166,10 +165,10 @@ public class ChaptersDAO {
         }
     }
 
-    public void deleteListOfChapters(List<Chapter> chapters) {
+    public void deleteList(List<Chapter> chapters) {
         ListIterator<Chapter> iterator = chapters.listIterator();
         while (iterator.hasNext()) {
-            deleteChapter(iterator.next());
+            delete(iterator.next());
         }
     }
 
@@ -183,7 +182,7 @@ public class ChaptersDAO {
         }
     }
 
-    private Chapter cursorToChapter(Cursor cursor) {
+    private Chapter cursorToObject(Cursor cursor) {
         try {
             long id = cursor.getPosition();
             Integer type = cursor.getInt(1);
@@ -199,11 +198,11 @@ public class ChaptersDAO {
 
             Chapter chapter = new Chapter(identity, expReward, rank, maxRank, record, completion);
 
-            Log.d("ChaptersDAO.cursorToChapter","Creating new chapter with id " +
+            Log.d("ChaptersDAO.cursorToObject","Creating new chapter with id " +
                     chapter.getIdentity().getId() + ". Chapter: " + chapter);
             return chapter;
         } catch (Exception ex) {
-            Log.e("ChaptersDAO.cursorToChapter", "Exception " + ex +" thrown while creating new chapter");
+            Log.e("ChaptersDAO.cursorToObject", "Exception " + ex +" thrown while creating new chapter");
             EntryIdentity errorIdentity = new EntryIdentity(-1, ErrorCodes.DB_ERROR.getErrorCode(),"", "");
             Chapter errorChapter = new Chapter(errorIdentity);
             return errorChapter;

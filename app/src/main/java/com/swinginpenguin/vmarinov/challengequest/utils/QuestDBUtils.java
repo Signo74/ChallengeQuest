@@ -28,21 +28,20 @@ public class QuestDBUtils {
         }
     }
 
-    public Quest quickAddQuest(String title){
+    public Quest quickAdd(String title){
         Log.d("QuestDBUtils.quickAddTask","Adding quest with title: " + title);
-        return dao.insertQuest(EntryTypes.QUEST.getId(), title, "", null, 0, 0, 0, 0);
+        return dao.insert(EntryTypes.QUEST.getId(), title, "", null, 0, 0, 0, 0);
     }
 
-    public void deleteAllQuests(){
-        Log.d("QuestDBUtils.deleteAllQuests","Deleting all tasks from Data base");
+    public void deleteAll(){
+        Log.d("QuestDBUtils.deleteAll","Deleting all tasks from Data base");
         dao.deleteAll();
     }
 
-    public List<Quest> getAllQuests(){
-        List<Quest> childItemTitles = dao.getAllQuests();
-        Log.d("QuestDBUtils.getAllCreatures","All quests in DB: " + childItemTitles);
+    public List<Quest> getAll(){
+        List<Quest> childItemTitles = dao.getAll();
+        Log.d("QuestDBUtils.getAll","All quests in DB: " + childItemTitles);
 
         return childItemTitles;
     }
-
 }

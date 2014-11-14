@@ -2,12 +2,13 @@ package com.swinginpenguin.vmarinov.challengequest.model;
 
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by vmarinov on 10/24/2014.
  */
-public class Creature {
+public class Creature implements Serializable{
     //TODO create and implement ICreatureBehavior
     //TODO or create a creature controller and delegate all behavior of the object to it.
     private EntryIdentity identity;
@@ -15,12 +16,14 @@ public class Creature {
     private int experience;
     private int level;
     private int gender;
+    private int race;
     private int creatureClass;
+    private int subClass;
 
     // Str, Dex, Stam, Cha, Const ...
-    private List<Integer> attributes;
-    // Health, speed, crit, hit ...
-    private List<Float> stats;
+    private List<AttributeSet> attributes;
+    // Initial value forHealth, speed, crit, hit ... before applying attribute bonuses
+    private List<Float> baseStats;
     // Heal, spells, stealth ....
     private List<Integer> specialAbilities;
 
@@ -31,14 +34,19 @@ public class Creature {
         this.identity = identity;
     }
 
-    public Creature(EntryIdentity identity, int experience, int level, int gender, int creatureClass, List<Integer> attributes, List<Float> stats, List<Integer> specialAbilities, List<Integer> equippedItems, List<Integer> availableLoot) {
+    public Creature(EntryIdentity identity, int experience, int level, int gender, int race,
+                    int creatureClass, int subClass, List<AttributeSet> attributes,
+                    List<Float> stats, List<Integer> specialAbilities, List<Integer> equippedItems,
+                    List<Integer> availableLoot) {
         this.identity = identity;
         this.experience = experience;
         this.level = level;
         this.gender = gender;
+        this.race = race;
         this.creatureClass = creatureClass;
+        this.subClass = subClass;
         this.attributes = attributes;
-        this.stats = stats;
+        this.baseStats = stats;
         this.specialAbilities = specialAbilities;
         this.equippedItems = equippedItems;
         this.availableLoot = availableLoot;
@@ -72,6 +80,14 @@ public class Creature {
         this.gender = gender;
     }
 
+    public int getRace() {
+        return race;
+    }
+
+    public void setRace(int race) {
+        this.race = race;
+    }
+
     public int getCreatureClass() {
         return creatureClass;
     }
@@ -80,20 +96,28 @@ public class Creature {
         this.creatureClass = creatureClass;
     }
 
-    public List<Integer> getAttributes() {
+    public int getSubClass() {
+        return subClass;
+    }
+
+    public void setSubClass(int subClass) {
+        this.subClass = subClass;
+    }
+
+    public List<AttributeSet> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<Integer> attributes) {
+    public void setAttributes(List<AttributeSet> attributes) {
         this.attributes = attributes;
     }
 
-    public List<Float> getStats() {
-        return stats;
+    public void setBaseStats(List<Float> baseStats) {
+        this.baseStats = baseStats;
     }
 
-    public void setStats(List<Float> stats) {
-        this.stats = stats;
+    public List<Float> getBaseStats() {
+        return baseStats;
     }
 
     public List<Integer> getSpecialAbilities() {
@@ -129,7 +153,7 @@ public class Creature {
                 ", gender=" + gender +
                 ", creatureClass=" + creatureClass +
                 ", attributes=" + attributes +
-                ", stats=" + stats +
+                ", baseStats=" + baseStats +
                 ", specialAbilities=" + specialAbilities +
                 ", equippedItems=" + equippedItems +
                 ", availableLoot=" + availableLoot +

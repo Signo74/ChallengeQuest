@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
+import com.swinginpenguin.vmarinov.challengequest.model.Creature;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.CharacterFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestsListFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestProgressOverviewFragment;
@@ -37,6 +38,8 @@ public class CharacterOverview
     private int pageCount;
     private QuestDBUtils questUtils = new QuestDBUtils(this);
 
+    private Creature playerHero;
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -57,6 +60,7 @@ public class CharacterOverview
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_overview);
 
+        
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());

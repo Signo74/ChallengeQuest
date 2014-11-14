@@ -36,11 +36,12 @@
     <string name="hero_creation_gender">Choose your gender: </string>
     <string name="hero_creation_gender_female">female</string>
     <string name="hero_creation_gender_male">male</string>
-    <string name="hero_creation_class">Choose your class: </string>
-    <string name="hero_creation_class_fighter">Fighter</string>
-    <string name="hero_creation_class_wizard">Wizard</string>
-    <string name="hero_creation_class_rouge">Rouge</string>
-    <string name="hero_creation_class_monk">Monk</string>
+    <string name="hero_creation_race">Choose your race: </string>
+    <string name="hero_creation_race_human">Human</string>
+    <string name="hero_creation_race_elf">Elf</string>
+    <string name="hero_creation_race_dwarf">Dwarf</string>
+    <string name="hero_creation_race_gnome">Gnome</string>
+    <string name="hero_creation_race_giant">Giant</string>
     <string name="hero_creation_button_create">Create</string>
     <string name="hero_creation_button_reset">Reset</string>
     <string name="title_activity_character_creation">CharacterCreation</string>

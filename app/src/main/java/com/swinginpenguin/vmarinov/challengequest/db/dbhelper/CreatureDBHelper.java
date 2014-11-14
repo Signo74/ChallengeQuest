@@ -19,7 +19,9 @@ public class CreatureDBHelper
     public static final String EXPERIENCE = "experience";
     public static final String LEVEL = "level";
     public static final String GENDER = "gender";
+    public static final String RACE = "race";
     public static final String CREATURE_CLASS = "creatureclass";
+    public static final String SUB_CLASS = "sublcass";
     public static final String ATTRIBUTES = "attributes";
     public static final String STATS = "stats";
     public static final String SPECIAL_ABILITIES = "specialabilities";
@@ -34,7 +36,9 @@ public class CreatureDBHelper
             + EXPERIENCE + " integer, "
             + LEVEL + " integer, "
             + GENDER + " integer, "
+            + RACE + " integer, "
             + CREATURE_CLASS + " integer, "
+            + SUB_CLASS + " integer, "
             + ATTRIBUTES + " text, "
             + STATS + " text, "
             + SPECIAL_ABILITIES + " text, "

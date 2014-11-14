@@ -7,30 +7,54 @@ public enum CreatureProperties {
     // 1-> 100 properties and attributes
     MALE(1),
     FEMALE(2),
-    // 100+ Classes
-    FIGHTER(101),
-    WIZARD(102),
-    ROUGE(103),
-    MONK(104),
+    // 100+ Races
+    //+1 action point
+    HUMAN(101),
+    //+1 intelligence action point
+    ELF(102),
+    //+1 physical action point
+    DWARF(103),
+    //+2 intelligence action points -1 physical action point
+    GNOME(104),
+    //+2 physical -1 intelligence
+    GIANT(105),
 
-    // 200+ attributes
-    STRENGTH(201),
-    DEXTERITY(202),
-    STAMINA(203),
-    WISDOM(204),
-    INTELLIGENCE(205),
-    CHARISMA(206),
+    // 200+ Classes
+    FIGHTER(201),
+    WIZARD(202),
+    ROUGE(203),
+    MONK(204),
+    CLERIC(205),
 
-    // 300+ stats
-    HEALTH(301),
-    LUCK(302),
-    SPEED(303),
-    BASE_DAMAGE(304),
-    BASE_DEFENSE(305),
-    HIT_CHANCE_MELEE(306),
-    HIT_CHANCE_RANGED(307),
-    CRITICAL_HIT_CHANCE(308),
-    CRITICAL_HIT_DAMAGE(309),
+    // 250+ Subclasses
+    BRAND_NEW_HERO(250),
+
+    // 300+ attributes
+    STRENGTH(301),
+    DEXTERITY(302),
+    STAMINA(303),
+    WISDOM(304),
+    INTELLIGENCE(305),
+    CHARISMA(306),
+
+    // 400+ stats
+    HEALTH(401),
+    LUCK(402),
+    SPEED(403),
+    BASE_DAMAGE(404),
+    BASE_DEFENSE(405),
+    HIT_CHANCE_MELEE(406),
+    HIT_CHANCE_RANGED(407),
+    CRITICAL_HIT_CHANCE(408),
+    CRITICAL_HIT_DAMAGE(409),
+
+    // 1000+ Badges - earned when completing certain type of quests
+    BLACKSMITH(1000),
+    CHIEFTAIN(1001),
+    MASTER_CHEF(1002),
+    HERBALIST(1003),
+    LIBRARIAN(1004),
+
 
     //TODO remove this when finalized.
     END(-1);

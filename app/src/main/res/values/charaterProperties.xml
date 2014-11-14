@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="race_human_description">The jack of all traits.
+        You'll receives +1 physical and + intelligence action points per day.</string>
+    <string name="race_elf_description">Nimble, quick and agile. + 1 Int.</string>
+    <string name="race_dwarf_description">Short but sturdy. + 1 Str.</string>
+    <string name="race_gnome_description">Love to dabble in machinery. +2 Int - 1 Str</string>
+    <string name="race_giant_description">Great with the Club. + 2 Str.</string>
+</resources>

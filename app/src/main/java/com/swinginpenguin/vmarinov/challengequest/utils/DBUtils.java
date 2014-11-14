@@ -1,5 +1,7 @@
 package com.swinginpenguin.vmarinov.challengequest.utils;
 
+import com.swinginpenguin.vmarinov.challengequest.model.AttributeSet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,11 @@ public class DBUtils {
     public static List<Float> dbStringToListFloats(String dbValue) {
         //TODO convert the string representation to a List<>
         return new ArrayList<Float>();
+    }
+
+    public static List<AttributeSet> dbStringToListAttributeSet(String dbValue) {
+        //TODO convert the string representation to a List<>
+        return new ArrayList<AttributeSet>();
     }
 
     public static String listToDBString(List<Object> list) {

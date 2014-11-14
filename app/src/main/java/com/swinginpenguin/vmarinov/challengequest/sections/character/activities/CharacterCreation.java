@@ -10,13 +10,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
+import com.swinginpenguin.vmarinov.challengequest.model.AttributeSet;
+import com.swinginpenguin.vmarinov.challengequest.model.Creature;
 import com.swinginpenguin.vmarinov.challengequest.model.base.CreatureProperties;
 import com.swinginpenguin.vmarinov.challengequest.model.base.CreaturesTypes;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryTypes;
+import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.activities.CharacterOverview;
+import com.swinginpenguin.vmarinov.challengequest.utils.CreatureDBUtils;
+
+import java.util.List;
 
 public class CharacterCreation extends Activity {
 
@@ -26,11 +33,20 @@ public class CharacterCreation extends Activity {
     private RadioGroup genderSelector;
     private RadioGroup classSelector;
 
+    private String _title;
+    private String _description;
     private int _gender;
-    private int _heroClass;
+    private int _race;
+    private int _heroClass = CreaturesTypes.PLAYER.getId();
+    private int _subClass = CreatureProperties.BRAND_NEW_HERO.getId();
+    private CreatureDBUtils dbUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        dbUtils = new CreatureDBUtils(this);
+
+        nameInput = (EditText) findViewById(R.id.hero_name_input);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_creation);
     }
@@ -68,19 +84,27 @@ public class CharacterCreation extends Activity {
         }
     }
 
-    public void onClassSelectorClicked(View view) {
+    public void onRaceSelectorItemClicked(View view) {
         switch (view.getId()) {
-            case R.id.hero_class_selector_fighter:
-                _heroClass = CreatureProperties.FIGHTER.getId();
+            case R.id.hero_race_selector_human:
+                _race = CreatureProperties.HUMAN.getId();
+                _description = getString(R.string.race_human_description);
                 break;
-            case R.id.hero_class_selector_wizard:
-                _heroClass = CreatureProperties.WIZARD.getId();
+            case R.id.hero_race_selector_elf:
+                _race = CreatureProperties.ELF.getId();
+                _description = getString(R.string.race_elf_description);
                 break;
-            case R.id.hero_class_selector_rouge:
-                _heroClass = CreatureProperties.ROUGE.getId();
+            case R.id.hero_race_selector_dwarf:
+                _race = CreatureProperties.DWARF.getId();
+                _description = getString(R.string.race_dwarf_description);
                 break;
-            case R.id.hero_class_selector_monk:
-                _heroClass = CreatureProperties.MONK.getId();
+            case R.id.hero_race_selector_gnome:
+                _race = CreatureProperties.GNOME.getId();
+                _description = getString(R.string.race_gnome_description);
+                break;
+            case R.id.hero_race_selector_giant:
+                _race = CreatureProperties.GIANT.getId();
+                _description = getString(R.string.race_giant_description);
                 break;
             default:
                 break;
@@ -93,7 +117,22 @@ public class CharacterCreation extends Activity {
     }
 
     public void createHero(View button) {
-        Intent createHeroIntent = new Intent(this, CharacterOverview.class);
-        startActivity(createHeroIntent);
+        //TODO populate all parameters correctly - Use ClassBaseUtils
+        _title = nameInput.getText().toString();
+        List<AttributeSet> attributes = null;
+        List<Float> stats = null;
+        List<Integer> abilities = null;
+        List<Integer> items = null;
+        List<Integer> loot = null;
+        Creature playerHero= dbUtils.add(CreaturesTypes.PLAYER.getId(), _title, _description, 0, 1, _gender, _race,
+                _heroClass, _subClass, attributes, stats, abilities, items, loot);
+        if (playerHero.getIdentity().getType() != ErrorCodes.DB_ERROR.getErrorCode()) {
+            Intent createHeroIntent = new Intent(this, CharacterOverview.class);
+            createHeroIntent.putExtra("playerHero", playerHero);
+            startActivity(createHeroIntent);
+        } else {
+            //TODO show error message and prompt user for different input.
+            Toast.makeText(this, "Error creating character!", Toast.LENGTH_LONG);
+        }
     }
 }

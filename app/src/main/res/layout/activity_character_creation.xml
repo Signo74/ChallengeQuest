@@ -64,44 +64,50 @@
 
     <!-- Character class label and input -->
     <TextView
-        android:id="@+id/hero_class_label"
-        android:text="@string/hero_creation_class"
+        android:id="@+id/hero_race_label"
+        android:text="@string/hero_creation_race"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/hero_gender_label"
         android:layout_centerInParent="true"/>
 
     <RadioGroup
-        android:id="@+id/hero_class_selector"
+        android:id="@+id/hero_race_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/hero_class_label"
+        android:layout_below="@+id/hero_race_label"
         android:layout_centerInParent="true">
         <RadioButton
-            android:id="@+id/hero_class_selector_fighter"
-            android:text="@string/hero_creation_class_fighter"
+            android:id="@+id/hero_race_selector_human"
+            android:text="@string/hero_creation_race_human"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onClassSelectorClicked"/>
+            android:onClick="onRaceSelectorItemClicked"/>
         <RadioButton
-            android:id="@+id/hero_class_selector_wizard"
-            android:text="@string/hero_creation_class_wizard"
+            android:id="@+id/hero_race_selector_elf"
+            android:text="@string/hero_creation_race_elf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onClassSelectorClicked"/>
+            android:onClick="onRaceSelectorItemClicked"/>
         <RadioButton
-            android:id="@+id/hero_class_selector_rouge"
-            android:text="@string/hero_creation_class_rouge"
+            android:id="@+id/hero_race_selector_dwarf"
+            android:text="@string/hero_creation_race_dwarf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onClassSelectorClicked"/>
+            android:onClick="onRaceSelectorItemClicked"/>
         <RadioButton
-            android:id="@+id/hero_class_selector_monk"
-            android:text="@string/hero_creation_class_monk"
+            android:id="@+id/hero_race_selector_gnome"
+            android:text="@string/hero_creation_race_gnome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onClassSelectorClicked"/>
+            android:onClick="onRaceSelectorItemClicked"/>
+        <RadioButton
+            android:id="@+id/hero_race_selector_giant"
+            android:text="@string/hero_creation_race_giant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRaceSelectorItemClicked"/>
     </RadioGroup>
 
     <Button
