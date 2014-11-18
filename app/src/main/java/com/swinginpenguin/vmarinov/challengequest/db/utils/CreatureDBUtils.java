@@ -1,4 +1,4 @@
-package com.swinginpenguin.vmarinov.challengequest.utils;
+package com.swinginpenguin.vmarinov.challengequest.db.utils;
 
 import android.content.Context;
 import android.util.Log;

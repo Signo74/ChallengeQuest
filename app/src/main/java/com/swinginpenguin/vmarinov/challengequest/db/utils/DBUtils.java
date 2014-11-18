@@ -1,4 +1,4 @@
-package com.swinginpenguin.vmarinov.challengequest.utils;
+package com.swinginpenguin.vmarinov.challengequest.db.utils;
 
 import com.swinginpenguin.vmarinov.challengequest.model.AttributeSet;
 

@@ -11,7 +11,7 @@ import com.swinginpenguin.vmarinov.challengequest.model.AttributeSet;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
 import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
-import com.swinginpenguin.vmarinov.challengequest.utils.DBUtils;
+import com.swinginpenguin.vmarinov.challengequest.db.utils.DBUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

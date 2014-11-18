@@ -7,7 +7,6 @@ import android.app.Activity;
 import com.swinginpenguin.vmarinov.challengequest.R;
 import com.swinginpenguin.vmarinov.challengequest.sections.questdetails.ChallengeDetailFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.questdetails.QuestOverviewActivity;
-import com.swinginpenguin.vmarinov.challengequest.utils.QuestDBUtils;
 
 
 /**

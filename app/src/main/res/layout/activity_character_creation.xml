@@ -22,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header"
+        android:layout_alignBaseline="@+id/hero_name_input"
         android:layout_alignParentLeft="true"/>
 
     <EditText
@@ -30,6 +31,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/hero_name_label"
+        android:layout_below="@+id/header"
         />
 
     <!-- Character gender label and input -->
@@ -38,26 +40,31 @@
         android:text="@string/hero_creation_gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/hero_name_label"
-        android:layout_alignParentLeft="true"/>
+        android:layout_below="@+id/hero_name_input"
+        android:layout_centerInParent="true"/>
 
     <RadioGroup
         android:id="@+id/hero_gender_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_toLeftOf="@+id/hero_gender_label">
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/hero_gender_label">
         <RadioButton
             android:id="@+id/hero_gender_selector_male"
             android:text="@string/hero_creation_gender_male"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="top"
             android:onClick="onGenderSelectorClicked"/>
         <RadioButton
             android:id="@+id/hero_gender_selector_female"
             android:text="@string/hero_creation_gender_female"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
             android:onClick="onGenderSelectorClicked"/>
     </RadioGroup>
 
@@ -68,7 +75,7 @@
         android:text="@string/hero_creation_race"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/hero_gender_label"
+        android:layout_below="@+id/hero_gender_selector"
         android:layout_centerInParent="true"/>
 
     <RadioGroup
@@ -83,30 +90,40 @@
             android:text="@string/hero_creation_race_human"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="bottom"
             android:onClick="onRaceSelectorItemClicked"/>
         <RadioButton
             android:id="@+id/hero_race_selector_elf"
             android:text="@string/hero_creation_race_elf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="top"
             android:onClick="onRaceSelectorItemClicked"/>
         <RadioButton
             android:id="@+id/hero_race_selector_dwarf"
             android:text="@string/hero_creation_race_dwarf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
             android:onClick="onRaceSelectorItemClicked"/>
         <RadioButton
             android:id="@+id/hero_race_selector_gnome"
             android:text="@string/hero_creation_race_gnome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             android:onClick="onRaceSelectorItemClicked"/>
         <RadioButton
             android:id="@+id/hero_race_selector_giant"
             android:text="@string/hero_creation_race_giant"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="right"
             android:onClick="onRaceSelectorItemClicked"/>
     </RadioGroup>
 
@@ -124,6 +141,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:onClick="resetData"/>
 
 </RelativeLayout>

@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
@@ -17,15 +16,14 @@ import com.swinginpenguin.vmarinov.challengequest.model.AttributeSet;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
 import com.swinginpenguin.vmarinov.challengequest.model.base.CreatureProperties;
 import com.swinginpenguin.vmarinov.challengequest.model.base.CreaturesTypes;
-import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
-import com.swinginpenguin.vmarinov.challengequest.model.base.EntryTypes;
 import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
-import com.swinginpenguin.vmarinov.challengequest.sections.character.activities.CharacterOverview;
-import com.swinginpenguin.vmarinov.challengequest.utils.CreatureDBUtils;
+import com.swinginpenguin.vmarinov.challengequest.db.utils.CreatureDBUtils;
 
 import java.util.List;
 
 public class CharacterCreation extends Activity {
+
+    private final String NAME_INPUT_DEFAULT_VALUE = "";
 
     private EditText nameInput;
     private Button createButton;
@@ -46,6 +44,8 @@ public class CharacterCreation extends Activity {
         dbUtils = new CreatureDBUtils(this);
 
         nameInput = (EditText) findViewById(R.id.hero_name_input);
+        genderSelector = (RadioGroup) findViewById(R.id.hero_gender_selector);
+        classSelector = (RadioGroup) findViewById(R.id.hero_race_selector);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_creation);
@@ -114,6 +114,7 @@ public class CharacterCreation extends Activity {
     public void resetData(View view){
         genderSelector.clearCheck();
         classSelector.clearCheck();
+        nameInput.setText(NAME_INPUT_DEFAULT_VALUE);
     }
 
     public void createHero(View button) {

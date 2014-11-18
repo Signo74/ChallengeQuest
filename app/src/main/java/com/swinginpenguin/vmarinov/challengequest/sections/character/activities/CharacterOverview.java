@@ -19,7 +19,7 @@ import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.C
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestsListFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestProgressOverviewFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.questdetails.QuestOverviewActivity;
-import com.swinginpenguin.vmarinov.challengequest.utils.QuestDBUtils;
+import com.swinginpenguin.vmarinov.challengequest.db.utils.QuestDBUtils;
 
 public class CharacterOverview
     extends Activity
@@ -60,7 +60,7 @@ public class CharacterOverview
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_overview);
 
-        
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());

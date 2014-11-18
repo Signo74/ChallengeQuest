@@ -31,7 +31,7 @@
     <string name="start_page_past_quests">Completed quests</string>
 
     <!-- Hero creation -->
-    <string name="hero_creation_welcome">Welcome to Challenge Quests!/It's time to create your hero!</string>
+    <string name="hero_creation_welcome">Welcome to Challenge Quests!/n It\'s time to create your hero!</string>
     <string name="hero_creation_name">Choose your name: </string>
     <string name="hero_creation_gender">Choose your gender: </string>
     <string name="hero_creation_gender_female">female</string>
@@ -54,7 +54,7 @@
     <string name="quest_title_default">New Quest</string>
     <string name="loot_default">Latest loot: None</string>
     <string name="quest_chapter_select">Chapter select:</string>
-    <string name="quest_description">A quest into the uknown world of getting fit!
+    <string name="quest_description">A quest into the unknown world of getting fit!
 Builds up the physical prowess and refreshes the mind. Each chapter requires several feats from our mighty hero HeroNameGoesHere with increasing difficulty over time.
 
 The disciplines in which you are going to be tested are:
