@@ -2,20 +2,16 @@ package com.swinginpenguin.vmarinov.challengequest.db.dbhelper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+
+import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpenHelper;
 
 /**
  * Created by victorm on 10/23/2014..
  */
 public class QuestsDBHelper
-        extends SQLiteOpenHelper {
+        extends BaseSQLiteOpenHelper {
     public static final String TABLE_NAME = "quests";
-    public static final String DATABASE_NAME = "main.db";
     private static int DATABASE_VERSION = 1;
-    public static final String ID_COLUMN = "_id";
-    public static final String TYPE_COLUMN = "type";
-    public static final String TITLE_COLUMN = "title";
-    public static final String DESCRIPTION_COLUMN = "description";
     public static final String CHAPTERS = "chapters";
     public static final String EXP_REWARD = "experienceGranted";
     public static final String RANK = "rank";

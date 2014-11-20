@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Created by vmarinov on 11/7/2014.
@@ -25,6 +26,7 @@ public class ChaptersDAO {
 
     public ChaptersDAO(Context cntx) {
         dbHelper = new ChapterDBHelper(cntx);
+
     }
 
     public void open() throws SQLException {
@@ -102,36 +104,18 @@ public class ChaptersDAO {
     }
 
     public int updateListById(List<Chapter> chapters) {
-        //TODO replace .toString with DBUtils method
         ListIterator<Chapter> iterator = chapters.listIterator();
         int updateCount = 0;
-        database.beginTransaction();
-        try {
-            while (iterator.hasNext()) {
-                Chapter chapter = iterator.next();
-                ContentValues values = new ContentValues();
-                values.put(dbHelper.TYPE_COLUMN, chapter.getIdentity().getType());
-                values.put(dbHelper.TITLE_COLUMN, chapter.getIdentity().getTitle());
-                values.put(dbHelper.DESCRIPTION_COLUMN, chapter.getIdentity().getDescription());
-                values.put(dbHelper.EXP_REWARD, chapter.getExperienceReward());
-                values.put(dbHelper.RANK, chapter.getRank());
-                values.put(dbHelper.MAX_RANK, chapter.getMaxRank());
-                values.put(dbHelper.RECORD, chapter.getRecord());
-                values.put(dbHelper.COMPLETION, chapter.getPercentageCompleted());
-                Log.d("ChaptersDAO.updateListById", "Updating chapter entry with id " +
-                        chapter.getIdentity().getId() + " with values {}" + values.valueSet());
-                updateCount += database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN +
-                        " = " + chapter.getIdentity().getId(), null);
-                database.setTransactionSuccessful();
+        while (iterator.hasNext()) {
+            Chapter chapter = iterator.next();
+            if (updateById(chapter)) {
+                updateCount++;
+            } else {
+                Log.e("ChaptersDAO.updateListById", "An error was thrown while updating list of " +
+                        "chapters in DB with chapterId: " + chapter.getIdentity().getId());
+                return ErrorCodes.DB_ERROR.getErrorCode();
             }
-        } catch (Exception ex) {
-            Log.e("ChaptersDAO.updateListById", "Error: " + ex +
-                    " was thrown while updating list of chapters in DB.");
-            return -1;
-        } finally {
-            database.endTransaction();
         }
-
         return updateCount;
     }
 

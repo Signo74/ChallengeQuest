@@ -107,36 +107,18 @@ public class QuestsDAO {
     }
 
     public int updateListById(List<Quest> quests) {
-        //TODO replace .toString with DBUtils method
         ListIterator<Quest> iterator = quests.listIterator();
         int updateCount = 0;
-        database.beginTransaction();
-        try {
-            while (iterator.hasNext()) {
-                Quest quest = iterator.next();
-                ContentValues values = new ContentValues();
-                values.put(dbHelper.TYPE_COLUMN, quest.getIdentity().getType());
-                values.put(dbHelper.TITLE_COLUMN, quest.getIdentity().getTitle());
-                values.put(dbHelper.DESCRIPTION_COLUMN, quest.getIdentity().getDescription());
-                values.put(dbHelper.CHAPTERS, quest.getChapters().toString());
-                values.put(dbHelper.EXP_REWARD, quest.getExperienceReward());
-                values.put(dbHelper.RANK, quest.getRank());
-                values.put(dbHelper.MAX_RANK, quest.getMaxRank());
-                values.put(dbHelper.COMPLETION, quest.getPercentageCompleted());
-                Log.d("QuestsDAO.updateListOfTasksById", "Updating quest entry with id " +
-                        quest.getIdentity().getId() + " with values {}" + values.valueSet());
-                updateCount += database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN +
-                                                " = " + quest.getIdentity().getId(), null);
-                database.setTransactionSuccessful();
+        while (iterator.hasNext()) {
+            Quest quest = iterator.next();
+            if (updateById(quest)) {
+                updateCount++;
+            } else {
+                Log.e("QuestsDAO.updateListById", "An error was thrown while updating list of " +
+                        "quests in DB with questId: " + quest.getIdentity().getId());
+                return ErrorCodes.DB_ERROR.getErrorCode();
             }
-        } catch (Exception ex) {
-            Log.e("QuestsDAO.updateListById", "Error: " + ex +
-                    " was thrown while updating list of quests in DB.");
-            return -1;
-        } finally {
-            database.endTransaction();
         }
-
         return updateCount;
     }
 

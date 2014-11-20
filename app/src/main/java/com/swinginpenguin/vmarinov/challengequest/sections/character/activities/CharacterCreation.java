@@ -23,7 +23,7 @@ import java.util.List;
 
 public class CharacterCreation extends Activity {
 
-    private final String NAME_INPUT_DEFAULT_VALUE = "";
+    private final String NAME_INPUT_DEFAULT_VALUE = getString(R.string.editable_empty);
 
     private EditText nameInput;
     private Button createButton;

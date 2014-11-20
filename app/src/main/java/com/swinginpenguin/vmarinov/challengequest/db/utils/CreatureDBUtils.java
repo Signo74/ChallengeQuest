@@ -6,8 +6,6 @@ import android.util.Log;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.CreaturesDAO;
 import com.swinginpenguin.vmarinov.challengequest.model.AttributeSet;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
-import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
-import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
 
 import java.util.List;
 
@@ -19,6 +17,7 @@ public class CreatureDBUtils {;
     private CreaturesDAO dao;
 
     public CreatureDBUtils(Context ctx){
+        //TODO move creation of helper and databaseto DAO
         dao = new CreaturesDAO(ctx);
         try {
             dao.open();

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.CreatureDBHelper;
@@ -109,8 +110,7 @@ public class CreaturesDAO {
             Log.d("CreaturesDAO.updateById", "Updating creature entry with Id " + creature.getIdentity().getId());
             updateCount = database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN + " = " + creature.getIdentity().getId(), null);
             database.setTransactionSuccessful();
-
-        } catch (Exception ex) {
+        } catch (SQLiteException ex) {
             Log.e("CreaturesDAO.updateById", "Error: " + ex + " was thrown while updating creature in DB.");
             return false;
         } finally {
@@ -124,39 +124,16 @@ public class CreaturesDAO {
         //TODO replace .toString with DBUtils method
         ListIterator<Creature> iterator = chapters.listIterator();
         int updateCount = 0;
-        database.beginTransaction();
-        try {
-            while (iterator.hasNext()) {
-                Creature creature = iterator.next();
-                ContentValues values = new ContentValues();
-                values.put(dbHelper.TYPE_COLUMN, creature.getIdentity().getType());
-                values.put(dbHelper.TITLE_COLUMN, creature.getIdentity().getTitle());
-                values.put(dbHelper.DESCRIPTION_COLUMN, creature.getIdentity().getDescription());
-                values.put(dbHelper.EXPERIENCE, creature.getExperience());
-                values.put(dbHelper.LEVEL, creature.getLevel());
-                values.put(dbHelper.GENDER, creature.getGender());
-                values.put(dbHelper.RACE, creature.getRace());
-                values.put(dbHelper.CREATURE_CLASS, creature.getCreatureClass());
-                values.put(dbHelper.SUB_CLASS, creature.getSubClass());
-                values.put(dbHelper.ATTRIBUTES, creature.getAttributes().toString());
-                values.put(dbHelper.STATS, creature.getBaseStats().toString());
-                values.put(dbHelper.SPECIAL_ABILITIES, creature.getSpecialAbilities().toString());
-                values.put(dbHelper.EQUIPPED_ITEMS, creature.getEquippedItems().toString());
-                values.put(dbHelper.AVAILABLE_LOOT, creature.getAvailableLoot().toString());
-                Log.d("CreaturesDAO.updateListById", "Updating creature entry with id " +
-                        creature.getIdentity().getId() + " with values {}" + values.valueSet());
-                updateCount += database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN +
-                        " = " + creature.getIdentity().getId(), null);
-                database.setTransactionSuccessful();
+        while (iterator.hasNext()) {
+           Creature creature = iterator.next();
+            if (updateById(creature)) {
+            updateCount++;
+            } else {
+                Log.e("CreaturesDAO.updateListById", "An error was thrown while updating list of " +
+                        "creatures in DB with creatureId: " + creature.getIdentity().getId());
+                return ErrorCodes.DB_ERROR.getErrorCode();
             }
-        } catch (Exception ex) {
-            Log.e("CreaturesDAO.updateListById", "Error: " + ex +
-                    " was thrown while updating list of creatures in DB.");
-            return -1;
-        } finally {
-            database.endTransaction();
         }
-
         return updateCount;
     }
 
