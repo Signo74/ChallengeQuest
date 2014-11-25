@@ -106,9 +106,9 @@ public class QuestsDAO {
         return updateCount > 0;
     }
 
-    public int updateListById(List<Quest> quests) {
+    public long updateListById(List<Quest> quests) {
         ListIterator<Quest> iterator = quests.listIterator();
-        int updateCount = 0;
+        long updateCount = 0;
         while (iterator.hasNext()) {
             Quest quest = iterator.next();
             if (updateById(quest)) {

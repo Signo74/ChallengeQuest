@@ -103,9 +103,9 @@ public class ChaptersDAO {
         return updateCount > 0;
     }
 
-    public int updateListById(List<Chapter> chapters) {
+    public long updateListById(List<Chapter> chapters) {
         ListIterator<Chapter> iterator = chapters.listIterator();
-        int updateCount = 0;
+        long updateCount = 0;
         while (iterator.hasNext()) {
             Chapter chapter = iterator.next();
             if (updateById(chapter)) {

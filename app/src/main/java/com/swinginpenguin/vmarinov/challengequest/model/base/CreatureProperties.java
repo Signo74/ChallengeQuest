@@ -5,6 +5,7 @@ package com.swinginpenguin.vmarinov.challengequest.model.base;
  */
 public enum CreatureProperties {
     // 1-> 100 properties and attributes
+    UNIDENTIFIED(0),
     MALE(1),
     FEMALE(2),
     // 100+ Races

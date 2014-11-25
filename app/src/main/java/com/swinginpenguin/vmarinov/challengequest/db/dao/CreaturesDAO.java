@@ -4,20 +4,25 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.UpdateEntryCallable;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteRunnable;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteTableContentsRunnable;
 import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.CreatureDBHelper;
 import com.swinginpenguin.vmarinov.challengequest.model.AttributeSet;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
 import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
 import com.swinginpenguin.vmarinov.challengequest.db.utils.DBUtils;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.InsertEntryCallable;
+import com.swinginpenguin.vmarinov.challengequest.multithreading.executor.ExecutorServiceProvider;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.Future;
 
 /**
  * Created by vmarinov on 11/11/2014.
@@ -39,47 +44,38 @@ public class CreaturesDAO {
         dbHelper.close();
     }
 
-    public Creature insert(int type, String title, String description, int experience,
-                           int level, int gender, int race, int creatureClass, int subClass,
-                           List<AttributeSet> attributes, List<Float> stats, List<Integer> abilities,
-                           List<Integer> items, List<Integer> loot) {
-        //TODO replace .toString with DBUtils method
+    public Boolean insert(Creature creature) {
+        //TODO set Id in values!!!
         ContentValues values = new ContentValues();
-        values.put(dbHelper.TYPE_COLUMN, type);
-        values.put(dbHelper.TITLE_COLUMN, title);
-        values.put(dbHelper.DESCRIPTION_COLUMN, description);
-        values.put(dbHelper.EXPERIENCE, experience);
-        values.put(dbHelper.LEVEL, level);
-        values.put(dbHelper.GENDER, gender);
-        values.put(dbHelper.RACE, race);
-        values.put(dbHelper.CREATURE_CLASS, creatureClass);
-        values.put(dbHelper.SUB_CLASS, subClass);
-        values.put(dbHelper.ATTRIBUTES, attributes.toString());
-        values.put(dbHelper.STATS, stats.toString());
-        values.put(dbHelper.SPECIAL_ABILITIES, abilities.toString());
-        values.put(dbHelper.EQUIPPED_ITEMS, items.toString());
-        values.put(dbHelper.AVAILABLE_LOOT, loot.toString());
+        values.put(CreatureDBHelper.TYPE_COLUMN, creature.getIdentity().getType());
+        values.put(CreatureDBHelper.TITLE_COLUMN, creature.getIdentity().getTitle());
+        values.put(CreatureDBHelper.DESCRIPTION_COLUMN, creature.getIdentity().getDescription());
+        values.put(CreatureDBHelper.EXPERIENCE, creature.getExperience());
+        values.put(CreatureDBHelper.LEVEL, creature.getLevel());
+        values.put(CreatureDBHelper.GENDER, creature.getGender());
+        values.put(CreatureDBHelper.RACE, creature.getRace());
+        values.put(CreatureDBHelper.CREATURE_CLASS, creature.getCreatureClass());
+        values.put(CreatureDBHelper.SUB_CLASS, creature.getSubClass());
+        String attributes = DBUtils.listToDBString(creature.getAttributes());
+        values.put(CreatureDBHelper.ATTRIBUTES, attributes);
+        String stats = DBUtils.listToDBString(creature.getBaseStats());
+        values.put(CreatureDBHelper.STATS, stats);
+        String abilities = DBUtils.listToDBString(creature.getSpecialAbilities());
+        values.put(CreatureDBHelper.SPECIAL_ABILITIES, abilities);
+        String items = DBUtils.listToDBString(creature.getEquippedItems());
+        values.put(CreatureDBHelper.EQUIPPED_ITEMS, items);
+        String loot = DBUtils.listToDBString(creature.getAvailableLoot());
+        values.put(CreatureDBHelper.AVAILABLE_LOOT, loot);
 
         try {
-            database.beginTransaction();
-            long insertID = database.insert(dbHelper.TABLE_NAME, null, values);
-            Cursor cursor = database.query(dbHelper.TABLE_NAME, null, dbHelper.ID_COLUMN +
-                    " = " + insertID, null, null, null, null);
-            cursor.moveToFirst();
-            cursor.close();
-            database.setTransactionSuccessful();
+            Log.d("CreaturesDAO.insert", "Inserting Creature with id: " + creature.getIdentity().getId());
+            InsertEntryCallable insert = new InsertEntryCallable(values, dbHelper);
+            Future<Long> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(insert);
 
-            EntryIdentity identity = new EntryIdentity(insertID, type, title, description);
-            Creature newCreature = new Creature(identity, experience, level, gender, race,
-                                        creatureClass, subClass, attributes, stats, abilities, items,
-                                        loot);
-
-            return newCreature;
+            return result.get() != -1;
         } catch (Exception ex) {
             Log.e("CreaturesDAO.insert", "Error: " + ex + " was thrown while inserting creature in DB.");
-            EntryIdentity errorEntry = new EntryIdentity(-1, ErrorCodes.DB_ERROR.getErrorCode(), "", "");
-            Creature errorCreature = new Creature(errorEntry);
-            return errorCreature;
+            return false;
         } finally {
             database.endTransaction();
         }
@@ -88,40 +84,37 @@ public class CreaturesDAO {
     public boolean updateById(Creature creature) {
         //TODO replace .toString with DBUtils method
         ContentValues values = new ContentValues();
-        int updateCount = 0;
-        values.put(dbHelper.TYPE_COLUMN, creature.getIdentity().getType());
-        values.put(dbHelper.TITLE_COLUMN, creature.getIdentity().getTitle());
-        values.put(dbHelper.DESCRIPTION_COLUMN, creature.getIdentity().getDescription());
-        values.put(dbHelper.EXPERIENCE, creature.getExperience());
-        values.put(dbHelper.LEVEL, creature.getLevel());
-        values.put(dbHelper.GENDER, creature.getGender());
-        values.put(dbHelper.RACE, creature.getRace());
-        values.put(dbHelper.CREATURE_CLASS, creature.getCreatureClass());
-        values.put(dbHelper.SUB_CLASS, creature.getSubClass());
-        values.put(dbHelper.ATTRIBUTES, creature.getAttributes().toString());
-        values.put(dbHelper.STATS, creature.getBaseStats().toString());
-        values.put(dbHelper.SPECIAL_ABILITIES, creature.getSpecialAbilities().toString());
-        values.put(dbHelper.EQUIPPED_ITEMS, creature.getEquippedItems().toString());
-        values.put(dbHelper.AVAILABLE_LOOT, creature.getAvailableLoot().toString());
+        values.put(CreatureDBHelper.TYPE_COLUMN, creature.getIdentity().getType());
+        values.put(CreatureDBHelper.TITLE_COLUMN, creature.getIdentity().getTitle());
+        values.put(CreatureDBHelper.DESCRIPTION_COLUMN, creature.getIdentity().getDescription());
+        values.put(CreatureDBHelper.EXPERIENCE, creature.getExperience());
+        values.put(CreatureDBHelper.LEVEL, creature.getLevel());
+        values.put(CreatureDBHelper.GENDER, creature.getGender());
+        values.put(CreatureDBHelper.RACE, creature.getRace());
+        values.put(CreatureDBHelper.CREATURE_CLASS, creature.getCreatureClass());
+        values.put(CreatureDBHelper.SUB_CLASS, creature.getSubClass());
+        values.put(CreatureDBHelper.ATTRIBUTES, creature.getAttributes().toString());
+        values.put(CreatureDBHelper.STATS, creature.getBaseStats().toString());
+        values.put(CreatureDBHelper.SPECIAL_ABILITIES, creature.getSpecialAbilities().toString());
+        values.put(CreatureDBHelper.EQUIPPED_ITEMS, creature.getEquippedItems().toString());
+        values.put(CreatureDBHelper.AVAILABLE_LOOT, creature.getAvailableLoot().toString());
         Log.d("CreaturesDAO.updateById", "Values " + values.valueSet() +
                 " for updating existing entry with Id: " + creature.getIdentity().getId());
-        database.beginTransaction();
         try {
             Log.d("CreaturesDAO.updateById", "Updating creature entry with Id " + creature.getIdentity().getId());
-            updateCount = database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN + " = " + creature.getIdentity().getId(), null);
-            database.setTransactionSuccessful();
-        } catch (SQLiteException ex) {
+            UpdateEntryCallable task = new UpdateEntryCallable(values, dbHelper);
+            Future<Long> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+
+            return result.get() != -1;
+        } catch (Exception ex) {
             Log.e("CreaturesDAO.updateById", "Error: " + ex + " was thrown while updating creature in DB.");
             return false;
         } finally {
             database.endTransaction();
         }
-
-        return updateCount > 0;
     }
 
-    public int updateListById(List<Creature> chapters) {
-        //TODO replace .toString with DBUtils method
+    public long updateListById(List<Creature> chapters) {
         ListIterator<Creature> iterator = chapters.listIterator();
         int updateCount = 0;
         while (iterator.hasNext()) {
@@ -139,7 +132,7 @@ public class CreaturesDAO {
 
     public List<Creature> getAll() {
         List<Creature> allCreatures = new ArrayList<Creature>();
-        Cursor cursor = database.query(dbHelper.TABLE_NAME, null, null, null, null, null, null);
+        Cursor cursor = database.query(CreatureDBHelper.TABLE_NAME, null, null, null, null, null, null);
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -158,13 +151,8 @@ public class CreaturesDAO {
 
     public void delete(Creature creature) {
         long id = creature.getIdentity().getId();
-        database.beginTransaction();
-        try {
-            database.delete(dbHelper.TABLE_NAME, dbHelper.ID_COLUMN + "=" + id, null);
-            database.setTransactionSuccessful();
-        } finally {
-            database.endTransaction();
-        }
+        DeleteRunnable task = new DeleteRunnable(id, dbHelper);
+        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
     }
 
     public void deleteList(List<Creature> creatures) {
@@ -175,13 +163,8 @@ public class CreaturesDAO {
     }
 
     public void deleteAll(){
-        database.beginTransaction();
-        try {
-            database.delete(dbHelper.TABLE_NAME, null, null);
-            database.setTransactionSuccessful();
-        } finally {
-            database.endTransaction();
-        }
+        DeleteTableContentsRunnable task = new DeleteTableContentsRunnable(dbHelper);
+        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
     }
 
     private Creature cursorToObject(Cursor cursor) {

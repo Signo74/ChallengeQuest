@@ -5,11 +5,11 @@ package com.swinginpenguin.vmarinov.challengequest.model.base;
  */
 public class EntryIdentity {
     private long id;
-    private int type;
+    private long type;
     private String title;
     private String description;
 
-    public EntryIdentity(long id, int type, String title, String description) {
+    public EntryIdentity(long id, long type, String title, String description) {
         this.id = id;
         this.type = type;
         this.title = title;
@@ -20,7 +20,7 @@ public class EntryIdentity {
         return id;
     }
 
-    public int getType() {
+    public long getType() {
         return type;
     }
 

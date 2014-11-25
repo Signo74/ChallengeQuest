@@ -14,4 +14,6 @@ public class AttributeSet {
     // Map of affected stats and the percentage by which this attributes affects them
     // NB: effect can be negative!
     private Map<Integer, Integer> statsEffect;
+    //TODO implement all internals
+    //TODO override toString()!!!
 }

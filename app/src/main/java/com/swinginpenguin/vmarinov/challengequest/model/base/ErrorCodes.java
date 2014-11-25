@@ -8,13 +8,13 @@ public enum ErrorCodes {
     DB_ERROR(1),
     GENERAL_ERROR(0);
 
-    private int errorCode;
+    private long errorCode;
 
-    ErrorCodes(int value) {
+    ErrorCodes(long value) {
         this.errorCode = value;
     }
 
-    public int getErrorCode() {
+    public long getErrorCode() {
         return errorCode;
     }
 }

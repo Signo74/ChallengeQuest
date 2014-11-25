@@ -28,9 +28,10 @@ public class DBUtils {
         return new ArrayList<AttributeSet>();
     }
 
-    public static String listToDBString(List<Object> list) {
+    public static String listToDBString(Object list) {
+        String result = "";
         //TODO convert a List<> to a conveniently formatted string that will be inserted in DB.
         //TODO Perhaps to a JSON format?
-        return "";
+        return result;
     }
 }
