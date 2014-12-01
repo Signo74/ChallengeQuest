@@ -24,7 +24,7 @@ public class DeleteTableContentsRunnable implements Runnable {
     public void run() {
         database.beginTransaction();
         try {
-            database.delete(dbHelper.TABLE_NAME, null, null);
+            database.delete(dbHelper.tableName, null, null);
             database.setTransactionSuccessful();
         } catch(SQLiteException ex) {
             Log.e("DeleteRunnable.run()", "Exception: " + ex + " was thrown while deleting table:" +

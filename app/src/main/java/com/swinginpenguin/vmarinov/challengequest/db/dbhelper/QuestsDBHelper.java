@@ -11,7 +11,6 @@ import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpe
 public class QuestsDBHelper
         extends BaseSQLiteOpenHelper {
     public static final String TABLE_NAME = "quests";
-    private static int DATABASE_VERSION = 1;
     public static final String CHAPTERS = "chapters";
     public static final String EXP_REWARD = "experienceGranted";
     public static final String RANK = "rank";
@@ -31,7 +30,7 @@ public class QuestsDBHelper
             + ");";
 
     public QuestsDBHelper(Context context) {
-        super(context, TABLE_NAME, null, DATABASE_VERSION);
+        super(context, TABLE_NAME, null);
     }
 
     @Override

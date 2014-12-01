@@ -10,121 +10,106 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 
+import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.GetRowDataBySelection;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.InsertEntryCallable;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteRunnable;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteTableContentsRunnable;
 import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.QuestsDBHelper;
+import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpenHelper;
 import com.swinginpenguin.vmarinov.challengequest.model.Chapter;
 import com.swinginpenguin.vmarinov.challengequest.model.Quest;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
 import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
+import com.swinginpenguin.vmarinov.challengequest.multithreading.executor.ExecutorServiceProvider;
 
 /**
  * Created by victorm on 10/23/2014..
  */
 public class QuestsDAO {
-    private SQLiteDatabase database;
     private QuestsDBHelper dbHelper;
 
     public QuestsDAO(Context cntx) {
         dbHelper = new QuestsDBHelper(cntx);
     }
 
-    public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        dbHelper.close();
-    }
-
-    public Quest insert(int type, String title, String description, List<Chapter> chapters,
-                        int expReward, int rank, int maxRank, int completion) {
+    public Boolean insert(Quest quest) {
         //TODO replace .toString with DBUtils method
         ContentValues values = new ContentValues();
-        values.put(dbHelper.TYPE_COLUMN, type);
-        values.put(dbHelper.TITLE_COLUMN, title);
-        values.put(dbHelper.DESCRIPTION_COLUMN, description);
+        values.put(BaseSQLiteOpenHelper.TYPE_COLUMN, quest.getIdentity().getType());
+        values.put(BaseSQLiteOpenHelper.TITLE_COLUMN, quest.getIdentity().getTitle());
+        values.put(BaseSQLiteOpenHelper.DESCRIPTION_COLUMN, quest.getIdentity().getDescription());
 
-        String chaptersString = chapters.toString();
+        String chaptersString = quest.getChapters().toString();
 
-        values.put(dbHelper.CHAPTERS, chaptersString);
-        values.put(dbHelper.EXP_REWARD, expReward);
-        values.put(dbHelper.RANK, rank);
-        values.put(dbHelper.MAX_RANK, maxRank);
-        values.put(dbHelper.COMPLETION, completion);
+        values.put(QuestsDBHelper.CHAPTERS, chaptersString);
+        values.put(QuestsDBHelper.EXP_REWARD, quest.getExperienceReward());
+        values.put(QuestsDBHelper.RANK, quest.getRank());
+        values.put(QuestsDBHelper.MAX_RANK, quest.getMaxRank());
+        values.put(QuestsDBHelper.COMPLETION, quest.getPercentageCompleted());
 
         try {
-            database.beginTransaction();
-            long insertID = database.insert(dbHelper.TABLE_NAME, null, values);
-            Cursor cursor = database.query(dbHelper.TABLE_NAME, null, dbHelper.ID_COLUMN +
-                                           " = " + insertID, null, null, null, null);
-            cursor.moveToFirst();
-            cursor.close();
-            database.setTransactionSuccessful();
+            Log.d("QuestsDAO.insert", "Inserting Quest with id: " + quest.getIdentity().getId());
+            InsertEntryCallable insert = new InsertEntryCallable(values, dbHelper);
+            Future<Long> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(insert);
 
-            EntryIdentity identity = new EntryIdentity(insertID, type, title, description);
-            Quest newQuest = new Quest(identity, chapters, expReward, rank, maxRank, completion);
-
-            return newQuest;
+            return result.get() != -1;
         } catch (Exception ex) {
             Log.e("QuestsDAO.insert", "Error: " + ex + " was thrown while inserting quest in DB.");
-            EntryIdentity errorEntry = new EntryIdentity(-1, ErrorCodes.DB_ERROR.getErrorCode(), "", "");
-            Quest errorQuest = new Quest(errorEntry);
-            return errorQuest;
-        } finally {
-            database.endTransaction();
+            return false;
         }
     }
 
     public boolean updateById(Quest quest) {
         //TODO replace .toString with DBUtils method
         ContentValues values = new ContentValues();
-        int updateCount = 0;
-        values.put(dbHelper.TYPE_COLUMN, quest.getIdentity().getType());
-        values.put(dbHelper.TITLE_COLUMN, quest.getIdentity().getTitle());
-        values.put(dbHelper.DESCRIPTION_COLUMN, quest.getIdentity().getDescription());
-        values.put(dbHelper.CHAPTERS, quest.getChapters().toString());
-        values.put(dbHelper.EXP_REWARD, quest.getExperienceReward());
-        values.put(dbHelper.RANK, quest.getRank());
-        values.put(dbHelper.MAX_RANK, quest.getRank());
-        values.put(dbHelper.COMPLETION, quest.getPercentageCompleted());
+        values.put(BaseSQLiteOpenHelper.TYPE_COLUMN, quest.getIdentity().getType());
+        values.put(BaseSQLiteOpenHelper.TITLE_COLUMN, quest.getIdentity().getTitle());
+        values.put(BaseSQLiteOpenHelper.DESCRIPTION_COLUMN, quest.getIdentity().getDescription());
+        values.put(QuestsDBHelper.CHAPTERS, quest.getChapters().toString());
+        values.put(QuestsDBHelper.EXP_REWARD, quest.getExperienceReward());
+        values.put(QuestsDBHelper.RANK, quest.getRank());
+        values.put(QuestsDBHelper.MAX_RANK, quest.getRank());
+        values.put(QuestsDBHelper.COMPLETION, quest.getPercentageCompleted());
         Log.d("QuestsDAO.updateById", "Values " + values.valueSet() +
                 " for updating existing entry with Id: " + quest.getIdentity().getId());
-        database.beginTransaction();
         try {
             Log.d("QuestsDAO.updateById", "Updating quest entry with Id "+ quest.getIdentity().getId());
-            updateCount = database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN + " = " + quest.getIdentity().getId(), null);
-            database.setTransactionSuccessful();
+            InsertEntryCallable insert = new InsertEntryCallable(values, dbHelper);
+            Future<Long> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(insert);
 
+            return result.get() != -1;
         } catch (Exception ex) {
             Log.e("QuestsDAO.updateById", "Error: " + ex + " was thrown while updating quest in DB.");
             return false;
-        } finally {
-            database.endTransaction();
         }
-
-        return updateCount > 0;
     }
 
     public long updateListById(List<Quest> quests) {
         ListIterator<Quest> iterator = quests.listIterator();
-        long updateCount = 0;
+        int updateCount = 0;
         while (iterator.hasNext()) {
             Quest quest = iterator.next();
             if (updateById(quest)) {
                 updateCount++;
             } else {
                 Log.e("QuestsDAO.updateListById", "An error was thrown while updating list of " +
-                        "quests in DB with questId: " + quest.getIdentity().getId());
+                        "quests in DB with creatureId: " + quest.getIdentity().getId());
                 return ErrorCodes.DB_ERROR.getErrorCode();
             }
         }
         return updateCount;
     }
 
-    public List<Quest> getAll() {
+    public List<Quest> getAll()
+            throws ExecutionException, InterruptedException {
         List<Quest> allQuests = new ArrayList<Quest>();
-        Cursor cursor = database.query(dbHelper.TABLE_NAME, null, null, null, null, null, null);
+        GetRowDataBySelection task = new GetRowDataBySelection(null, dbHelper);
+        Future<Cursor> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        Cursor cursor = result.get();
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -136,6 +121,7 @@ public class QuestsDAO {
             Log.e("QuestsDAO.getAll", "Error " + ex +" was thrown while processing all quests.");
             return new ArrayList();
         } finally {
+            result.get().close();
             cursor.close();
         }
         return allQuests;
@@ -143,30 +129,28 @@ public class QuestsDAO {
 
     public void delete(Quest quest) {
         long id = quest.getIdentity().getId();
-        database.beginTransaction();
-        try {
-            database.delete(dbHelper.TABLE_NAME, dbHelper.ID_COLUMN + "=" + id, null);
-            database.setTransactionSuccessful();
-        } finally {
-            database.endTransaction();
-        }
+        String selection = BaseSQLiteOpenHelper.ID_COLUMN + "=" + id;
+        Log.d("QuestsDAO.delete","About to delete DB entry: " + id + " in table: " + dbHelper.tableName);
+        DeleteRunnable task = new DeleteRunnable(selection, dbHelper);
+        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
     }
 
     public void deleteList(List<Quest> quests) {
+        String selection = dbHelper.ID_COLUMN + " IN ";
         ListIterator<Quest> iterator = quests.listIterator();
         while (iterator.hasNext()) {
-            delete(iterator.next());
+            long id = iterator.next().getIdentity().getId();
+            selection.concat(id + "','");
         }
+        selection.concat(")");
+        Log.d("QuestsDAO.","About to delete DB entries with: " + selection + " in table: " + dbHelper.tableName);
+        DeleteRunnable task = new DeleteRunnable(selection, dbHelper);
+        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
     }
 
     public void deleteAll(){
-        database.beginTransaction();
-        try {
-            database.delete(dbHelper.TABLE_NAME, null, null);
-            database.setTransactionSuccessful();
-        } finally {
-            database.endTransaction();
-        }
+        DeleteTableContentsRunnable task = new DeleteTableContentsRunnable(dbHelper);
+        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
     }
 
     private Quest cursorToObject(Cursor cursor) {

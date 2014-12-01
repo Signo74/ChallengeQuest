@@ -10,14 +10,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 public abstract class BaseSQLiteOpenHelper
         extends SQLiteOpenHelper {
     public String tableName;
+    private static int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "main.db";
     public static final String ID_COLUMN = "_id";
     public static final String TYPE_COLUMN = "type";
     public static final String TITLE_COLUMN = "title";
     public static final String DESCRIPTION_COLUMN = "description";
 
-    public BaseSQLiteOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, DATABASE_NAME, factory, version);
+    public BaseSQLiteOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory) {
+        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
         this.tableName = name;
     }
 }

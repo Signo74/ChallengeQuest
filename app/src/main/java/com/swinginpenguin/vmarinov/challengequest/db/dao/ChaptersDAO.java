@@ -6,22 +6,30 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.GetRowDataBySelection;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.InsertEntryCallable;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.UpdateEntryCallable;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteRunnable;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteTableContentsRunnable;
 import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.ChapterDBHelper;
+import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpenHelper;
 import com.swinginpenguin.vmarinov.challengequest.model.Chapter;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
 import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
+import com.swinginpenguin.vmarinov.challengequest.multithreading.executor.ExecutorServiceProvider;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 /**
  * Created by vmarinov on 11/7/2014.
  */
 public class ChaptersDAO {
-    private SQLiteDatabase database;
     private ChapterDBHelper dbHelper;
 
     public ChaptersDAO(Context cntx) {
@@ -29,78 +37,53 @@ public class ChaptersDAO {
 
     }
 
-    public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        dbHelper.close();
-    }
-
-    public Chapter insert(int type, String title, String description,
-                          int expReward, int rank, int maxRank, long record, int completion) {
+    public Boolean insert(Chapter chapter) {
         //TODO replace .toString with DBUtils method
         ContentValues values = new ContentValues();
-        values.put(dbHelper.TYPE_COLUMN, type);
-        values.put(dbHelper.TITLE_COLUMN, title);
-        values.put(dbHelper.DESCRIPTION_COLUMN, description);
-        values.put(dbHelper.EXP_REWARD, expReward);
-        values.put(dbHelper.RANK, rank);
-        values.put(dbHelper.MAX_RANK, maxRank);
-        values.put(dbHelper.RECORD, record);
-        values.put(dbHelper.COMPLETION, completion);
+        values.put(BaseSQLiteOpenHelper.TYPE_COLUMN, chapter.getIdentity().getType());
+        values.put(BaseSQLiteOpenHelper.TITLE_COLUMN, chapter.getIdentity().getTitle());
+        values.put(BaseSQLiteOpenHelper.DESCRIPTION_COLUMN, chapter.getIdentity().getDescription());
+        values.put(ChapterDBHelper.EXP_REWARD, chapter.getExperienceReward());
+        values.put(ChapterDBHelper.RANK, chapter.getRank());
+        values.put(ChapterDBHelper.MAX_RANK, chapter.getMaxRank());
+        values.put(ChapterDBHelper.RECORD, chapter.getRecord());
+        values.put(ChapterDBHelper.COMPLETION, chapter.getPercentageCompleted());
 
         try {
-            database.beginTransaction();
-            long insertID = database.insert(dbHelper.TABLE_NAME, null, values);
-            Cursor cursor = database.query(dbHelper.TABLE_NAME, null, dbHelper.ID_COLUMN +
-                    " = " + insertID, null, null, null, null);
-            cursor.moveToFirst();
-            cursor.close();
-            database.setTransactionSuccessful();
+            Log.d("CreaturesDAO.insert", "Inserting Creature with id: " + chapter.getIdentity().getId());
+            InsertEntryCallable insert = new InsertEntryCallable(values, dbHelper);
+            Future<Long> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(insert);
 
-            EntryIdentity identity = new EntryIdentity(insertID, type, title, description);
-            Chapter newChapter = new Chapter(identity, expReward, rank, maxRank, record, completion);
-
-            return newChapter;
+            return result.get() != -1;
         } catch (Exception ex) {
             Log.e("ChaptersDAO.insert", "Error: " + ex + " was thrown while inserting chapter in DB.");
-            EntryIdentity errorEntry = new EntryIdentity(-1, ErrorCodes.DB_ERROR.getErrorCode(), "", "");
-            Chapter errorChpater = new Chapter(errorEntry);
-            return errorChpater;
-        } finally {
-            database.endTransaction();
+            return false;
         }
     }
 
     public boolean updateById(Chapter chapter) {
         //TODO replace .toString with DBUtils method
         ContentValues values = new ContentValues();
-        int updateCount = 0;
-        values.put(dbHelper.TYPE_COLUMN, chapter.getIdentity().getType());
-        values.put(dbHelper.TITLE_COLUMN, chapter.getIdentity().getTitle());
-        values.put(dbHelper.DESCRIPTION_COLUMN, chapter.getIdentity().getDescription());
-        values.put(dbHelper.EXP_REWARD, chapter.getExperienceReward());
-        values.put(dbHelper.RANK, chapter.getRank());
-        values.put(dbHelper.MAX_RANK, chapter.getRank());
-        values.put(dbHelper.RECORD, chapter.getRecord());
-        values.put(dbHelper.COMPLETION, chapter.getPercentageCompleted());
+        values.put(BaseSQLiteOpenHelper.TYPE_COLUMN, chapter.getIdentity().getType());
+        values.put(BaseSQLiteOpenHelper.TITLE_COLUMN, chapter.getIdentity().getTitle());
+        values.put(BaseSQLiteOpenHelper.DESCRIPTION_COLUMN, chapter.getIdentity().getDescription());
+        values.put(ChapterDBHelper.EXP_REWARD, chapter.getExperienceReward());
+        values.put(ChapterDBHelper.RANK, chapter.getRank());
+        values.put(ChapterDBHelper.MAX_RANK, chapter.getRank());
+        values.put(ChapterDBHelper.RECORD, chapter.getRecord());
+        values.put(ChapterDBHelper.COMPLETION, chapter.getPercentageCompleted());
         Log.d("ChaptersDAO.updateById", "Values " + values.valueSet() +
                 " for updating existing entry with Id: " + chapter.getIdentity().getId());
-        database.beginTransaction();
         try {
             Log.d("ChaptersDAO.updateById", "Updating chapter entry with Id " + chapter.getIdentity().getId());
-            updateCount = database.update(dbHelper.TABLE_NAME, values, dbHelper.ID_COLUMN + " = " + chapter.getIdentity().getId(), null);
-            database.setTransactionSuccessful();
+            UpdateEntryCallable task = new UpdateEntryCallable(values, dbHelper);
+            Future<Long> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
 
+            return result.get() != -1;
         } catch (Exception ex) {
             Log.e("ChaptersDAO.updateById", "Error: " + ex + " was thrown while updating chapter in DB.");
             return false;
-        } finally {
-            database.endTransaction();
         }
-
-        return updateCount > 0;
     }
 
     public long updateListById(List<Chapter> chapters) {
@@ -119,9 +102,12 @@ public class ChaptersDAO {
         return updateCount;
     }
 
-    public List<Chapter> getAll() {
+    public List<Chapter> getAll()
+            throws ExecutionException, InterruptedException {
         List<Chapter> allChapters = new ArrayList<Chapter>();
-        Cursor cursor = database.query(dbHelper.TABLE_NAME, null, null, null, null, null, null);
+        GetRowDataBySelection task = new GetRowDataBySelection(null, dbHelper);
+        Future<Cursor> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        Cursor cursor = result.get();
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -130,9 +116,32 @@ public class ChaptersDAO {
                 cursor.moveToNext();
             }
         } catch (Exception ex) {
-            Log.e("ChaptersDAO.getAll", "Error " + ex +" was thrown while processing all chapters.");
+            Log.e("ChaptersDAO.getAll", "Error " + ex +" was thrown while processing all creatures.");
             return new ArrayList();
         } finally {
+            result.get().close();
+            cursor.close();
+        }
+        return allChapters;
+    }
+    public List<Chapter> getList(String selection)
+            throws ExecutionException, InterruptedException {
+        List<Chapter> allChapters = new ArrayList<Chapter>();
+        GetRowDataBySelection task = new GetRowDataBySelection(null, dbHelper);
+        Future<Cursor> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        Cursor cursor = result.get();
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Chapter chapter = cursorToObject(cursor);
+                allChapters.add(chapter);
+                cursor.moveToNext();
+            }
+        } catch (Exception ex) {
+            Log.e("ChaptersDAO.getList", "Error " + ex +" was thrown while processing all creatures.");
+            return new ArrayList();
+        } finally {
+            result.get().close();
             cursor.close();
         }
         return allChapters;
@@ -140,30 +149,28 @@ public class ChaptersDAO {
 
     public void delete(Chapter chapter) {
         long id = chapter.getIdentity().getId();
-        database.beginTransaction();
-        try {
-            database.delete(dbHelper.TABLE_NAME, dbHelper.ID_COLUMN + "=" + id, null);
-            database.setTransactionSuccessful();
-        } finally {
-            database.endTransaction();
-        }
+        String selection = BaseSQLiteOpenHelper.ID_COLUMN + "=" + id;
+        Log.d("CreaturesDAO.delete","About to delete DB entry: " + id + " in table: " + dbHelper.tableName);
+        DeleteRunnable task = new DeleteRunnable(selection, dbHelper);
+        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
     }
 
     public void deleteList(List<Chapter> chapters) {
+        String selection = dbHelper.ID_COLUMN + " IN ";
         ListIterator<Chapter> iterator = chapters.listIterator();
         while (iterator.hasNext()) {
-            delete(iterator.next());
+            long id = iterator.next().getIdentity().getId();
+            selection.concat(id + "','");
         }
+        selection.concat(")");
+        Log.d("CreaturesDAO.","About to delete DB entries with: " + selection + " in table: " + dbHelper.tableName);
+        DeleteRunnable task = new DeleteRunnable(selection, dbHelper);
+        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
     }
 
     public void deleteAll(){
-        database.beginTransaction();
-        try {
-            database.delete(dbHelper.TABLE_NAME, null, null);
-            database.setTransactionSuccessful();
-        } finally {
-            database.endTransaction();
-        }
+        DeleteTableContentsRunnable task = new DeleteTableContentsRunnable(dbHelper);
+        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
     }
 
     private Chapter cursorToObject(Cursor cursor) {

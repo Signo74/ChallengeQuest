@@ -33,7 +33,7 @@ public class UpdateEntryCallable implements Callable<Long> {
         try {
             database.beginTransaction();
             //TODO get id from values!!!
-            updateCount = new Long(database.update(dbHelper.TABLE_NAME), values, dbHelper.ID_COLUMN + " = " + 0, null));
+            updateCount = new Long(database.update(dbHelper.tableName, values, dbHelper.ID_COLUMN + " = " + 0, null));
             database.setTransactionSuccessful();
         } catch (Exception ex) {
             Log.e("InsertEntryCallable.call", "Error: " + ex + " was thrown while inserting in DB.");

@@ -11,7 +11,6 @@ import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpe
 public class CreatureDBHelper
         extends BaseSQLiteOpenHelper {
     public static final String TABLE_NAME = "creatures";
-    private static int DATABASE_VERSION = 1;
     public static final String EXPERIENCE = "experience";
     public static final String LEVEL = "level";
     public static final String GENDER = "gender";
@@ -43,7 +42,7 @@ public class CreatureDBHelper
             + ");";
 
     public CreatureDBHelper(Context context) {
-        super(context, TABLE_NAME, null, DATABASE_VERSION);
+        super(context, TABLE_NAME, null);
     }
 
     @Override

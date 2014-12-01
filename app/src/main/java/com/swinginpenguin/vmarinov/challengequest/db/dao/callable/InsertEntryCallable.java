@@ -32,7 +32,7 @@ public class InsertEntryCallable implements Callable<Long> {
         Long insertID = ErrorCodes.DB_ERROR.getErrorCode();
         try {
             database.beginTransaction();
-            insertID = database.insert(dbHelper.TABLE_NAME), null, values);
+            insertID = database.insert(dbHelper.tableName, null, values);
             database.setTransactionSuccessful();
         } catch (Exception ex) {
             Log.e("InsertEntryCallable.call", "Error: " + ex + " was thrown while inserting in DB.");

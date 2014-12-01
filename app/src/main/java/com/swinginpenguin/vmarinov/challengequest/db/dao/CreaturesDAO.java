@@ -6,10 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.GetRowDataBySelection;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.UpdateEntryCallable;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteRunnable;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteTableContentsRunnable;
 import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.CreatureDBHelper;
+import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpenHelper;
 import com.swinginpenguin.vmarinov.challengequest.model.AttributeSet;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
@@ -22,6 +24,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
@@ -29,19 +32,10 @@ import java.util.concurrent.Future;
  */
 public class CreaturesDAO {
 
-    private SQLiteDatabase database;
     private CreatureDBHelper dbHelper;
 
     public CreaturesDAO(Context cntx) {
         dbHelper = new CreatureDBHelper(cntx);
-    }
-
-    public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        dbHelper.close();
     }
 
     public Boolean insert(Creature creature) {
@@ -76,8 +70,6 @@ public class CreaturesDAO {
         } catch (Exception ex) {
             Log.e("CreaturesDAO.insert", "Error: " + ex + " was thrown while inserting creature in DB.");
             return false;
-        } finally {
-            database.endTransaction();
         }
     }
 
@@ -109,8 +101,6 @@ public class CreaturesDAO {
         } catch (Exception ex) {
             Log.e("CreaturesDAO.updateById", "Error: " + ex + " was thrown while updating creature in DB.");
             return false;
-        } finally {
-            database.endTransaction();
         }
     }
 
@@ -130,9 +120,12 @@ public class CreaturesDAO {
         return updateCount;
     }
 
-    public List<Creature> getAll() {
+    public List<Creature> getAll()
+            throws ExecutionException, InterruptedException {
         List<Creature> allCreatures = new ArrayList<Creature>();
-        Cursor cursor = database.query(CreatureDBHelper.TABLE_NAME, null, null, null, null, null, null);
+        GetRowDataBySelection task = new GetRowDataBySelection(null, dbHelper);
+        Future<Cursor> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        Cursor cursor = result.get();
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -144,6 +137,30 @@ public class CreaturesDAO {
             Log.e("CreaturesDAO.getAll", "Error " + ex +" was thrown while processing all creatures.");
             return new ArrayList();
         } finally {
+            result.get().close();
+            cursor.close();
+        }
+        return allCreatures;
+    }
+
+    public List<Creature> getList(String selection)
+            throws ExecutionException, InterruptedException {
+        List<Creature> allCreatures = new ArrayList<Creature>();
+        GetRowDataBySelection task = new GetRowDataBySelection(null, dbHelper);
+        Future<Cursor> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        Cursor cursor = result.get();
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Creature creature = cursorToObject(cursor);
+                allCreatures.add(creature);
+                cursor.moveToNext();
+            }
+        } catch (Exception ex) {
+            Log.e("CreaturesDAO.getAll", "Error " + ex +" was thrown while processing all creatures.");
+            return new ArrayList();
+        } finally {
+            result.get().close();
             cursor.close();
         }
         return allCreatures;
@@ -151,15 +168,23 @@ public class CreaturesDAO {
 
     public void delete(Creature creature) {
         long id = creature.getIdentity().getId();
-        DeleteRunnable task = new DeleteRunnable(id, dbHelper);
+        String selection = BaseSQLiteOpenHelper.ID_COLUMN + "=" + id;
+        Log.d("CreaturesDAO.delete","About to delete DB entry: " + id + " in table: " + dbHelper.tableName);
+        DeleteRunnable task = new DeleteRunnable(selection, dbHelper);
         ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
     }
 
     public void deleteList(List<Creature> creatures) {
+        String selection = dbHelper.ID_COLUMN + " IN ";
         ListIterator<Creature> iterator = creatures.listIterator();
         while (iterator.hasNext()) {
-            delete(iterator.next());
+            long id = iterator.next().getIdentity().getId();
+            selection.concat(id + "','");
         }
+        selection.concat(")");
+        Log.d("CreaturesDAO.","About to delete DB entries with: " + selection + " in table: " + dbHelper.tableName);
+        DeleteRunnable task = new DeleteRunnable(selection, dbHelper);
+        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
     }
 
     public void deleteAll(){
