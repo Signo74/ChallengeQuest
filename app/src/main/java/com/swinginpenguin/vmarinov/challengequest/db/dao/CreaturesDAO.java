@@ -64,7 +64,7 @@ public class CreaturesDAO {
         try {
             Log.d("CreaturesDAO.insert", "Inserting Creature with id: " + creature.getIdentity().getId());
             InsertEntryCallable insert = new InsertEntryCallable(values, dbHelper);
-            Future<Long> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(insert);
+            Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(insert);
 
             return result.get() != -1;
         } catch (Exception ex) {
@@ -95,7 +95,7 @@ public class CreaturesDAO {
         try {
             Log.d("CreaturesDAO.updateById", "Updating creature entry with Id " + creature.getIdentity().getId());
             UpdateEntryCallable task = new UpdateEntryCallable(values, dbHelper);
-            Future<Long> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+            Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
 
             return result.get() != -1;
         } catch (Exception ex) {
@@ -124,7 +124,7 @@ public class CreaturesDAO {
             throws ExecutionException, InterruptedException {
         List<Creature> allCreatures = new ArrayList<Creature>();
         GetRowDataBySelection task = new GetRowDataBySelection(null, dbHelper);
-        Future<Cursor> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        Future<Cursor> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
         Cursor cursor = result.get();
         try {
             cursor.moveToFirst();
@@ -147,7 +147,7 @@ public class CreaturesDAO {
             throws ExecutionException, InterruptedException {
         List<Creature> allCreatures = new ArrayList<Creature>();
         GetRowDataBySelection task = new GetRowDataBySelection(null, dbHelper);
-        Future<Cursor> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        Future<Cursor> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
         Cursor cursor = result.get();
         try {
             cursor.moveToFirst();
@@ -171,7 +171,7 @@ public class CreaturesDAO {
         String selection = BaseSQLiteOpenHelper.ID_COLUMN + "=" + id;
         Log.d("CreaturesDAO.delete","About to delete DB entry: " + id + " in table: " + dbHelper.tableName);
         DeleteRunnable task = new DeleteRunnable(selection, dbHelper);
-        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
     }
 
     public void deleteList(List<Creature> creatures) {
@@ -184,12 +184,12 @@ public class CreaturesDAO {
         selection.concat(")");
         Log.d("CreaturesDAO.","About to delete DB entries with: " + selection + " in table: " + dbHelper.tableName);
         DeleteRunnable task = new DeleteRunnable(selection, dbHelper);
-        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
     }
 
     public void deleteAll(){
         DeleteTableContentsRunnable task = new DeleteTableContentsRunnable(dbHelper);
-        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
     }
 
     private Creature cursorToObject(Cursor cursor) {

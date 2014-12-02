@@ -52,7 +52,7 @@ public class ChaptersDAO {
         try {
             Log.d("CreaturesDAO.insert", "Inserting Creature with id: " + chapter.getIdentity().getId());
             InsertEntryCallable insert = new InsertEntryCallable(values, dbHelper);
-            Future<Long> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(insert);
+            Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(insert);
 
             return result.get() != -1;
         } catch (Exception ex) {
@@ -77,7 +77,7 @@ public class ChaptersDAO {
         try {
             Log.d("ChaptersDAO.updateById", "Updating chapter entry with Id " + chapter.getIdentity().getId());
             UpdateEntryCallable task = new UpdateEntryCallable(values, dbHelper);
-            Future<Long> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+            Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
 
             return result.get() != -1;
         } catch (Exception ex) {
@@ -106,7 +106,7 @@ public class ChaptersDAO {
             throws ExecutionException, InterruptedException {
         List<Chapter> allChapters = new ArrayList<Chapter>();
         GetRowDataBySelection task = new GetRowDataBySelection(null, dbHelper);
-        Future<Cursor> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        Future<Cursor> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
         Cursor cursor = result.get();
         try {
             cursor.moveToFirst();
@@ -128,7 +128,7 @@ public class ChaptersDAO {
             throws ExecutionException, InterruptedException {
         List<Chapter> allChapters = new ArrayList<Chapter>();
         GetRowDataBySelection task = new GetRowDataBySelection(null, dbHelper);
-        Future<Cursor> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        Future<Cursor> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
         Cursor cursor = result.get();
         try {
             cursor.moveToFirst();
@@ -152,7 +152,7 @@ public class ChaptersDAO {
         String selection = BaseSQLiteOpenHelper.ID_COLUMN + "=" + id;
         Log.d("CreaturesDAO.delete","About to delete DB entry: " + id + " in table: " + dbHelper.tableName);
         DeleteRunnable task = new DeleteRunnable(selection, dbHelper);
-        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
     }
 
     public void deleteList(List<Chapter> chapters) {
@@ -165,12 +165,12 @@ public class ChaptersDAO {
         selection.concat(")");
         Log.d("CreaturesDAO.","About to delete DB entries with: " + selection + " in table: " + dbHelper.tableName);
         DeleteRunnable task = new DeleteRunnable(selection, dbHelper);
-        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
     }
 
     public void deleteAll(){
         DeleteTableContentsRunnable task = new DeleteTableContentsRunnable(dbHelper);
-        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
     }
 
     private Chapter cursorToObject(Cursor cursor) {

@@ -54,7 +54,7 @@ public class QuestsDAO {
         try {
             Log.d("QuestsDAO.insert", "Inserting Quest with id: " + quest.getIdentity().getId());
             InsertEntryCallable insert = new InsertEntryCallable(values, dbHelper);
-            Future<Long> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(insert);
+            Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(insert);
 
             return result.get() != -1;
         } catch (Exception ex) {
@@ -79,7 +79,7 @@ public class QuestsDAO {
         try {
             Log.d("QuestsDAO.updateById", "Updating quest entry with Id "+ quest.getIdentity().getId());
             InsertEntryCallable insert = new InsertEntryCallable(values, dbHelper);
-            Future<Long> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(insert);
+            Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(insert);
 
             return result.get() != -1;
         } catch (Exception ex) {
@@ -108,7 +108,7 @@ public class QuestsDAO {
             throws ExecutionException, InterruptedException {
         List<Quest> allQuests = new ArrayList<Quest>();
         GetRowDataBySelection task = new GetRowDataBySelection(null, dbHelper);
-        Future<Cursor> result = ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        Future<Cursor> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
         Cursor cursor = result.get();
         try {
             cursor.moveToFirst();
@@ -132,7 +132,7 @@ public class QuestsDAO {
         String selection = BaseSQLiteOpenHelper.ID_COLUMN + "=" + id;
         Log.d("QuestsDAO.delete","About to delete DB entry: " + id + " in table: " + dbHelper.tableName);
         DeleteRunnable task = new DeleteRunnable(selection, dbHelper);
-        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
     }
 
     public void deleteList(List<Quest> quests) {
@@ -145,12 +145,12 @@ public class QuestsDAO {
         selection.concat(")");
         Log.d("QuestsDAO.","About to delete DB entries with: " + selection + " in table: " + dbHelper.tableName);
         DeleteRunnable task = new DeleteRunnable(selection, dbHelper);
-        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
     }
 
     public void deleteAll(){
         DeleteTableContentsRunnable task = new DeleteTableContentsRunnable(dbHelper);
-        ExecutorServiceProvider.getInstance().dbExecutor.submit(task);
+        ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
     }
 
     private Quest cursorToObject(Cursor cursor) {
