@@ -125,7 +125,7 @@ public class CharacterCreation extends Activity {
         List<Integer> abilities = null;
         List<Integer> items = null;
         List<Integer> loot = null;
-        Creature playerHero= dbUtils.add(CreaturesTypes.PLAYER.getId(), _title, _description, 0, 1, _gender, _race,
+        Creature playerHero = dbUtils.add(CreaturesTypes.PLAYER.getId(), _title, _description, 0, 1, _gender, _race,
                 _heroClass, _subClass, attributes, stats, abilities, items, loot);
         if (playerHero.getIdentity().getType() != ErrorCodes.DB_ERROR.getErrorCode()) {
             Intent createHeroIntent = new Intent(this, CharacterOverview.class);
