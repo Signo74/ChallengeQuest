@@ -104,8 +104,7 @@ public class QuestsDAO {
         return updateCount;
     }
 
-    public List<Quest> getAll()
-            throws ExecutionException, InterruptedException {
+    public List<Quest> getAll() throws ExecutionException, InterruptedException {
         List<Quest> allQuests = new ArrayList<Quest>();
         GetRowDataBySelection task = new GetRowDataBySelection(null, dbHelper);
         Future<Cursor> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
@@ -120,7 +119,7 @@ public class QuestsDAO {
         } catch (Exception ex) {
             Log.e("QuestsDAO.getAll", "Error " + ex +" was thrown while processing all quests.");
             return new ArrayList();
-        } finally {
+        }finally {
             result.get().close();
             cursor.close();
         }

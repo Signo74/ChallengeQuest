@@ -40,14 +40,6 @@ public class Chapter {
         this.experienceReward = experienceReward;
     }
 
-    public int getPercentageCompleted() {
-        return percentageCompleted;
-    }
-
-    public void setPercentageCompleted(int percentageCompleted) {
-        this.percentageCompleted = percentageCompleted;
-    }
-
     public int getRank() {
         return rank;
     }
@@ -70,6 +62,14 @@ public class Chapter {
 
     public void setRecord(long record) {
         this.record = record;
+    }
+
+    public int getPercentageCompleted() {
+        return percentageCompleted;
+    }
+
+    public void setPercentageCompleted(int percentageCompleted) {
+        this.percentageCompleted = percentageCompleted;
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryTypes;
 import com.swinginpenguin.vmarinov.challengequest.model.utils.IdGenerator;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -40,7 +41,7 @@ public class QuestDBUtils {
 
     public Quest add(int type, String title, String description, List<Chapter > chapters,
                      int experienceReward, int rank, int maxRank, int percentageCompleted) {
-        Log.d("CreatureDBUtils.quickAdd","Adding creature with title: " + title);
+        Log.d("CreatureDBUtils.quickAdd","Adding quest with title: " + title);
         int id = IdGenerator.getInstance().getNextAvailableId();
         EntryIdentity identity = new EntryIdentity(id, type, title, description);
         Quest dbEntry = new Quest(identity, null, 0, 0, 0, 0);
@@ -55,11 +56,16 @@ public class QuestDBUtils {
         dao.deleteAll();
     }
 
-    public List<Quest> getAll()
-            throws ExecutionException, InterruptedException {
-        List<Quest> childItemTitles = dao.getAll();
-        Log.d("QuestDBUtils.getAll","All quests in DB: " + childItemTitles);
+    public List<Quest> getAll() {
+        List<Quest> allItems = new ArrayList<>();
+        try {
+            allItems = dao.getAll();
+            Log.d("QuestDBUtils.getAll", "All quests in DB: " + allItems);
+        } catch (ExecutionException | InterruptedException ex) {
+            Log.e("QuestDBUtils.getAll","Error: " + ex + " thrown while getting all quests from DB.");
+            //TODO handle exception
+        }
 
-        return childItemTitles;
+        return allItems;
     }
 }

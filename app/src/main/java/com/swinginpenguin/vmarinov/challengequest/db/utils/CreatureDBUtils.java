@@ -10,6 +10,7 @@ import com.swinginpenguin.vmarinov.challengequest.model.base.CreatureProperties;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
 import com.swinginpenguin.vmarinov.challengequest.model.utils.IdGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -21,7 +22,6 @@ public class CreatureDBUtils {;
     private CreaturesDAO dao;
 
     public CreatureDBUtils(Context ctx){
-        //TODO move creation of helper and databaseto DAO
         dao = new CreaturesDAO(ctx);
     }
 
@@ -58,10 +58,15 @@ public class CreatureDBUtils {;
         dao.deleteAll();
     }
 
-    public List<Creature> getAll() throws ExecutionException, InterruptedException {
-        List<Creature> childItemTitles = dao.getAll();
-        Log.d("CreatureDBUtils.getAll", "All creatures in DB: " + childItemTitles);
+    public List<Creature> getAll() {
+        List<Creature> allItems = new ArrayList<>();
+        try {
+            allItems = dao.getAll();
+            Log.d("CreatureDBUtils.getAll", "All creatures in DB: " + allItems);
+        } catch (ExecutionException | InterruptedException ex){
+            Log.e("CreatureDBUtils.getAll","Error: " + ex + " thrown while getting all quests from DB.");
+        }
 
-        return childItemTitles;
+        return allItems;
     }
 }
