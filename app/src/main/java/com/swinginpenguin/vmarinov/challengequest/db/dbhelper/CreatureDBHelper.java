@@ -24,7 +24,7 @@ public class CreatureDBHelper
     public static final String AVAILABLE_LOOT = "availableloot";
 
     private static final String DATABASE_CREATE = "create table " + TABLE_NAME + "("
-            + ID_COLUMN + " integer primary key, "
+            + ID_COLUMN + " integer primary key autoincrement, "
             + TITLE_COLUMN + " text not null, "
             + TYPE_COLUMN + " integer, "
             + DESCRIPTION_COLUMN + " text, "
@@ -38,7 +38,7 @@ public class CreatureDBHelper
             + STATS + " text, "
             + SPECIAL_ABILITIES + " text, "
             + EQUIPPED_ITEMS + " text, "
-            + AVAILABLE_LOOT + " text, "
+            + AVAILABLE_LOOT + " text"
             + ");";
 
     public CreatureDBHelper(Context context) {

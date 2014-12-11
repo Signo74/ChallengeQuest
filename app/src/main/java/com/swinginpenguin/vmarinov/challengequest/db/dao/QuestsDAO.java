@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 
+import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.GetLastIdCallable;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.GetRowDataBySelection;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.InsertEntryCallable;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteRunnable;
@@ -150,6 +151,17 @@ public class QuestsDAO {
     public void deleteAll(){
         DeleteTableContentsRunnable task = new DeleteTableContentsRunnable(dbHelper);
         ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
+    }
+
+    public Long getLatestId()
+            throws ExecutionException, InterruptedException {
+        long lastRowId;
+        GetLastIdCallable task = new GetLastIdCallable(dbHelper);
+        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
+        if (result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
+            return result.get();
+        }
+        return ErrorCodes.DB_ERROR.getErrorCode();
     }
 
     private Quest cursorToObject(Cursor cursor) {

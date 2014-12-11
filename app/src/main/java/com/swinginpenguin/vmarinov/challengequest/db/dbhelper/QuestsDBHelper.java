@@ -18,7 +18,7 @@ public class QuestsDBHelper
     public static final String COMPLETION = "percentagecompleted";
 
     private static final String DATABASE_CREATE = "create table " + TABLE_NAME + "("
-            + ID_COLUMN + " integer primary key, "
+            + ID_COLUMN + " integer primary key autoincrement, "
             + TITLE_COLUMN + " text not null, "
             + TYPE_COLUMN + " integer, "
             + DESCRIPTION_COLUMN + " text, "
@@ -26,7 +26,7 @@ public class QuestsDBHelper
             + EXP_REWARD + " integer, "
             + RANK + " integer, "
             + MAX_RANK + " integer, "
-            + COMPLETION + " integer, "
+            + COMPLETION + " integer"
             + ");";
 
     public QuestsDBHelper(Context context) {

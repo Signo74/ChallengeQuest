@@ -20,7 +20,7 @@ public class ChapterDBHelper
 
     //TODO: Modify initial creation string to insert all necessary fields.
     private static final String DATABASE_CREATE = "create table " + TABLE_NAME + "("
-            + ID_COLUMN + " integer primary key, "
+            + ID_COLUMN + " integer primary key autoincrement, "
             + TITLE_COLUMN + " text not null, "
             + TYPE_COLUMN + " integer, "
             + DESCRIPTION_COLUMN + " text, "
@@ -28,7 +28,7 @@ public class ChapterDBHelper
             + RANK + " integer, "
             + MAX_RANK + " integer, "
             + RECORD + " real, "
-            + COMPLETION + " integer, "
+            + COMPLETION + " integer"
             + ");";
 
     public ChapterDBHelper(Context context) {

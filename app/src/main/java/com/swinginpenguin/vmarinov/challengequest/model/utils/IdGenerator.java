@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class IdGenerator {
     private static IdGenerator idGenerator = new IdGenerator();
-    private static AtomicInteger id;
+    private static AtomicInteger id = null;
 
     // TODO initialize the generator ID property with the biggest one upon app startup
     // TODO find a cleaning algorithm, which should be executed regularly in order to keep the id
@@ -17,7 +17,12 @@ public class IdGenerator {
         return idGenerator;
     }
     public int getNextAvailableId(){
-        return id.incrementAndGet();
+        if (id != null) {
+            return id.incrementAndGet();
+        } else {
+
+        }
+        return 0;
     }
 
     private IdGenerator() {

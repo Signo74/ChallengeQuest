@@ -29,7 +29,7 @@ public class InsertEntryCallable implements Callable<Long> {
 
     public Long call()
             throws SQLiteException {
-        Long insertID = ErrorCodes.DB_ERROR.getErrorCode();
+        Long insertID;
         try {
             database.beginTransaction();
             insertID = database.insert(dbHelper.tableName, null, values);

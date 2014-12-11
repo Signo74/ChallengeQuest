@@ -23,7 +23,8 @@ import java.util.List;
 
 public class CharacterCreation extends Activity {
 
-    private final String NAME_INPUT_DEFAULT_VALUE = getString(R.string.editable_empty);
+    //TODO getResource getString(R.string.editable_empty)
+    private final String NAME_INPUT_DEFAULT_VALUE = "";
 
     private EditText nameInput;
     private Button createButton;
@@ -42,13 +43,12 @@ public class CharacterCreation extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         dbUtils = new CreatureDBUtils(this);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_character_creation);
 
         nameInput = (EditText) findViewById(R.id.hero_name_input);
         genderSelector = (RadioGroup) findViewById(R.id.hero_gender_selector);
         classSelector = (RadioGroup) findViewById(R.id.hero_race_selector);
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_character_creation);
     }
 
 

@@ -21,7 +21,7 @@ public class CampaignDBHelper
 
     //TODO: Modify initial creation string to insert all necessary fields.
     private static final String DATABASE_CREATE = "create table " + TABLE_NAME + "("
-            + ID_COLUMN + " integer primary key, "
+            + ID_COLUMN + " integer primary key autoincrement, "
             + TITLE_COLUMN + " text not null, "
             + TYPE_COLUMN + " integer, "
             + DESCRIPTION_COLUMN + " text, "
@@ -30,7 +30,7 @@ public class CampaignDBHelper
             + MAX_RANK + " integer, "
             + RECORD + " real, "
             + COMPLETION + " integer, "
-            + QUESTS + " text, "
+            + QUESTS + " text"
             + ");";
 
     public CampaignDBHelper(Context context) {

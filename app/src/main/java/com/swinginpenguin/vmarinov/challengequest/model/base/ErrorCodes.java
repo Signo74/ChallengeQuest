@@ -6,7 +6,8 @@ package com.swinginpenguin.vmarinov.challengequest.model.base;
 public enum ErrorCodes {
 
     DB_ERROR(1),
-    GENERAL_ERROR(0);
+    GENERAL_ERROR(2),
+    ERROR_OK(0);
 
     private long errorCode;
 
