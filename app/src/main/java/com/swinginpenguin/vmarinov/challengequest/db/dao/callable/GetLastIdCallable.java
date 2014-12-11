@@ -28,6 +28,7 @@ public class GetLastIdCallable
 
     @Override
     public Long call() throws Exception {
+        //TODO use rowID of SQLite and refcator all tables!
         Long result;
         Cursor queryResult = null;
         try {

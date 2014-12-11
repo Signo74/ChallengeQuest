@@ -10,6 +10,7 @@ import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpe
  */
 public class CreatureDBHelper
         extends BaseSQLiteOpenHelper {
+    //TODO use rowID of SQLite and refcator all tables!
     public static final String TABLE_NAME = "creatures";
     public static final String EXPERIENCE = "experience";
     public static final String LEVEL = "level";

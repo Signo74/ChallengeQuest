@@ -11,6 +11,7 @@ import com.swinginpenguin.vmarinov.challengequest.model.Chapter;
  */
 public class CampaignDBHelper
             extends BaseSQLiteOpenHelper {
+    //TODO use rowID of SQLite and refcator all tables!
     public static final String TABLE_NAME = "campaigns";
     public static final String EXP_REWARD = "experienceGranted";
     public static final String RANK = "rank";
