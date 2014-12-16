@@ -40,11 +40,13 @@ public class QuestsDAO {
         GetLastIdCallable task = new GetLastIdCallable(dbHelper);
         Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
         try {
-            if (result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
+            if (result.get() != null && result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
                 lastAvailableId = result.get();
+            } else {
+                lastAvailableId = 0;
             }
         } catch (InterruptedException | ExecutionException ex) {
-            Log.e("CampaignDAO constructor", "Error: " + ex + " was thrown while updating campaign in DB.");
+            Log.e("QuestsDAO constructor", "Error: " + ex + " was thrown while initializing DAO.");
         }
     }
 

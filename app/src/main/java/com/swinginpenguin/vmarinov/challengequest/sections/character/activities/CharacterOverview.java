@@ -14,12 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
+import com.swinginpenguin.vmarinov.challengequest.db.utils.CampaignDBUtils;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.CharacterFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestsListFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestProgressOverviewFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.questdetails.QuestOverviewActivity;
-import com.swinginpenguin.vmarinov.challengequest.db.utils.QuestDBUtils;
 
 public class CharacterOverview
     extends Activity
@@ -36,7 +36,7 @@ public class CharacterOverview
     private final static int LIST_PAGE = 3;
 
     private int pageCount;
-    private QuestDBUtils questUtils = new QuestDBUtils(this);
+    private CampaignDBUtils dbUtils;
 
     private Creature playerHero;
 
@@ -61,6 +61,7 @@ public class CharacterOverview
         setContentView(R.layout.activity_character_overview);
 
 
+//        dbUtils = new CampaignDBUtils(this);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());

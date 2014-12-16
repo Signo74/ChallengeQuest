@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public abstract class BaseSQLiteOpenHelper
         extends SQLiteOpenHelper {
     public String tableName;
+
     private static int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "main.db";
     public static final String ID_COLUMN = "_id";

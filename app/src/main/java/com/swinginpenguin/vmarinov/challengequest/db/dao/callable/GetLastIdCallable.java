@@ -33,12 +33,15 @@ public class GetLastIdCallable
         Cursor queryResult;
         try {
             queryResult = database.query(dbHelper.tableName, null, null, null, null, null, order ,limit);
-            result = queryResult.getLong(0);
+            if (queryResult.getCount() > 0) {
+                Log.d("GetLastIdCallable.call", "queryResult.getCount(): " + queryResult.getCount());
+                return result = queryResult.getLong(0);
+            } else {
+                return result = 0l;
+            }
         } catch (SQLiteException ex) {
-            Log.e("CreaturesDAO.getAll", "Error " + ex + " was thrown while processing all creatures.");
+            Log.e(" GetLastIdCallable.call", "Error " + ex + " was thrown while processing all creatures.");
             return null;
         }
-        //Cursor will be closed later on
-        return result;
     }
 }

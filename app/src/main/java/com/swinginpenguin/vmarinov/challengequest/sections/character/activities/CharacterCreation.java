@@ -43,10 +43,10 @@ public class CharacterCreation extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        dbUtils = new CreatureDBUtils(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_creation);
 
+        dbUtils = new CreatureDBUtils(this);
         nameInput = (EditText) findViewById(R.id.hero_name_input);
         genderSelector = (RadioGroup) findViewById(R.id.hero_gender_selector);
         classSelector = (RadioGroup) findViewById(R.id.hero_race_selector);

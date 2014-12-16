@@ -40,14 +40,16 @@ public class CreaturesDAO {
 
         GetLastIdCallable task = new GetLastIdCallable(dbHelper);
         Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
+        Log.d("CreaturesDAO.constructor","result: " + result);
         try {
             if (result.get() != null && result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
                 lastAvailableId = result.get();
+                Log.d("CreaturesDAO.constructor","lastAvailableId: " + lastAvailableId);
             } else {
                 lastAvailableId = 0;
             }
         } catch (InterruptedException | ExecutionException ex) {
-            Log.e("CampaignDAO constructor", "Error: " + ex + " was thrown while initializing DAO.");
+            Log.e("CreaturesDAO constructor", "Error: " + ex + " was thrown while initializing DAO.");
         }
     }
 
@@ -147,7 +149,7 @@ public class CreaturesDAO {
                 cursor.moveToNext();
             }
         } catch (Exception ex) {
-            Log.e("CreaturesDAO.getAll", "Error " + ex +" was thrown while processing all creatures.");
+            Log.e("CreaturesDAO.getAll", "Error: ' " + ex +"' was thrown while processing all creatures.");
             return new ArrayList();
         } finally {
             result.get().close();
