@@ -32,11 +32,23 @@ import java.util.concurrent.Future;
  * Created by vmarinov on 11/11/2014.
  */
 public class CreaturesDAO {
-
     private CreatureDBHelper dbHelper;
+    private long lastAvailableId;
 
     public CreaturesDAO(Context cntx) {
         dbHelper = new CreatureDBHelper(cntx);
+
+        GetLastIdCallable task = new GetLastIdCallable(dbHelper);
+        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
+        try {
+            if (result.get() != null && result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
+                lastAvailableId = result.get();
+            } else {
+                lastAvailableId = 0;
+            }
+        } catch (InterruptedException | ExecutionException ex) {
+            Log.e("CampaignDAO constructor", "Error: " + ex + " was thrown while initializing DAO.");
+        }
     }
 
     public Boolean insert(Creature creature) {
@@ -193,17 +205,6 @@ public class CreaturesDAO {
         ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
     }
 
-    public Long getLatestId()
-            throws ExecutionException, InterruptedException {
-        long lastRowId;
-        GetLastIdCallable task = new GetLastIdCallable(dbHelper);
-        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
-        if (result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
-            return result.get();
-        }
-        return ErrorCodes.DB_ERROR.getErrorCode();
-    }
-
     private Creature cursorToObject(Cursor cursor) {
         try {
             long id = cursor.getPosition();
@@ -237,5 +238,9 @@ public class CreaturesDAO {
             Creature errorCreature = new Creature(errorIdentity);
             return errorCreature;
         }
+    }
+
+    public long getLastAvailableId() {
+        return lastAvailableId++;
     }
 }

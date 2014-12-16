@@ -32,10 +32,20 @@ import java.util.concurrent.Future;
  */
 public class ChaptersDAO {
     private ChapterDBHelper dbHelper;
+    private long lastAvailableId;
 
     public ChaptersDAO(Context cntx) {
         dbHelper = new ChapterDBHelper(cntx);
 
+        GetLastIdCallable task = new GetLastIdCallable(dbHelper);
+        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
+        try {
+            if (result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
+                lastAvailableId = result.get();
+            }
+        } catch (InterruptedException | ExecutionException ex) {
+            Log.e("CampaignDAO constructor", "Error: " + ex + " was thrown while initializing DAO.");
+        }
     }
 
     public Boolean insert(Chapter chapter) {
@@ -174,17 +184,6 @@ public class ChaptersDAO {
         ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
     }
 
-    public Long getLatestId()
-            throws ExecutionException, InterruptedException {
-        long lastRowId;
-        GetLastIdCallable task = new GetLastIdCallable(dbHelper);
-        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
-        if (result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
-            return result.get();
-        }
-        return ErrorCodes.DB_ERROR.getErrorCode();
-    }
-
     private Chapter cursorToObject(Cursor cursor) {
         try {
             long id = cursor.getPosition();
@@ -210,5 +209,9 @@ public class ChaptersDAO {
             Chapter errorChapter = new Chapter(errorIdentity);
             return errorChapter;
         }
+    }
+
+    public long getLastAvailableId() {
+        return lastAvailableId++;
     }
 }

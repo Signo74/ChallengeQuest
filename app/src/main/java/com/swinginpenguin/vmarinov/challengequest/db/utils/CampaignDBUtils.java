@@ -18,14 +18,13 @@ import java.util.concurrent.ExecutionException;
  */
 public class CampaignDBUtils {
     private CampaignDAO dao;
-
     public CampaignDBUtils(Context ctx){
         dao = new CampaignDAO(ctx);
     }
 
     public Campaign quickAdd(int type, String title){
         Log.d("CampaignDBUtils.quickAdd", "Adding campaign with title: " + title);
-        int id = IdGenerator.getInstance().getNextAvailableId();
+        long id = dao.getLastAvailableId();
         EntryIdentity identity = new EntryIdentity(id, type, title, "");
 
         Campaign dbEntry = new Campaign(identity, 0, 0, 0, 0, 0, null);
@@ -38,7 +37,7 @@ public class CampaignDBUtils {
     public Campaign add(int type, String title, String description, int experienceReward, int rank,
                        int maxRank, long record, int percentageCompleted, List<Quest> quests) {
         Log.d("CampaignDBUtils.quickAdd","Adding campaign with title: " + title);
-        int id = IdGenerator.getInstance().getNextAvailableId();
+        long id = dao.getLastAvailableId();;
         EntryIdentity identity = new EntryIdentity(id, type, title, description);
         Campaign dbEntry = new Campaign(identity, experienceReward, rank, maxRank, record, percentageCompleted, quests);
         if (!dao.insert(dbEntry)) {

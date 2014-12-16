@@ -32,9 +32,20 @@ import com.swinginpenguin.vmarinov.challengequest.multithreading.executor.Execut
  */
 public class QuestsDAO {
     private QuestsDBHelper dbHelper;
+    private long lastAvailableId;
 
     public QuestsDAO(Context cntx) {
         dbHelper = new QuestsDBHelper(cntx);
+
+        GetLastIdCallable task = new GetLastIdCallable(dbHelper);
+        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
+        try {
+            if (result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
+                lastAvailableId = result.get();
+            }
+        } catch (InterruptedException | ExecutionException ex) {
+            Log.e("CampaignDAO constructor", "Error: " + ex + " was thrown while updating campaign in DB.");
+        }
     }
 
     public Boolean insert(Quest quest) {
@@ -118,7 +129,7 @@ public class QuestsDAO {
                 cursor.moveToNext();
             }
         } catch (Exception ex) {
-            Log.e("QuestsDAO.getAll", "Error " + ex +" was thrown while processing all quests.");
+            Log.e("QuestsDAO.getAll", "Error " + ex +" was thrown while initializing DAO.");
             return new ArrayList();
         }finally {
             result.get().close();
@@ -153,17 +164,6 @@ public class QuestsDAO {
         ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
     }
 
-    public Long getLatestId()
-            throws ExecutionException, InterruptedException {
-        long lastRowId;
-        GetLastIdCallable task = new GetLastIdCallable(dbHelper);
-        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
-        if (result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
-            return result.get();
-        }
-        return ErrorCodes.DB_ERROR.getErrorCode();
-    }
-
     private Quest cursorToObject(Cursor cursor) {
         try {
             long id = cursor.getPosition();
@@ -192,5 +192,9 @@ public class QuestsDAO {
             Quest errorQuest = new Quest(errorIdentity);
             return null;
         }
+    }
+
+    public long getLastAvailableId() {
+        return lastAvailableId++;
     }
 }

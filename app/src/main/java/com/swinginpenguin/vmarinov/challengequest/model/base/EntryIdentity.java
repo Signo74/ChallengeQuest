@@ -1,9 +1,11 @@
 package com.swinginpenguin.vmarinov.challengequest.model.base;
 
+import java.io.Serializable;
+
 /**
  * Created by vmarinov on 10/23/2014.
  */
-public class EntryIdentity {
+public class EntryIdentity implements Serializable{
     private long id;
     private long type;
     private String title;

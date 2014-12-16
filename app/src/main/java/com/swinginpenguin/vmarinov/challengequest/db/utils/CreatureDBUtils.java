@@ -17,17 +17,15 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by vmarinov on 11/13/2014.
  */
-public class CreatureDBUtils {;
-
+public class CreatureDBUtils {
     private CreaturesDAO dao;
-
     public CreatureDBUtils(Context ctx){
         dao = new CreaturesDAO(ctx);
     }
 
     public Creature quickAdd(int type, String title){
         Log.d("CreatureDBUtils.quickAdd","Adding creature with title: " + title);
-        int id = IdGenerator.getInstance().getNextAvailableId();
+        long id = dao.getLastAvailableId();
         EntryIdentity identity = new EntryIdentity(id, type, title, "");
         int none = CreatureProperties.UNIDENTIFIED.getId();
         Creature dbEntry = new Creature(identity, 0, 0, none, none, none, none, null, null, null,
@@ -43,7 +41,7 @@ public class CreatureDBUtils {;
                        List<AttributeSet> attributes, List<Float> stats, List<Integer> abilities,
                        List<Integer> items, List<Integer> loot) {
         Log.d("CreatureDBUtils.quickAdd","Adding creature with title: " + title);
-        int id = IdGenerator.getInstance().getNextAvailableId();
+        long id = dao.getLastAvailableId();
         EntryIdentity identity = new EntryIdentity(id, type, title, description);
         Creature dbEntry = new Creature(identity, experience, level, gender, race, creatureClass,
                                         subClass, attributes, stats, abilities, items, loot);

@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
  */
 public class GetLastIdCallable
         implements Callable<Long>{
-    private String order = "column DESC";
+    private String order = "_id DESC";
     private String limit = "1";
     // This is generic so that we can get access to different tables/db.
     private BaseSQLiteOpenHelper dbHelper;
@@ -30,7 +30,7 @@ public class GetLastIdCallable
     public Long call() throws Exception {
         //TODO use rowID of SQLite and refcator all tables!
         Long result;
-        Cursor queryResult = null;
+        Cursor queryResult;
         try {
             queryResult = database.query(dbHelper.tableName, null, null, null, null, null, order ,limit);
             result = queryResult.getLong(0);

@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
  */
 public class GetRowDataBySelection implements Callable<Cursor> {
 
-    private String selection;
+    private String selection = null;
     // This is generic so that we can get access to different tables/db.
     private BaseSQLiteOpenHelper dbHelper;
     private SQLiteDatabase database;

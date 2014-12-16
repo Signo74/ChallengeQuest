@@ -128,20 +128,32 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/create_hero"
-        android:text="@string/hero_creation_button_create"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:onClick="createHero"/>
-
-    <Button
         android:id="@+id/create_hero_reset"
         android:text="@string/hero_creation_button_reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:onClick="resetData"/>
+
+    <Button
+        android:id="@+id/clear_db"
+        android:text="Clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/create_hero_reset"
+        android:onClick="clear"/>
+
+
+    <Button
+        android:id="@+id/create_hero"
+        android:text="@string/hero_creation_button_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:onClick="createHero"/>
+
 
 </RelativeLayout>

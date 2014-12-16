@@ -3,6 +3,7 @@ package com.swinginpenguin.vmarinov.challengequest.sections.character.activities
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -133,7 +134,12 @@ public class CharacterCreation extends Activity {
             startActivity(createHeroIntent);
         } else {
             //TODO show error message and prompt user for different input.
+            Log.e("CharacterCreation.createHero","Error creating hero. Reset Form and rty again!");
             Toast.makeText(this, "Error creating character!", Toast.LENGTH_LONG);
         }
+    }
+
+    public void clear() {
+        dbUtils.deleteAll();
     }
 }
