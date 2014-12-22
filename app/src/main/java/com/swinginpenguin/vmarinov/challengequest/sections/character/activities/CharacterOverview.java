@@ -61,7 +61,7 @@ public class CharacterOverview
         setContentView(R.layout.activity_character_overview);
 
 
-//        dbUtils = new CampaignDBUtils(this);
+        dbUtils = new CampaignDBUtils(this);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());

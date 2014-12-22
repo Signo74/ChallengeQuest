@@ -32,22 +32,9 @@ import com.swinginpenguin.vmarinov.challengequest.multithreading.executor.Execut
  */
 public class QuestsDAO {
     private QuestsDBHelper dbHelper;
-    private long lastAvailableId;
 
     public QuestsDAO(Context cntx) {
         dbHelper = new QuestsDBHelper(cntx);
-
-        GetLastIdCallable task = new GetLastIdCallable(dbHelper);
-        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
-        try {
-            if (result.get() != null && result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
-                lastAvailableId = result.get();
-            } else {
-                lastAvailableId = 0;
-            }
-        } catch (InterruptedException | ExecutionException ex) {
-            Log.e("QuestsDAO constructor", "Error: " + ex + " was thrown while initializing DAO.");
-        }
     }
 
     public Boolean insert(Quest quest) {
@@ -197,6 +184,6 @@ public class QuestsDAO {
     }
 
     public long getLastAvailableId() {
-        return lastAvailableId++;
+        return dbHelper.getLastAvailableId();
     }
 }

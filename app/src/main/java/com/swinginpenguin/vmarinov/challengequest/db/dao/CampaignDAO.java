@@ -31,22 +31,9 @@ import java.util.concurrent.Future;
  */
 public class CampaignDAO {
     private CampaignDBHelper dbHelper;
-    private long lastAvailableId;
 
     public CampaignDAO(Context cntx) {
         dbHelper = new CampaignDBHelper(cntx);
-
-        GetLastIdCallable task = new GetLastIdCallable(dbHelper);
-        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit (task);
-        try {
-            if (result.get() != null && result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
-                lastAvailableId = result.get();
-            } else {
-                lastAvailableId = 0;
-            }
-        } catch (InterruptedException | ExecutionException ex) {
-            Log.e("CampaignDAO constructor", "Error: " + ex + " was thrown while initializing DAO.");
-        }
     }
 
     public Boolean insert(Campaign campaign) {
@@ -214,6 +201,6 @@ public class CampaignDAO {
     }
 
     public long getLastAvailableId() {
-        return lastAvailableId++;
+        return dbHelper.getLastAvailableId();
     }
 }

@@ -2,8 +2,15 @@ package com.swinginpenguin.vmarinov.challengequest.db.dbhelper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.GetLastIdCallable;
 import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpenHelper;
+import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
+import com.swinginpenguin.vmarinov.challengequest.multithreading.executor.ExecutorServiceProvider;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Created by vmarinov on 11/7/2014.
@@ -17,6 +24,8 @@ public class ChapterDBHelper
     public static final String MAX_RANK = "maxrank";
     public static final String RECORD = "record";
     public static final String COMPLETION = "percentagecompleted";
+
+    public long lastAvailableId = 0;
 
 
     //TODO: Modify initial creation string to insert all necessary fields.
@@ -34,6 +43,18 @@ public class ChapterDBHelper
 
     public ChapterDBHelper(Context context) {
         super(context, TABLE_NAME, null);
+
+        GetLastIdCallable task = new GetLastIdCallable(this);
+        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit (task);
+        try {
+            if (result.get() != null && result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
+                lastAvailableId = result.get();
+            } else {
+                lastAvailableId = 0;
+            }
+        } catch (InterruptedException | ExecutionException ex) {
+            Log.e("CampaignDBHelper.onCreate", "Error: " + ex + " was thrown while initializing Table: " + TABLE_NAME);
+        }
     }
 
     @Override
@@ -41,13 +62,13 @@ public class ChapterDBHelper
         sqLiteDatabase.execSQL(DATABASE_CREATE);
     }
 
-    private void createTable(SQLiteDatabase sqLiteDatabase) {
-        //TODO: initialize the DB if it is missing.
-    }
-
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldDB, int newDB) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
         onCreate(sqLiteDatabase);
+    }
+
+    public long getLastAvailableId() {
+        return lastAvailableId++;
     }
 }

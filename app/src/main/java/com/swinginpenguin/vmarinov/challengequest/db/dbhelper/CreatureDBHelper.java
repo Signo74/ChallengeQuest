@@ -2,8 +2,15 @@ package com.swinginpenguin.vmarinov.challengequest.db.dbhelper;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.GetLastIdCallable;
 import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpenHelper;
+import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
+import com.swinginpenguin.vmarinov.challengequest.multithreading.executor.ExecutorServiceProvider;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Created by vmarinov on 11/10/2014.
@@ -23,6 +30,8 @@ public class CreatureDBHelper
     public static final String SPECIAL_ABILITIES = "specialabilities";
     public static final String EQUIPPED_ITEMS = "equippeditems";
     public static final String AVAILABLE_LOOT = "availableloot";
+
+    public long lastAvailableId = 0;
 
     private static final String DATABASE_CREATE = "create table " + TABLE_NAME + "("
             + ID_COLUMN + " integer primary key autoincrement, "
@@ -44,6 +53,18 @@ public class CreatureDBHelper
 
     public CreatureDBHelper(Context context) {
         super(context, TABLE_NAME, null);
+
+        GetLastIdCallable task = new GetLastIdCallable(this);
+        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit (task);
+        try {
+            if (result.get() != null && result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
+                lastAvailableId = result.get();
+            } else {
+                lastAvailableId = 0;
+            }
+        } catch (InterruptedException | ExecutionException ex) {
+            Log.e("CampaignDBHelper.onCreate", "Error: " + ex + " was thrown while initializing Table: " + TABLE_NAME);
+        }
     }
 
     @Override
@@ -51,13 +72,13 @@ public class CreatureDBHelper
         sqLiteDatabase.execSQL(DATABASE_CREATE);
     }
 
-    private void createTable(SQLiteDatabase sqLiteDatabase) {
-        //TODO: initialize the DB if it is missing.
-    }
-
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldDB, int newDB) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
         onCreate(sqLiteDatabase);
+    }
+
+    public long getLastAvailableId() {
+        return lastAvailableId++;
     }
 }

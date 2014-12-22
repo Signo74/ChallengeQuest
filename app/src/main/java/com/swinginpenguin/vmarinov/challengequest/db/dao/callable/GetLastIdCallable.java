@@ -33,7 +33,8 @@ public class GetLastIdCallable
         Cursor queryResult;
         try {
             queryResult = database.query(dbHelper.tableName, null, null, null, null, null, order ,limit);
-            if (queryResult.getCount() > 0) {
+            int position = queryResult.getPosition();
+            if (position > 0) {
                 Log.d("GetLastIdCallable.call", "queryResult.getCount(): " + queryResult.getCount());
                 return result = queryResult.getLong(0);
             } else {

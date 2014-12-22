@@ -23,7 +23,7 @@ public class ExecutorServiceProvider {
     private static int NUMBER_OF_AVAILABLE_CORES = MAX_NUMBER_OF_CORES ;
     private static int KEEP_ALIVE_TIME = 1;
     private static TimeUnit KEEP_ALIVE_UNITS = TimeUnit.SECONDS;
-    //TODO we should be able to submit Runnable
+
     private final BlockingQueue<Runnable> dbExecutorQueue;
     private final BlockingQueue<Runnable> serverExecutorQueue;
     //TODO implement a map with int as key and the services as items

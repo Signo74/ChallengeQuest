@@ -214,6 +214,6 @@ public class ChaptersDAO {
     }
 
     public long getLastAvailableId() {
-        return lastAvailableId++;
+        return dbHelper.getLastAvailableId();
     }
 }

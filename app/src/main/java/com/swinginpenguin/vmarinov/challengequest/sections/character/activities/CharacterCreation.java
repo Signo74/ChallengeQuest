@@ -21,6 +21,7 @@ import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
 import com.swinginpenguin.vmarinov.challengequest.db.utils.CreatureDBUtils;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 public class CharacterCreation extends Activity {
 
@@ -33,10 +34,10 @@ public class CharacterCreation extends Activity {
     private RadioGroup genderSelector;
     private RadioGroup classSelector;
 
-    private String _title;
+    private String _title = NAME_INPUT_DEFAULT_VALUE;
     private String _description;
-    private int _gender;
-    private int _race;
+    private int _gender = CreatureProperties.UNIDENTIFIED.getId();
+    private int _race = CreatureProperties.UNIDENTIFIED.getId();
     private int _heroClass = CreaturesTypes.PLAYER.getId();
     private int _subClass = CreatureProperties.BRAND_NEW_HERO.getId();
     private CreatureDBUtils dbUtils;
@@ -119,6 +120,14 @@ public class CharacterCreation extends Activity {
     }
 
     public void createHero(View button) {
+        List<Creature> allCreatures = dbUtils.getAll();
+        Log.d("CharacterCreation.createHero","Creatures: " + allCreatures.toString());
+
+        if (_gender == CreatureProperties.UNIDENTIFIED.getId() ||
+                _race == CreatureProperties.UNIDENTIFIED.getId() ||
+                _title == NAME_INPUT_DEFAULT_VALUE) {
+            //TODO first create check whether all inputs are filled/selected
+        }
         //TODO populate all parameters correctly - Use ClassBaseUtils
         _title = nameInput.getText().toString();
         List<AttributeSet> attributes = null;

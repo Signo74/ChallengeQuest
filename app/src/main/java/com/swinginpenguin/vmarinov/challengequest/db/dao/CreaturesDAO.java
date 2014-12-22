@@ -243,6 +243,6 @@ public class CreaturesDAO {
     }
 
     public long getLastAvailableId() {
-        return lastAvailableId++;
+        return dbHelper.getLastAvailableId();
     }
 }
