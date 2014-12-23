@@ -148,7 +148,7 @@ public class CharacterCreation extends Activity {
         }
     }
 
-    public void clear() {
+    public void clear(View view) {
         dbUtils.deleteAll();
     }
 }

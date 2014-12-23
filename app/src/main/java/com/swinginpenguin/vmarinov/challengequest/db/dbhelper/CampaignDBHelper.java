@@ -27,14 +27,14 @@ public class CampaignDBHelper
     public static final String COMPLETION = "percentagecompleted";
     public static final String QUESTS = "quests";
 
-    public long lastAvailableId = 0;
+    public int lastAvailableId = 0;
 
     //TODO: Modify initial creation string to insert all necessary fields.
     private static final String DATABASE_CREATE = "create table " + TABLE_NAME + "("
             + ID_COLUMN + " integer primary key autoincrement, "
+            + TYPE_COLUMN + " integer not null, "
             + TITLE_COLUMN + " text not null, "
-            + TYPE_COLUMN + " integer, "
-            + DESCRIPTION_COLUMN + " text, "
+            + DESCRIPTION_COLUMN + " text not null, "
             + EXP_REWARD + " integer, "
             + RANK + " integer, "
             + MAX_RANK + " integer, "
@@ -52,7 +52,7 @@ public class CampaignDBHelper
         sqLiteDatabase.execSQL(DATABASE_CREATE);
 
         GetLastIdCallable task = new GetLastIdCallable(this);
-        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit (task);
+        Future<Integer> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit (task);
         try {
             if (result.get() != null && result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
                 lastAvailableId = result.get();
@@ -70,7 +70,7 @@ public class CampaignDBHelper
         onCreate(sqLiteDatabase);
     }
 
-    public long getLastAvailableId() {
+    public int getLastAvailableId() {
         return lastAvailableId++;
     }
 }

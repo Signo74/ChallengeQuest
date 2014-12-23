@@ -11,8 +11,11 @@ public abstract class BaseSQLiteOpenHelper
         extends SQLiteOpenHelper {
     public String tableName;
 
-    private static int DATABASE_VERSION = 1;
+    private static int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "main.db";
+    /* NB: Never set the _id column explicitly as SQLite is taking care of it automatically trough
+     * the "int primary key autoincrement" description.
+     */
     public static final String ID_COLUMN = "_id";
     public static final String TYPE_COLUMN = "type";
     public static final String TITLE_COLUMN = "title";

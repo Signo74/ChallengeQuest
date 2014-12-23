@@ -6,19 +6,19 @@ import java.io.Serializable;
  * Created by vmarinov on 10/23/2014.
  */
 public class EntryIdentity implements Serializable{
-    private long id;
+    private int id;
     private long type;
     private String title;
     private String description;
 
-    public EntryIdentity(long id, long type, String title, String description) {
+    public EntryIdentity(int id, long type, String title, String description) {
         this.id = id;
         this.type = type;
         this.title = title;
         this.description = description;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

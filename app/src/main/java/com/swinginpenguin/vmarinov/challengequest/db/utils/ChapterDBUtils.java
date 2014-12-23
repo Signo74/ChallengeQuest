@@ -23,7 +23,7 @@ public class ChapterDBUtils {
 
     public Chapter quickAdd(int type, String title){
         Log.d("ChapterDBUtils.quickAdd", "Adding chapter with title: " + title);
-        long id = dao.getLastAvailableId();
+        int id = dao.getLastAvailableId();
         EntryIdentity identity = new EntryIdentity(id, type, title, "");
 
         Chapter dbEntry = new Chapter(identity, 0, 0, 0, 0, 0);
@@ -36,7 +36,7 @@ public class ChapterDBUtils {
     public Chapter add(int type, String title, String description, int experienceReward, int rank,
                        int maxRank, long record, int percentageCompleted) {
         Log.d("ChapterDBUtils.quickAdd","Adding chapter with title: " + title);
-        long id = dao.getLastAvailableId();
+        int id = dao.getLastAvailableId();
         EntryIdentity identity = new EntryIdentity(id, type, title, description);
         Chapter dbEntry = new Chapter(identity, experienceReward, rank, maxRank, record, percentageCompleted);
         if (!dao.insert(dbEntry)) {

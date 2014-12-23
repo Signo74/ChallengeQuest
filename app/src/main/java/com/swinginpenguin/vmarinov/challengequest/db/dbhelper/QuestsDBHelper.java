@@ -25,13 +25,13 @@ public class QuestsDBHelper
     public static final String MAX_RANK = "maxrank";
     public static final String COMPLETION = "percentagecompleted";
 
-    public long lastAvailableId = 0;
+    public int lastAvailableId = 0;
 
     private static final String DATABASE_CREATE = "create table " + TABLE_NAME + "("
             + ID_COLUMN + " integer primary key autoincrement, "
+            + TYPE_COLUMN + " integer not null, "
             + TITLE_COLUMN + " text not null, "
-            + TYPE_COLUMN + " integer, "
-            + DESCRIPTION_COLUMN + " text, "
+            + DESCRIPTION_COLUMN + " text not null, "
             + CHAPTERS + " text, "
             + EXP_REWARD + " integer, "
             + RANK + " integer, "
@@ -43,7 +43,7 @@ public class QuestsDBHelper
         super(context, TABLE_NAME, null);
 
         GetLastIdCallable task = new GetLastIdCallable(this);
-        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit (task);
+        Future<Integer> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit (task);
         try {
             if (result.get() != null && result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
                 lastAvailableId = result.get();
@@ -66,7 +66,7 @@ public class QuestsDBHelper
         onCreate(sqLiteDatabase);
     }
 
-    public long getLastAvailableId() {
+    public int getLastAvailableId() {
         return lastAvailableId++;
     }
 }

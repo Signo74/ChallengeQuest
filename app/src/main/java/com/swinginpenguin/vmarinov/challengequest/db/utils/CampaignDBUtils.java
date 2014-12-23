@@ -24,7 +24,7 @@ public class CampaignDBUtils {
 
     public Campaign quickAdd(int type, String title){
         Log.d("CampaignDBUtils.quickAdd", "Adding campaign with title: " + title);
-        long id = dao.getLastAvailableId();
+        int id = dao.getLastAvailableId();
         EntryIdentity identity = new EntryIdentity(id, type, title, "");
 
         Campaign dbEntry = new Campaign(identity, 0, 0, 0, 0, 0, null);
@@ -37,7 +37,7 @@ public class CampaignDBUtils {
     public Campaign add(int type, String title, String description, int experienceReward, int rank,
                        int maxRank, long record, int percentageCompleted, List<Quest> quests) {
         Log.d("CampaignDBUtils.quickAdd","Adding campaign with title: " + title);
-        long id = dao.getLastAvailableId();;
+        int id = dao.getLastAvailableId();;
         EntryIdentity identity = new EntryIdentity(id, type, title, description);
         Campaign dbEntry = new Campaign(identity, experienceReward, rank, maxRank, record, percentageCompleted, quests);
         if (!dao.insert(dbEntry)) {

@@ -10,13 +10,22 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.CreaturesDAO;
+import com.swinginpenguin.vmarinov.challengequest.model.Creature;
+import com.swinginpenguin.vmarinov.challengequest.model.base.CreaturesTypes;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.activities.CharacterCreation;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.activities.CharacterOverview;
 import com.swinginpenguin.vmarinov.challengequest.sections.login.LoginActivity;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
 public class ChallengeQuests extends Activity {
 
     private Boolean _characterCreated = false;
+    private CreaturesDAO dao;
+    private Boolean isLoaded = false;
+    private Boolean hasSavedSlot = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +43,16 @@ public class ChallengeQuests extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        final Button startButton = (Button) findViewById(R.id.button_game_start);
-        startButton.setVisibility(View.VISIBLE);
+        String selection = "type = " + CreaturesTypes.PLAYER.getId();
+        isLoaded = true;
+        dao = CreaturesDAO.getInstance(this);
+        try {
+            List<Creature> heroes =  dao.getList(selection);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        final TextView loadingLabel = (TextView)findViewById(R.id.label_loading);
-        loadingLabel.setVisibility(View.INVISIBLE);
+        setVisibilityAndPosition();
     }
 
     @Override
@@ -68,5 +82,20 @@ public class ChallengeQuests extends Activity {
     public void loginButtonClicked(View button) {
         Intent loginIntent = new Intent(this, LoginActivity.class);
         startActivity(loginIntent);
+    }
+
+    private void setVisibilityAndPosition() {
+        // TODO set the Start button position below the last
+        if (!isLoaded) {
+            if (!hasSavedSlot) {
+                final Button startButton = (Button) findViewById(R.id.button_game_start);
+                startButton.setVisibility(View.VISIBLE);
+
+                final TextView loadingLabel = (TextView) findViewById(R.id.label_loading);
+                loadingLabel.setVisibility(View.INVISIBLE);
+            } else {
+
+            }
+        }
     }
 }

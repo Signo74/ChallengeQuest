@@ -32,29 +32,21 @@ import java.util.concurrent.Future;
  * Created by vmarinov on 11/11/2014.
  */
 public class CreaturesDAO {
+    private static CreaturesDAO instance = null;
     private CreatureDBHelper dbHelper;
-    private long lastAvailableId;
 
-    public CreaturesDAO(Context cntx) {
+    private CreaturesDAO(Context cntx){
         dbHelper = new CreatureDBHelper(cntx);
+    }
 
-        GetLastIdCallable task = new GetLastIdCallable(dbHelper);
-        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
-        Log.d("CreaturesDAO.constructor","result: " + result);
-        try {
-            if (result.get() != null && result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
-                lastAvailableId = result.get();
-                Log.d("CreaturesDAO.constructor","lastAvailableId: " + lastAvailableId);
-            } else {
-                lastAvailableId = 0;
-            }
-        } catch (InterruptedException | ExecutionException ex) {
-            Log.e("CreaturesDAO constructor", "Error: " + ex + " was thrown while initializing DAO.");
+    public static CreaturesDAO getInstance(Context cntx) {
+        if (instance == null) {
+            instance = new CreaturesDAO(cntx);
         }
+        return instance;
     }
 
     public Boolean insert(Creature creature) {
-        //TODO set Id in values!!!
         ContentValues values = new ContentValues();
         values.put(CreatureDBHelper.TYPE_COLUMN, creature.getIdentity().getType());
         values.put(CreatureDBHelper.TITLE_COLUMN, creature.getIdentity().getTitle());
@@ -209,7 +201,7 @@ public class CreaturesDAO {
 
     private Creature cursorToObject(Cursor cursor) {
         try {
-            long id = cursor.getPosition();
+            int id = cursor.getInt(0);
             Integer type = cursor.getInt(1);
             String title = cursor.getString(2);
             String description = cursor.getString(3);
@@ -242,7 +234,7 @@ public class CreaturesDAO {
         }
     }
 
-    public long getLastAvailableId() {
+    public int getLastAvailableId() {
         return dbHelper.getLastAvailableId();
     }
 }

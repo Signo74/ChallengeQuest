@@ -18,6 +18,7 @@ public class ExecutorServiceProvider {
     private ExecutorService serverExecutor = null;
 
     private static int NUMBER_OF_IDLE_CORES = 0;
+    private static int NUMBER_OF_DB_CORES = 1;
     private static int NUMBER_OF_SERVICES = 0;
     private static int MAX_NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
     private static int NUMBER_OF_AVAILABLE_CORES = MAX_NUMBER_OF_CORES ;
@@ -48,9 +49,13 @@ public class ExecutorServiceProvider {
     }
 
     public ExecutorService getDbExecutor() {
+        /*  DB service is a single thread executor because we want to avoid multiple threads
+         *  accessing the DB, especially the same table, at the same time.
+         *  In the future this could be re-worked to support more threads.
+         */
         if (dbExecutor == null) {
             NUMBER_OF_SERVICES++;
-            dbExecutor = new ThreadPoolExecutor(NUMBER_OF_IDLE_CORES, getNumberOfAvailableCores(),
+            dbExecutor = new ThreadPoolExecutor(NUMBER_OF_IDLE_CORES, NUMBER_OF_DB_CORES,
                                             KEEP_ALIVE_TIME, KEEP_ALIVE_UNITS, dbExecutorQueue);
         }
         return dbExecutor;
@@ -66,7 +71,7 @@ public class ExecutorServiceProvider {
     }
 
     private int getNumberOfAvailableCores() {
-        NUMBER_OF_AVAILABLE_CORES = MAX_NUMBER_OF_CORES / NUMBER_OF_SERVICES;
+        NUMBER_OF_AVAILABLE_CORES = MAX_NUMBER_OF_CORES / NUMBER_OF_SERVICES - NUMBER_OF_DB_CORES;
         if (NUMBER_OF_AVAILABLE_CORES <= 0) {
             NUMBER_OF_AVAILABLE_CORES = 1;
         }

@@ -174,7 +174,7 @@ public class CampaignDAO {
 
     private Campaign cursorToObject(Cursor cursor) {
         try {
-            long id = cursor.getPosition();
+            int id = cursor.getInt(0);
             Integer type = cursor.getInt(1);
             String title = cursor.getString(2);
             String description = cursor.getString(3);
@@ -200,7 +200,7 @@ public class CampaignDAO {
         }
     }
 
-    public long getLastAvailableId() {
+    public int getLastAvailableId() {
         return dbHelper.getLastAvailableId();
     }
 }

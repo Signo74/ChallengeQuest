@@ -38,7 +38,7 @@ public class ChaptersDAO {
         dbHelper = new ChapterDBHelper(cntx);
 
         GetLastIdCallable task = new GetLastIdCallable(dbHelper);
-        Future<Long> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
+        Future<Integer> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
         try {
             if (result.get() != null && result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
                 lastAvailableId = result.get();
@@ -188,7 +188,7 @@ public class ChaptersDAO {
 
     private Chapter cursorToObject(Cursor cursor) {
         try {
-            long id = cursor.getPosition();
+            int id = cursor.getInt(0);
             Integer type = cursor.getInt(1);
             String title = cursor.getString(2);
             String description = cursor.getString(3);
@@ -213,7 +213,7 @@ public class ChaptersDAO {
         }
     }
 
-    public long getLastAvailableId() {
+    public int getLastAvailableId() {
         return dbHelper.getLastAvailableId();
     }
 }

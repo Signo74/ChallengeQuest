@@ -26,7 +26,7 @@ public class QuestDBUtils {
 
     public Quest quickAdd(int type, String title){
         Log.d("QuestDBUtils.quickAdd","Adding quest with title: " + title);
-        long id = dao.getLastAvailableId();
+        int id = dao.getLastAvailableId();
         EntryIdentity identity = new EntryIdentity(id, type, title, "");
         Quest dbEntry = new Quest(identity, null, 0, 0, 0, 0);
         if (!dao.insert(dbEntry)) {
@@ -38,7 +38,7 @@ public class QuestDBUtils {
     public Quest add(int type, String title, String description, List<Chapter > chapters,
                      int experienceReward, int rank, int maxRank, int percentageCompleted) {
         Log.d("CreatureDBUtils.quickAdd","Adding quest with title: " + title);
-        long id = dao.getLastAvailableId();
+        int id = dao.getLastAvailableId();
         EntryIdentity identity = new EntryIdentity(id, type, title, description);
         Quest dbEntry = new Quest(identity, null, 0, 0, 0, 0);
         if (!dao.insert(dbEntry)) {

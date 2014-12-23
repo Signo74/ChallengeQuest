@@ -26,6 +26,39 @@
         android:layout_centerVertical="true"
         android:onClick="startButtonClicked"/>
 
+    <!-- The group of buttons for character selection.
+         TODO Decide the number of available heroes! -->
+    <Button
+        android:id="@+id/button_hero_slot_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/common_label_empty"
+        android:visibility="invisible"
+        android:layout_above="@+id/button_hero_slot_2"
+        android:layout_centerHorizontal="true"
+        android:onClick="heroButtonClicked"/>
+
+    <Button
+        android:id="@+id/button_hero_slot_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/common_label_empty"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:onClick="heroButtonClicked"/>
+    <Button
+        android:id="@+id/button_hero_slot_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/common_label_empty"
+        android:visibility="invisible"
+        android:layout_below="@+id/button_hero_slot_2"
+        android:layout_centerHorizontal="true"
+        android:onClick="heroButtonClicked"/>
+
+    <!-- end of Hero group -->
+
     <Button
         android:id="@+id/button_google_plus_login"
         android:layout_width="wrap_content"
