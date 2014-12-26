@@ -18,10 +18,11 @@
     <string name="common_button_start">Start</string>
     <string name="common_button_settings">Settings</string>
     <string name="common_label_character_overview">Character overview</string>
-    <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="editable_empty"></string>
     <string name="common_label_empty">Empty</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_delete_creature_db">Delete Creatures</string>
 
     <!-- Default strings -->
     <string name="challenge_default_fragment_title">New Challenge Fragment!</string>

@@ -16,46 +16,49 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"/>
 
+    <!-- The group of buttons for character selection.
+         TODO Decide the number of available heroes! -->
+    <RelativeLayout
+        android:id="@+id/hero_buttons_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+        <Button
+            android:id="@+id/button_hero_slot_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/common_label_empty"
+            android:visibility="invisible"
+            android:onClick="heroButtonClicked"/>
+
+        <Button
+            android:id="@+id/button_hero_slot_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_hero_slot_1"
+            android:text="@string/common_label_empty"
+            android:visibility="invisible"
+            android:onClick="heroButtonClicked"/>
+        <Button
+            android:id="@+id/button_hero_slot_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_hero_slot_2"
+            android:text="@string/common_label_empty"
+            android:visibility="invisible"
+            android:onClick="heroButtonClicked"/>
+
+        </RelativeLayout>
+
     <Button
         android:id="@+id/button_game_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/common_button_start"
-        android:visibility="invisible"
-        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:onClick="startButtonClicked"/>
-
-    <!-- The group of buttons for character selection.
-         TODO Decide the number of available heroes! -->
-    <Button
-        android:id="@+id/button_hero_slot_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/common_label_empty"
-        android:visibility="invisible"
-        android:layout_above="@+id/button_hero_slot_2"
-        android:layout_centerHorizontal="true"
-        android:onClick="heroButtonClicked"/>
-
-    <Button
-        android:id="@+id/button_hero_slot_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/common_label_empty"
-        android:visibility="invisible"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:onClick="heroButtonClicked"/>
-    <Button
-        android:id="@+id/button_hero_slot_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/common_label_empty"
-        android:visibility="invisible"
-        android:layout_below="@+id/button_hero_slot_2"
-        android:layout_centerHorizontal="true"
-        android:onClick="heroButtonClicked"/>
 
     <!-- end of Hero group -->
 

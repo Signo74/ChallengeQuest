@@ -5,4 +5,9 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    <item android:id="@+id/action_delete_db"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/action_delete_creature_db"
+        android:orderInCategory="101"
+        android:showAsAction="always" />
 </menu>
