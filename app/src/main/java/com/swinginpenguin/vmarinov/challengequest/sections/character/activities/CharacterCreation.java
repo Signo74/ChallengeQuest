@@ -19,6 +19,7 @@ import com.swinginpenguin.vmarinov.challengequest.model.base.CreatureProperties;
 import com.swinginpenguin.vmarinov.challengequest.model.base.CreaturesTypes;
 import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
 import com.swinginpenguin.vmarinov.challengequest.db.utils.CreatureDBUtils;
+import com.swinginpenguin.vmarinov.challengequest.sections.IntentExtraKeys;
 
 import java.util.List;
 import java.util.concurrent.Future;
@@ -139,7 +140,7 @@ public class CharacterCreation extends Activity {
                 _heroClass, _subClass, attributes, stats, abilities, items, loot);
         if (playerHero.getIdentity().getType() != ErrorCodes.DB_ERROR.getErrorCode()) {
             Intent createHeroIntent = new Intent(this, CharacterOverview.class);
-            createHeroIntent.putExtra("playerHero", playerHero);
+            createHeroIntent.putExtra(IntentExtraKeys.PLAYER_HERO_EXTRA.getKey(), playerHero);
             startActivity(createHeroIntent);
         } else {
             //TODO show error message and prompt user for different input.

@@ -12,10 +12,13 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
 import com.swinginpenguin.vmarinov.challengequest.db.utils.CampaignDBUtils;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
+import com.swinginpenguin.vmarinov.challengequest.sections.IntentExtraKeys;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.CharacterFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestsListFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestProgressOverviewFragment;
@@ -39,6 +42,7 @@ public class CharacterOverview
     private CampaignDBUtils dbUtils;
 
     private Creature playerHero;
+    private ProgressBar xpProgressBar;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -59,7 +63,8 @@ public class CharacterOverview
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_overview);
-
+        Intent invokerIntent = getIntent();
+        playerHero = (Creature) invokerIntent.getSerializableExtra(IntentExtraKeys.PLAYER_HERO_EXTRA.getKey());
 
         dbUtils = new CampaignDBUtils(this);
         // Create the adapter that will return a fragment for each of the three
@@ -71,6 +76,8 @@ public class CharacterOverview
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(PROGRESS_OVERVIEW);
         pageCount = R.integer.character_overview_pages_count;
+
+        initUI(playerHero);
     }
 
 
@@ -104,6 +111,14 @@ public class CharacterOverview
         Intent listItemClickedIntent = new Intent(this, QuestOverviewActivity.class);
         listItemClickedIntent.putExtra("targetId", id);
         startActivity(listItemClickedIntent);
+    }
+
+    public void onHeroButtonClicked(View button) {
+        mViewPager.setCurrentItem(CHARACTER_OVERVIEW_PAGE);
+    }
+
+    private void initUI(Creature hero) {
+
     }
 
     /**

@@ -18,6 +18,7 @@ import com.swinginpenguin.vmarinov.challengequest.R;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.CreaturesDAO;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
 import com.swinginpenguin.vmarinov.challengequest.model.base.CreaturesTypes;
+import com.swinginpenguin.vmarinov.challengequest.sections.IntentExtraKeys;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.activities.CharacterCreation;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.activities.CharacterOverview;
 import com.swinginpenguin.vmarinov.challengequest.sections.login.LoginActivity;
@@ -124,7 +125,7 @@ public class ChallengeQuests extends Activity {
     public void heroButtonClicked(View button) {
         Intent heroIntent = new Intent(this, CharacterOverview.class);
         Creature hero = (Creature) button.getTag();
-        heroIntent.putExtra("hero", hero);
+        heroIntent.putExtra(IntentExtraKeys.PLAYER_HERO_EXTRA.getKey(), hero);
         startActivity(heroIntent);
     }
 

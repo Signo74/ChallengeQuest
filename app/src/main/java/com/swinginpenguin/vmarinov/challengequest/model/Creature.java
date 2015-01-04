@@ -29,6 +29,11 @@ public class Creature implements Serializable{
 
     private List<Integer> equippedItems;
     private List<Integer> availableLoot;
+    //TODO include in DB
+    private List<Integer> currentCampaigns;
+    private List<Integer> currentQuests;
+    private List<Integer> completedCampaigns;
+    private List<Integer> completedQuests;
 
     public Creature(EntryIdentity identity) {
         this.identity = identity;
@@ -36,8 +41,8 @@ public class Creature implements Serializable{
 
     public Creature(EntryIdentity identity, int experience, int level, int gender, int race,
                     int creatureClass, int subClass, List<AttributeSet> attributes,
-                    List<Float> stats, List<Integer> specialAbilities, List<Integer> equippedItems,
-                    List<Integer> availableLoot) {
+                    List<Float> baseStats, List<Integer> specialAbilities,
+                    List<Integer> equippedItems) {
         this.identity = identity;
         this.experience = experience;
         this.level = level;
@@ -46,10 +51,33 @@ public class Creature implements Serializable{
         this.creatureClass = creatureClass;
         this.subClass = subClass;
         this.attributes = attributes;
-        this.baseStats = stats;
+        this.baseStats = baseStats;
+        this.specialAbilities = specialAbilities;
+        this.equippedItems = equippedItems;
+    }
+
+    public Creature(EntryIdentity identity, int experience, int level, int gender, int race,
+                    int creatureClass, int subClass, List<AttributeSet> attributes,
+                    List<Float> baseStats, List<Integer> specialAbilities,
+                    List<Integer> equippedItems, List<Integer> availableLoot,
+                    List<Integer> currentCampaigns, List<Integer> currentQuests,
+                    List<Integer> completedCampaigns, List<Integer> completedQuests) {
+        this.identity = identity;
+        this.experience = experience;
+        this.level = level;
+        this.gender = gender;
+        this.race = race;
+        this.creatureClass = creatureClass;
+        this.subClass = subClass;
+        this.attributes = attributes;
+        this.baseStats = baseStats;
         this.specialAbilities = specialAbilities;
         this.equippedItems = equippedItems;
         this.availableLoot = availableLoot;
+        this.currentCampaigns = currentCampaigns;
+        this.currentQuests = currentQuests;
+        this.completedCampaigns = completedCampaigns;
+        this.completedQuests = completedQuests;
     }
 
     public EntryIdentity getIdentity() {
@@ -144,6 +172,38 @@ public class Creature implements Serializable{
         this.availableLoot = availableLoot;
     }
 
+    public List<Integer> getCurrentCampaigns() {
+        return currentCampaigns;
+    }
+
+    public void setCurrentCampaigns(List<Integer> currentCampaigns) {
+        this.currentCampaigns = currentCampaigns;
+    }
+
+    public List<Integer> getCurrentQuests() {
+        return currentQuests;
+    }
+
+    public void setCurrentQuests(List<Integer> currentQuests) {
+        this.currentQuests = currentQuests;
+    }
+
+    public List<Integer> getCompletedCampaigns() {
+        return completedCampaigns;
+    }
+
+    public void setCompletedCampaigns(List<Integer> completedCampaigns) {
+        this.completedCampaigns = completedCampaigns;
+    }
+
+    public List<Integer> getCompletedQuests() {
+        return completedQuests;
+    }
+
+    public void setCompletedQuests(List<Integer> completedQuests) {
+        this.completedQuests = completedQuests;
+    }
+
     @Override
     public String toString() {
         return "Creature{" +
@@ -151,12 +211,18 @@ public class Creature implements Serializable{
                 ", experience=" + experience +
                 ", level=" + level +
                 ", gender=" + gender +
+                ", race=" + race +
                 ", creatureClass=" + creatureClass +
+                ", subClass=" + subClass +
                 ", attributes=" + attributes +
                 ", baseStats=" + baseStats +
                 ", specialAbilities=" + specialAbilities +
                 ", equippedItems=" + equippedItems +
                 ", availableLoot=" + availableLoot +
+                ", currentCampaigns=" + currentCampaigns +
+                ", currentQuests=" + currentQuests +
+                ", completedCampaigns=" + completedCampaigns +
+                ", completedQuests=" + completedQuests +
                 '}';
     }
 }
