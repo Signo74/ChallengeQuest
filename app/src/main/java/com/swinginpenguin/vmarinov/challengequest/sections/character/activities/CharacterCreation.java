@@ -8,12 +8,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
-import com.swinginpenguin.vmarinov.challengequest.model.AttributeSet;
+import com.swinginpenguin.vmarinov.challengequest.model.Ability;
+import com.swinginpenguin.vmarinov.challengequest.model.Attribute;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
 import com.swinginpenguin.vmarinov.challengequest.model.base.CreatureProperties;
 import com.swinginpenguin.vmarinov.challengequest.model.base.CreaturesTypes;
@@ -22,7 +24,7 @@ import com.swinginpenguin.vmarinov.challengequest.db.utils.CreatureDBUtils;
 import com.swinginpenguin.vmarinov.challengequest.sections.IntentExtraKeys;
 
 import java.util.List;
-import java.util.concurrent.Future;
+import java.util.Map;
 
 public class CharacterCreation extends Activity {
 
@@ -34,6 +36,7 @@ public class CharacterCreation extends Activity {
     private Button resetButton;
     private RadioGroup genderSelector;
     private RadioGroup classSelector;
+    private CheckBox skipTutorial;
 
     private String _title = NAME_INPUT_DEFAULT_VALUE;
     private String _description;
@@ -52,6 +55,7 @@ public class CharacterCreation extends Activity {
         nameInput = (EditText) findViewById(R.id.hero_name_input);
         genderSelector = (RadioGroup) findViewById(R.id.hero_gender_selector);
         classSelector = (RadioGroup) findViewById(R.id.hero_race_selector);
+        skipTutorial = (CheckBox) findViewById(R.id.skip_tutorial);
     }
 
 
@@ -118,6 +122,7 @@ public class CharacterCreation extends Activity {
         genderSelector.clearCheck();
         classSelector.clearCheck();
         nameInput.setText(NAME_INPUT_DEFAULT_VALUE);
+        skipTutorial.setChecked(false);
     }
 
     public void createHero(View button) {
@@ -131,9 +136,9 @@ public class CharacterCreation extends Activity {
         }
         //TODO populate all parameters correctly - Use ClassBaseUtils
         _title = nameInput.getText().toString();
-        List<AttributeSet> attributes = null;
-        List<Float> stats = null;
-        List<Integer> abilities = null;
+        List<Attribute> attributes = null;
+        Map<String, Float> stats = null;
+        List<Ability> abilities = null;
         List<Integer> items = null;
         List<Integer> loot = null;
         Creature playerHero = dbUtils.add(CreaturesTypes.PLAYER.getId(), _title, _description, 0, 1, _gender, _race,
@@ -141,6 +146,7 @@ public class CharacterCreation extends Activity {
         if (playerHero.getIdentity().getType() != ErrorCodes.DB_ERROR.getErrorCode()) {
             Intent createHeroIntent = new Intent(this, CharacterOverview.class);
             createHeroIntent.putExtra(IntentExtraKeys.PLAYER_HERO_EXTRA.getKey(), playerHero);
+            createHeroIntent.putExtra(IntentExtraKeys.SKIP_TUTORIAL.getKey(), skipTutorial.isChecked());
             startActivity(createHeroIntent);
         } else {
             //TODO show error message and prompt user for different input.

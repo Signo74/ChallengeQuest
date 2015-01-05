@@ -7,8 +7,6 @@ package com.swinginpenguin.vmarinov.challengequest.db.utils;
         import com.swinginpenguin.vmarinov.challengequest.model.Chapter;
         import com.swinginpenguin.vmarinov.challengequest.model.Quest;
         import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
-        import com.swinginpenguin.vmarinov.challengequest.model.base.EntryTypes;
-        import com.swinginpenguin.vmarinov.challengequest.model.utils.IdGenerator;
 
         import java.util.ArrayList;
         import java.util.Calendar;
@@ -40,7 +38,7 @@ public class QuestDBUtils {
         Log.d("CreatureDBUtils.quickAdd","Adding quest with title: " + title);
         int id = dao.getLastAvailableId();
         EntryIdentity identity = new EntryIdentity(id, type, title, description);
-        Quest dbEntry = new Quest(identity, null, 0, 0, 0, 0);
+        Quest dbEntry = new Quest(identity, chapters, 0, 0, 0, 0);
         if (!dao.insert(dbEntry)) {
             //TODO handle false insertion.
         }

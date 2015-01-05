@@ -5,7 +5,6 @@
     android:orientation="vertical"
     tools:context="com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestProgressOverviewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/welcome"
         android:layout_width="wrap_content"
@@ -15,11 +14,20 @@
         android:textAlignment="center"
         android:text="@string/start_page_welcome"/>
 
+    <TextView
+        android:id="@+id/hero_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/welcome"
+        android:textAlignment="center"/>
+
     <ImageButton
         android:id="@+id/hero_button"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_below="@+id/welcome"
+        android:layout_below="@+id/hero_name"
         android:layout_centerHorizontal="true"
         android:onClick="onHeroButtonClicked"/>
 
@@ -39,13 +47,14 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/current_level_progress"/>
 
+    <!-- Add a textfield for the current XP level -->
     <TextView
         android:id="@+id/current_xp_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/xpProgressBar"
         android:layout_alignLeft="@id/xpProgressBar"
-        android:text="100" />
+        android:text="" />
     <TextView
         android:id="@+id/current_xp_suffix"
         android:layout_width="wrap_content"
@@ -66,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/xpProgressBar"
         android:layout_toLeftOf="@id/target_xp_suffix"
-        android:text="1000" />
+        android:text="" />
 
 
     <ListView

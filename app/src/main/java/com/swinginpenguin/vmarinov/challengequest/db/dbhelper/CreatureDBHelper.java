@@ -17,7 +17,6 @@ import java.util.concurrent.Future;
  */
 public class CreatureDBHelper
         extends BaseSQLiteOpenHelper {
-    //TODO use rowID of SQLite and refcator all tables!
     public static final String TABLE_NAME = "creatures";
     public static final String EXPERIENCE = "experience";
     public static final String LEVEL = "level";
@@ -30,6 +29,10 @@ public class CreatureDBHelper
     public static final String SPECIAL_ABILITIES = "specialabilities";
     public static final String EQUIPPED_ITEMS = "equippeditems";
     public static final String AVAILABLE_LOOT = "availableloot";
+    public static final String CURRENT_CAMPAIGNS = "campaigns";
+    public static final String CURRENT_QUESTS = "quests";
+    public static final String COMPLETED_CAMPAIGNS = "completedcampaigns";
+    public static final String COMPLETED_QUESTS = "completedquests";
 
     public int lastAvailableId = 0;
 
@@ -48,7 +51,11 @@ public class CreatureDBHelper
             + STATS + " text, "
             + SPECIAL_ABILITIES + " text, "
             + EQUIPPED_ITEMS + " text, "
-            + AVAILABLE_LOOT + " text"
+            + AVAILABLE_LOOT + " text,"
+            + CURRENT_CAMPAIGNS + " text, "
+            + CURRENT_QUESTS + " text, "
+            + COMPLETED_CAMPAIGNS + " text, "
+            + COMPLETED_QUESTS + " text"
             + ");";
 
     public CreatureDBHelper(Context context) {

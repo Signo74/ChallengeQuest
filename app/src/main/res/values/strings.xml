@@ -48,6 +48,7 @@
     <string name="hero_creation_button_create">Create</string>
     <string name="hero_creation_button_reset">Reset</string>
     <string name="title_activity_character_creation">CharacterCreation</string>
+    <string name="hero_creation_skip_tutorial">Skip Tutorial</string>
 
     <!-- Progress -->
     <string name="progress_title">Current progress</string>
@@ -99,4 +100,17 @@ Running</string>
     <string name="hero_label_ring">Ring</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Campaign creation -->
+    <string name="tutorial_title">Tap to get started!</string>
+    <string name="tutorial_description">Your first ever campaign. This will take you trough the basics of using the app.</string>
+   <string-array name="tutorial_quests">
+       <item>Check character sheet</item>
+       <item>Swipe to the Right to quickly access your character sheet, or tap the character button on this screenCheck character sheet.</item>
+       <item>Check the list of Current Campaigns and Quests</item>
+       <item>Swipe to the Left to reveal a list of all you ongoing campaigns and quests.A list of your most recent campaigns and quests is also available on this screen.</item>
+       <item>Check the details of this campaign.</item>
+       <item>Click on the campaign entry in the lit ot see the details and all quests available in it.</item>
+       <item>Create your first campaign!</item>
+       <item>Click on the "Create Campaign" button an follow the wizard to create your first campaign.</item>
+   </string-array>
 </resources>

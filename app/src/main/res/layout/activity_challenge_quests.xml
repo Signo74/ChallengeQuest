@@ -17,7 +17,7 @@
         android:layout_centerHorizontal="true"/>
 
     <!-- The group of buttons for character selection.
-         TODO Decide the number of available heroes! -->
+         TODO Decide the number of available heroes! Current is 3. -->
     <RelativeLayout
         android:id="@+id/hero_buttons_group"
         android:layout_width="wrap_content"
@@ -58,6 +58,7 @@
         android:text="@string/common_button_start"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:visibility="invisible"
         android:onClick="startButtonClicked"/>
 
     <!-- end of Hero group -->

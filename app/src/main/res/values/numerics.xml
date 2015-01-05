@@ -2,4 +2,8 @@
 <resources>
     <integer name="character_overview_pages_count">3</integer>
     <integer name="quest_chapters_columns">10</integer>
+
+    <integer name="tutorial_reward">20</integer>
+    <integer name="tutorial_quest_reward">20</integer>
+    <integer name="tutorial_max_rank">0</integer>
 </resources>

@@ -3,17 +3,16 @@ package com.swinginpenguin.vmarinov.challengequest.db.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.GetLastIdCallable;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.GetRowDataBySelection;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.UpdateEntryCallable;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteRunnable;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteTableContentsRunnable;
 import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.CreatureDBHelper;
 import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpenHelper;
-import com.swinginpenguin.vmarinov.challengequest.model.AttributeSet;
+import com.swinginpenguin.vmarinov.challengequest.model.Ability;
+import com.swinginpenguin.vmarinov.challengequest.model.Attribute;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
 import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
@@ -21,10 +20,11 @@ import com.swinginpenguin.vmarinov.challengequest.db.utils.DBUtils;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.InsertEntryCallable;
 import com.swinginpenguin.vmarinov.challengequest.multithreading.executor.ExecutorServiceProvider;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -214,14 +214,18 @@ public class CreaturesDAO {
             int creatureClass = cursor.getInt(7);
             int subClass = cursor.getInt(8);
             int race = cursor.getInt(9);
-            List<AttributeSet> attributes = DBUtils.dbStringToListAttributeSet(cursor.getString(10));
-            List<Float> stats = DBUtils.dbStringToListFloats(cursor.getString(11));
-            List<Integer> abilities = DBUtils.dbStringToListIntegers(cursor.getString(12));
+            List<Attribute> attributes = DBUtils.dbStringToListAttributeSet(cursor.getString(10));
+            // TODO create DBUtils method
+            // DBUtils.dbStringToListFloats(cursor.getString(11));
+            Map<String, Float> stats = new HashMap<>();
+            // TODO create DBUtils method
+            // DBUtils.dbStringToListIntegers(cursor.getString(12));
+            List<Ability> abilities = new ArrayList<>();
             List<Integer> items = DBUtils.dbStringToListIntegers(cursor.getString(13));
             List<Integer> loot = DBUtils.dbStringToListIntegers(cursor.getString(14));
 
             Creature creature = new Creature(identity, experience, level, gender, race, subClass,
-                                        creatureClass, attributes, stats, abilities, items, loot);
+                                        creatureClass, attributes, stats, abilities, items);
 
             Log.d("CreaturesDAO.cursorToObject","Creating new creature with id " +
                     creature.getIdentity().getId() + ". Creature: " + creature);

@@ -4,6 +4,7 @@ import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vmarinov on 10/24/2014.
@@ -21,15 +22,14 @@ public class Creature implements Serializable{
     private int subClass;
 
     // Str, Dex, Stam, Cha, Const ...
-    private List<AttributeSet> attributes;
+    private List<Attribute> attributes;
     // Initial value forHealth, speed, crit, hit ... before applying attribute bonuses
-    private List<Float> baseStats;
+    private Map<String, Float> baseStats;
     // Heal, spells, stealth ....
-    private List<Integer> specialAbilities;
+    private List<Ability> specialAbilities;
 
     private List<Integer> equippedItems;
     private List<Integer> availableLoot;
-    //TODO include in DB
     private List<Integer> currentCampaigns;
     private List<Integer> currentQuests;
     private List<Integer> completedCampaigns;
@@ -40,8 +40,8 @@ public class Creature implements Serializable{
     }
 
     public Creature(EntryIdentity identity, int experience, int level, int gender, int race,
-                    int creatureClass, int subClass, List<AttributeSet> attributes,
-                    List<Float> baseStats, List<Integer> specialAbilities,
+                    int creatureClass, int subClass, List<Attribute> attributes,
+                    Map<String, Float> baseStats, List<Ability> specialAbilities,
                     List<Integer> equippedItems) {
         this.identity = identity;
         this.experience = experience;
@@ -57,8 +57,8 @@ public class Creature implements Serializable{
     }
 
     public Creature(EntryIdentity identity, int experience, int level, int gender, int race,
-                    int creatureClass, int subClass, List<AttributeSet> attributes,
-                    List<Float> baseStats, List<Integer> specialAbilities,
+                    int creatureClass, int subClass, List<Attribute> attributes,
+                    Map<String, Float> baseStats, List<Ability> specialAbilities,
                     List<Integer> equippedItems, List<Integer> availableLoot,
                     List<Integer> currentCampaigns, List<Integer> currentQuests,
                     List<Integer> completedCampaigns, List<Integer> completedQuests) {
@@ -132,27 +132,27 @@ public class Creature implements Serializable{
         this.subClass = subClass;
     }
 
-    public List<AttributeSet> getAttributes() {
+    public List<Attribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<AttributeSet> attributes) {
+    public void setAttributes(List<Attribute> attributes) {
         this.attributes = attributes;
     }
 
-    public void setBaseStats(List<Float> baseStats) {
+    public void setBaseStats(Map<String, Float> baseStats) {
         this.baseStats = baseStats;
     }
 
-    public List<Float> getBaseStats() {
+    public Map<String, Float> getBaseStats() {
         return baseStats;
     }
 
-    public List<Integer> getSpecialAbilities() {
+    public List<Ability> getSpecialAbilities() {
         return specialAbilities;
     }
 
-    public void setSpecialAbilities(List<Integer> specialAbilities) {
+    public void setSpecialAbilities(List<Ability> specialAbilities) {
         this.specialAbilities = specialAbilities;
     }
 

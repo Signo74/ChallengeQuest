@@ -11,6 +11,7 @@ public class Quest {
     //TODO create and implement IQuestBehaviour
     //TODO or create a Quest controller and delegate quest functionality to it.
     private EntryIdentity identity;
+    // Can be null!
     private List<Chapter> chapters;
     private int experienceReward;
     private int rank;

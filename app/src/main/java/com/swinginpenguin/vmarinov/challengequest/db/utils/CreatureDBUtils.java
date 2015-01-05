@@ -4,14 +4,15 @@ import android.content.Context;
 import android.util.Log;
 
 import com.swinginpenguin.vmarinov.challengequest.db.dao.CreaturesDAO;
-import com.swinginpenguin.vmarinov.challengequest.model.AttributeSet;
+import com.swinginpenguin.vmarinov.challengequest.model.Ability;
+import com.swinginpenguin.vmarinov.challengequest.model.Attribute;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
 import com.swinginpenguin.vmarinov.challengequest.model.base.CreatureProperties;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
-import com.swinginpenguin.vmarinov.challengequest.model.utils.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -30,8 +31,7 @@ public class CreatureDBUtils {
         int id = dao.getLastAvailableId();
         EntryIdentity identity = new EntryIdentity(id, type, title, "");
         int none = CreatureProperties.UNIDENTIFIED.getId();
-        Creature dbEntry = new Creature(identity, 0, 0, none, none, none, none, null, null, null,
-                                        null, null);
+        Creature dbEntry = new Creature(identity, 0, 1, none, none, none, none, null, null, null, null);
         if (!dao.insert(dbEntry)) {
             //TODO handle false insertion.
         }
@@ -40,14 +40,14 @@ public class CreatureDBUtils {
 
     public Creature add(int type, String title, String description, int experience,
                        int level, int gender, int race, int creatureClass, int subClass,
-                       List<AttributeSet> attributes, List<Float> stats, List<Integer> abilities,
+                       List<Attribute> attributes, Map<String, Float> stats, List<Ability> abilities,
                        List<Integer> items, List<Integer> loot) {
         Log.d("CreatureDBUtils.quickAdd","Adding creature with title: " + title);
         // TODO isn't this prone to error?
         int id = dao.getLastAvailableId();
         EntryIdentity identity = new EntryIdentity(id, type, title, description);
         Creature dbEntry = new Creature(identity, experience, level, gender, race, creatureClass,
-                                        subClass, attributes, stats, abilities, items, loot);
+                                        subClass, attributes, stats, abilities, items);
         if (!dao.insert(dbEntry)) {
             //TODO handle false insertion.
         }

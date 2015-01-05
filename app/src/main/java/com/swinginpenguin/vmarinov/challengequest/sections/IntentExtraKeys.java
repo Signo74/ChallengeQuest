@@ -5,6 +5,7 @@ package com.swinginpenguin.vmarinov.challengequest.sections;
  */
 public enum IntentExtraKeys {
     PLAYER_HERO_EXTRA("playerHero"),
+    SKIP_TUTORIAL("skipTutorial"),
 
     //TODO remove this when finalized.
     END("end");

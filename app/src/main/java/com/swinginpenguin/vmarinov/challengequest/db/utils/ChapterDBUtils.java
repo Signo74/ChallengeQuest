@@ -6,7 +6,6 @@ import android.util.Log;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.ChaptersDAO;
 import com.swinginpenguin.vmarinov.challengequest.model.Chapter;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
-import com.swinginpenguin.vmarinov.challengequest.model.utils.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

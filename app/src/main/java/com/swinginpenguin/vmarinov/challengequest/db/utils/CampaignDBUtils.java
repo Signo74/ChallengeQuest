@@ -7,7 +7,7 @@ import com.swinginpenguin.vmarinov.challengequest.db.dao.CampaignDAO;
 import com.swinginpenguin.vmarinov.challengequest.model.Campaign;
 import com.swinginpenguin.vmarinov.challengequest.model.Quest;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
-import com.swinginpenguin.vmarinov.challengequest.model.utils.IdGenerator;
+import com.swinginpenguin.vmarinov.challengequest.model.base.EntryTypes;
 
 import java.util.ArrayList;
 import java.util.List;

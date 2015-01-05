@@ -32,22 +32,9 @@ import java.util.concurrent.Future;
  */
 public class ChaptersDAO {
     private ChapterDBHelper dbHelper;
-    private long lastAvailableId;
 
     public ChaptersDAO(Context cntx) {
         dbHelper = new ChapterDBHelper(cntx);
-
-        GetLastIdCallable task = new GetLastIdCallable(dbHelper);
-        Future<Integer> result = ExecutorServiceProvider.getInstance().getDbExecutor().submit(task);
-        try {
-            if (result.get() != null && result.get() > ErrorCodes.ERROR_OK.getErrorCode()) {
-                lastAvailableId = result.get();
-            } else {
-                lastAvailableId = 0;
-            }
-        } catch (InterruptedException | ExecutionException ex) {
-            Log.e("ChaptersDAO constructor", "Error: " + ex + " was thrown while initializing DAO.");
-        }
     }
 
     public Boolean insert(Chapter chapter) {

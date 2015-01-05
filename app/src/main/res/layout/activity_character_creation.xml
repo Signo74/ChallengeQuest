@@ -127,6 +127,15 @@
             android:onClick="onRaceSelectorItemClicked"/>
     </RadioGroup>
 
+    <CheckBox
+        android:id="@+id/skip_tutorial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hero_race_selector"
+        android:layout_alignLeft="@+id/hero_race_selector"
+        android:text="@string/hero_creation_skip_tutorial"
+        android:checked="false"/>
+
     <Button
         android:id="@+id/create_hero_reset"
         android:text="@string/hero_creation_button_reset"

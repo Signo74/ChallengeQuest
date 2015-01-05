@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The upper experience limit for each level
+     levels are starting from 1. So the upper limit for the first level you'll be able
+     to earn will be 100XP. -->
+    <integer-array name="levelLimits" >
+        <item>0</item>
+        <item>100</item> <!-- level 2 -->
+        <item>250</item>
+        <item>500</item>
+        <item>1000</item> <!-- level 5 -->
+        <item>2000</item>
+        <item>4000</item>
+        <item>6000</item>
+        <item>8000</item>
+        <item>10000</item> <!-- level 10 -->
+        <item>13000</item>
+        <item>17000</item>
+        <item>22000</item>
+        <item>28000</item>
+        <item>35000</item>  <!-- level 15 -->
+    </integer-array>
+</resources>
