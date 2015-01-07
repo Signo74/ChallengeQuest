@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 public class CampaignDBUtils {
     private CampaignDAO dao;
     public CampaignDBUtils(Context ctx){
-        dao = new CampaignDAO(ctx);
+        dao = CampaignDAO.getInstance(ctx);
     }
 
     public Campaign quickAdd(int type, String title){

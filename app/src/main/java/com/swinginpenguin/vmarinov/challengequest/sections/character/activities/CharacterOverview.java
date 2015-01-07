@@ -16,11 +16,9 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.CreaturesDAO;
 import com.swinginpenguin.vmarinov.challengequest.db.utils.CampaignDBUtils;
 import com.swinginpenguin.vmarinov.challengequest.db.utils.QuestDBUtils;
 import com.swinginpenguin.vmarinov.challengequest.model.Campaign;
@@ -38,8 +36,6 @@ public class CharacterOverview
     implements QuestsListFragment.OnFragmentInteractionListener,
                CharacterFragment.OnFragmentInteractionListener,
                QuestProgressOverviewFragment.OnFragmentInteractionListener{
-
-
     // Defines the index of the page in which we'll show a character overview.
     private final static int CHARACTER_OVERVIEW_PAGE = 0;
     // Defines the index of the starting page in the ViewPager
@@ -50,14 +46,9 @@ public class CharacterOverview
     private int pageCount;
     private CampaignDBUtils campaignDbUtils;
     private QuestDBUtils questsDbUtils;
-
+    private CreaturesDAO creaturesDAO;
 
     private Creature playerHero;
-    private ProgressBar xpProgressBar;
-    private TextView heroName;
-    private TextView currentLevelXPLimit;
-    private TextView nextLevelXPLimit;
-    private ListView recentActivity;
     private Boolean skipTutorial = false;
 
     /**
@@ -68,43 +59,30 @@ public class CharacterOverview
      * may be best to switch to a
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
      */
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    SectionsPagerAdapter sectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    ViewPager mViewPager;
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_overview);
         Intent invokerIntent = getIntent();
-        playerHero = (Creature) invokerIntent.getSerializableExtra(IntentExtraKeys.PLAYER_HERO_EXTRA.getKey());
-        skipTutorial = invokerIntent.getBooleanArrayExtra(IntentExtraKeys.SKIP_TUTORIAL.getKey())[0];
-
-        // Init view elements
-        xpProgressBar = (ProgressBar) findViewById(R.id.xpProgressBar);
-        heroName = (TextView) findViewById(R.id.hero_name);
-        // TODO refactor the current xp value to the previous level limit
-        currentLevelXPLimit = (TextView) findViewById(R.id.current_xp_value);
-        nextLevelXPLimit = (TextView) findViewById(R.id.target_xp_value);
-        recentActivity = (ListView) findViewById(R.id.campaignList);
-
-        // init DB
-        campaignDbUtils = new CampaignDBUtils(this);
-        questsDbUtils = new QuestDBUtils(this);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(PROGRESS_OVERVIEW);
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.setCurrentItem(PROGRESS_OVERVIEW);
         pageCount = R.integer.character_overview_pages_count;
 
-        initUI(playerHero);
+       playerHero = (Creature) invokerIntent.getSerializableExtra(IntentExtraKeys.PLAYER_HERO_EXTRA.getKey());
+        skipTutorial = (Boolean) invokerIntent.getSerializableExtra(IntentExtraKeys.SKIP_TUTORIAL.getKey());
     }
 
 
@@ -114,7 +92,6 @@ public class CharacterOverview
         getMenuInflater().inflate(R.menu.character_overview, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -141,38 +118,9 @@ public class CharacterOverview
     }
 
     public void onHeroButtonClicked(View button) {
-        mViewPager.setCurrentItem(CHARACTER_OVERVIEW_PAGE);
+        viewPager.setCurrentItem(CHARACTER_OVERVIEW_PAGE);
     }
 
-    private void initUI(Creature hero) {
-        heroName.setText(hero.getIdentity().getTitle());
-        xpProgressBar.setProgress(hero.getExperience());
-
-        Resources res = getResources();
-        int[] levelLimits = res.getIntArray(R.array.levelLimits);
-        currentLevelXPLimit.setText(levelLimits[hero.getLevel() -1]);
-        nextLevelXPLimit.setText(levelLimits[hero.getLevel()]);
-
-        if (hero.getLevel() == 1 && hero.getCurrentCampaigns() == null &&
-                                    hero.getCompletedCampaigns() == null &&
-                                    !skipTutorial) {
-            // Initialize the tutorial campaign
-            List<Quest> quests = new ArrayList<>();
-            String[] questsInfo = res.getStringArray(R.array.tutorial_quests);
-            for (int i=0 ; i < questsInfo.length / 2 ; i += 2){
-                Quest newQuest = questsDbUtils.add(EntryTypes.QUEST.getId(), questsInfo[i], questsInfo[i+1],
-                        null, R.integer.tutorial_quest_reward, 0, 0, 0);
-                quests.add(newQuest);
-            }
-            Campaign tutorial = campaignDbUtils.add(EntryTypes.CAMPAIGN.getId(), getString(R.string.tutorial_title),
-                                getString(R.string.tutorial_description), R.integer.tutorial_reward, 0,
-                                R.integer.tutorial_max_rank, 0l, 0, quests);
-            List<Integer> currentCampaigns = new ArrayList<>();
-            currentCampaigns.add(tutorial.getIdentity().getId());
-            hero.setCurrentCampaigns(currentCampaigns);
-            // TODO add the tutorial to the list of recent activity.
-        }
-    }
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -193,7 +141,7 @@ public class CharacterOverview
                     pageFragment = CharacterFragment.newInstance(str1, str2);
                     break;
                 case PROGRESS_OVERVIEW:
-                    pageFragment = QuestProgressOverviewFragment.newInstance(str1, str2);
+                    pageFragment = QuestProgressOverviewFragment.newInstance(playerHero, str2);
                     break;
                 case LIST_PAGE:
                     pageFragment = QuestsListFragment.newInstance(str1, str2);
@@ -205,6 +153,7 @@ public class CharacterOverview
             return pageFragment;
         }
 
+        // TODO rewrite to read the number form a config file
         @Override
         public int getCount() {
             return 3;

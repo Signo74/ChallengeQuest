@@ -1,14 +1,28 @@
 package com.swinginpenguin.vmarinov.challengequest.sections.character.fragments;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
+import com.swinginpenguin.vmarinov.challengequest.db.dao.CreaturesDAO;
+import com.swinginpenguin.vmarinov.challengequest.db.utils.CampaignDBUtils;
+import com.swinginpenguin.vmarinov.challengequest.db.utils.QuestDBUtils;
+import com.swinginpenguin.vmarinov.challengequest.model.Campaign;
+import com.swinginpenguin.vmarinov.challengequest.model.Creature;
+import com.swinginpenguin.vmarinov.challengequest.model.Quest;
+import com.swinginpenguin.vmarinov.challengequest.model.base.EntryTypes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,56 +36,117 @@ import com.swinginpenguin.vmarinov.challengequest.R;
 public class QuestProgressOverviewFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "playerHero";
+    private static final String ARG_PARAM2 = "pageTitle";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int pageIndex;
+    private String pageTitle;
+    private OnFragmentInteractionListener listener;
 
-    private OnFragmentInteractionListener mListener;
+
+    private CampaignDBUtils campaignDbUtils;
+    private QuestDBUtils questsDbUtils;
+    private CreaturesDAO creaturesDAO;
+
+    private static Creature playerHero;
+    private static Boolean skipTutorial = false;
+
+    private ProgressBar xpProgressBar;
+    private TextView heroName;
+    private TextView currentLevelXPLimit;
+    private TextView nextLevelXPLimit;
+    private ListView recentActivity;
+
+    public QuestProgressOverviewFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+     * @param hero Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment QuestProgressOverviewFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static QuestProgressOverviewFragment newInstance(String param1, String param2) {
+    public static QuestProgressOverviewFragment newInstance(Creature hero, String param2) {
         QuestProgressOverviewFragment fragment = new QuestProgressOverviewFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putSerializable(ARG_PARAM1, hero);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
-    public QuestProgressOverviewFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            playerHero = (Creature) getArguments().getSerializable(ARG_PARAM1);
         }
+
+        // init DB
+        campaignDbUtils = new CampaignDBUtils(getActivity());
+        questsDbUtils = new QuestDBUtils(getActivity());
+        creaturesDAO = CreaturesDAO.getInstance(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_quest_progress_overview, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        View rootView = getView();
+        xpProgressBar = (ProgressBar) rootView.findViewById(R.id.xpProgressBar);
+        heroName = (TextView) rootView.findViewById(R.id.hero_name);
+        currentLevelXPLimit = (TextView) rootView.findViewById(R.id.current_xp_value);
+        nextLevelXPLimit = (TextView) rootView.findViewById(R.id.target_xp_value);
+        recentActivity = (ListView) rootView.findViewById(R.id.recent_activity_list);
+        initUI();
+    }
+
+    private void initUI() {
+        heroName.setText(playerHero.getIdentity().getTitle());
+        xpProgressBar.setProgress(playerHero.getExperience());
+
+        Resources res = getResources();
+        int[] levelLimits = res.getIntArray(R.array.levelLimits);
+        currentLevelXPLimit.setText(levelLimits[playerHero.getLevel() -1]);
+        nextLevelXPLimit.setText(levelLimits[playerHero.getLevel()]);
+
+        if (playerHero.getLevel() == 1 && playerHero.getCurrentCampaigns() == null &&
+                playerHero.getCompletedCampaigns() == null &&
+                !skipTutorial) {
+            // Initialize the tutorial campaign
+            List<Quest> quests = new ArrayList<>();
+            String[] questsInfo = res.getStringArray(R.array.tutorial_quests);
+            for (int i=0 ; i < questsInfo.length / 2 ; i += 2){
+                Quest newQuest = questsDbUtils.add(EntryTypes.QUEST.getId(), questsInfo[i], questsInfo[i+1],
+                        null, R.integer.tutorial_quest_reward, 0, 0, 0);
+                quests.add(newQuest);
+            }
+            // Adds the campaign to the db and returns a campaign object
+            Campaign tutorial = campaignDbUtils.add(EntryTypes.CAMPAIGN.getId(), getString(R.string.tutorial_title),
+                    getString(R.string.tutorial_description), R.integer.tutorial_reward, 0,
+                    R.integer.tutorial_max_rank, 0l, 0, quests);
+            List<Integer> currentCampaigns = new ArrayList<>();
+            currentCampaigns.add(tutorial.getIdentity().getId());
+            playerHero.setCurrentCampaigns(currentCampaigns);
+            creaturesDAO.updateById(playerHero);
+            // TODO add the tutorial to the list of recent activity.
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        if (listener != null) {
+            listener.onFragmentInteraction(uri);
         }
     }
 
@@ -79,7 +154,7 @@ public class QuestProgressOverviewFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            listener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -89,7 +164,7 @@ public class QuestProgressOverviewFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        listener = null;
     }
 
     /**
@@ -107,4 +182,11 @@ public class QuestProgressOverviewFragment extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+    public Creature getPlayerHero() {
+        return playerHero;
+    }
+
+    public void setPlayerHero(Creature playerHero) {
+        this.playerHero = playerHero;
+    }
 }

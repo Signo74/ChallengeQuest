@@ -19,7 +19,7 @@ package com.swinginpenguin.vmarinov.challengequest.db.utils;
 public class QuestDBUtils {
     private QuestsDAO dao;
     public QuestDBUtils(Context ctx){
-        dao = new QuestsDAO(ctx);
+        dao = QuestsDAO.getInstance(ctx);
     }
 
     public Quest quickAdd(int type, String title){

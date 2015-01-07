@@ -32,11 +32,19 @@ import com.swinginpenguin.vmarinov.challengequest.multithreading.executor.Execut
  */
 public class QuestsDAO {
     private QuestsDBHelper dbHelper;
+    private static QuestsDAO instance = null;
 
     public QuestsDAO(Context cntx) {
         dbHelper = new QuestsDBHelper(cntx);
     }
 
+
+    public static QuestsDAO getInstance(Context cntx) {
+        if (instance == null) {
+            instance = new QuestsDAO(cntx);
+        }
+        return instance;
+    }
     public Boolean insert(Quest quest) {
         //TODO replace .toString with DBUtils method
         ContentValues values = new ContentValues();

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.GetLastIdCallable;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.GetRowDataBySelection;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.InsertEntryCallable;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.callable.UpdateEntryCallable;
@@ -13,7 +12,6 @@ import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteRunnable
 import com.swinginpenguin.vmarinov.challengequest.db.dao.runnable.DeleteTableContentsRunnable;
 import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.CampaignDBHelper;
 import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpenHelper;
-import com.swinginpenguin.vmarinov.challengequest.db.utils.DBUtils;
 import com.swinginpenguin.vmarinov.challengequest.model.Campaign;
 import com.swinginpenguin.vmarinov.challengequest.model.Quest;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
@@ -31,9 +29,17 @@ import java.util.concurrent.Future;
  */
 public class CampaignDAO {
     private CampaignDBHelper dbHelper;
+    private static CampaignDAO instance = null;
 
     public CampaignDAO(Context cntx) {
         dbHelper = new CampaignDBHelper(cntx);
+    }
+
+    public static CampaignDAO getInstance(Context cntx) {
+        if (instance == null) {
+            instance = new CampaignDAO(cntx);
+        }
+        return instance;
     }
 
     public Boolean insert(Campaign campaign) {
