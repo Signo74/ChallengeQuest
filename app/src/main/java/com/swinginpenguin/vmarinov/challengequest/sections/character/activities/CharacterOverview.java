@@ -1,14 +1,11 @@
 package com.swinginpenguin.vmarinov.challengequest.sections.character.activities;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
@@ -19,12 +16,8 @@ import android.view.View;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.CreaturesDAO;
-import com.swinginpenguin.vmarinov.challengequest.db.utils.CampaignDBUtils;
-import com.swinginpenguin.vmarinov.challengequest.db.utils.QuestDBUtils;
-import com.swinginpenguin.vmarinov.challengequest.model.Campaign;
+import com.swinginpenguin.vmarinov.challengequest.db.utils.ActivityDBUtils;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
-import com.swinginpenguin.vmarinov.challengequest.model.Quest;
-import com.swinginpenguin.vmarinov.challengequest.model.base.EntryTypes;
 import com.swinginpenguin.vmarinov.challengequest.sections.IntentExtraKeys;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.CharacterFragment;
 import com.swinginpenguin.vmarinov.challengequest.sections.character.fragments.QuestsListFragment;
@@ -44,8 +37,7 @@ public class CharacterOverview
     private final static int LIST_PAGE = 3;
 
     private int pageCount;
-    private CampaignDBUtils campaignDbUtils;
-    private QuestDBUtils questsDbUtils;
+    private ActivityDBUtils questsDbUtils;
     private CreaturesDAO creaturesDAO;
 
     private Creature playerHero;

@@ -40,7 +40,7 @@ public class CreatureDBUtils {
 
     public Creature add(int type, String title, String description, int experience,
                        int level, int gender, int race, int creatureClass, int subClass,
-                       List<Attribute> attributes, Map<String, Float> stats, List<Ability> abilities,
+                       List<Attribute> attributes, Map<Integer, Float> stats, List<Ability> abilities,
                        List<Integer> items, List<Integer> loot) {
         Log.d("CreatureDBUtils.quickAdd","Adding creature with title: " + title);
         // TODO isn't this prone to error?

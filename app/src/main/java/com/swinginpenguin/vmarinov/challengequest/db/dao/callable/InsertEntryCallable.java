@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpenHelper;
+import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.DbHelper;
 import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
 
 import java.util.List;
@@ -17,13 +17,12 @@ import java.util.concurrent.Callable;
 public class InsertEntryCallable implements Callable<Long> {
 
     private ContentValues values;
-    // This is generic so that we can get access to different tables/db.
-    private BaseSQLiteOpenHelper dbHelper;
     private SQLiteDatabase database;
+    private String tableName;
 
-    public InsertEntryCallable(ContentValues values, BaseSQLiteOpenHelper dbHelper) {
+    public InsertEntryCallable(ContentValues values, DbHelper dbHelper, String tableName) {
         this.values = values;
-        this.dbHelper = dbHelper;
+        this.tableName = tableName;
         database = dbHelper.getWritableDatabase();
     }
 
@@ -32,7 +31,7 @@ public class InsertEntryCallable implements Callable<Long> {
         Long insertID;
         try {
             database.beginTransaction();
-            insertID = database.insert(dbHelper.tableName, null, values);
+            insertID = database.insert(tableName, null, values);
             database.setTransactionSuccessful();
         } catch (Exception ex) {
             Log.e("InsertEntryCallable.call", "Error: " + ex + " was thrown while inserting in DB.");

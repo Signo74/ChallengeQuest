@@ -1,6 +1,5 @@
 package com.swinginpenguin.vmarinov.challengequest.sections.character.fragments;
 
-import android.app.Activity;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,11 +13,9 @@ import android.widget.TextView;
 
 import com.swinginpenguin.vmarinov.challengequest.R;
 import com.swinginpenguin.vmarinov.challengequest.db.dao.CreaturesDAO;
-import com.swinginpenguin.vmarinov.challengequest.db.utils.CampaignDBUtils;
-import com.swinginpenguin.vmarinov.challengequest.db.utils.QuestDBUtils;
-import com.swinginpenguin.vmarinov.challengequest.model.Campaign;
+import com.swinginpenguin.vmarinov.challengequest.db.utils.ActivityDBUtils;
 import com.swinginpenguin.vmarinov.challengequest.model.Creature;
-import com.swinginpenguin.vmarinov.challengequest.model.Quest;
+import com.swinginpenguin.vmarinov.challengequest.model.Activity;
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryTypes;
 
 import java.util.ArrayList;
@@ -44,9 +41,7 @@ public class QuestProgressOverviewFragment extends Fragment {
     private String pageTitle;
     private OnFragmentInteractionListener listener;
 
-
-    private CampaignDBUtils campaignDbUtils;
-    private QuestDBUtils questsDbUtils;
+    private ActivityDBUtils activityDbUtils;
     private CreaturesDAO creaturesDAO;
 
     private static Creature playerHero;
@@ -88,8 +83,7 @@ public class QuestProgressOverviewFragment extends Fragment {
         }
 
         // init DB
-        campaignDbUtils = new CampaignDBUtils(getActivity());
-        questsDbUtils = new QuestDBUtils(getActivity());
+        activityDbUtils = new ActivityDBUtils(getActivity());
         creaturesDAO = CreaturesDAO.getInstance(getActivity());
     }
 
@@ -117,24 +111,26 @@ public class QuestProgressOverviewFragment extends Fragment {
 
         Resources res = getResources();
         int[] levelLimits = res.getIntArray(R.array.levelLimits);
-        currentLevelXPLimit.setText(levelLimits[playerHero.getLevel() -1]);
-        nextLevelXPLimit.setText(levelLimits[playerHero.getLevel()]);
+        String lowerLimit = String.valueOf(levelLimits[playerHero.getLevel() - 1]);
+        String upperLimit = String.valueOf(levelLimits[playerHero.getLevel()]);
+        currentLevelXPLimit.setText(lowerLimit);
+        nextLevelXPLimit.setText(upperLimit);
 
         if (playerHero.getLevel() == 1 && playerHero.getCurrentCampaigns() == null &&
                 playerHero.getCompletedCampaigns() == null &&
                 !skipTutorial) {
             // Initialize the tutorial campaign
-            List<Quest> quests = new ArrayList<>();
+            List<Activity> quests = new ArrayList<>();
             String[] questsInfo = res.getStringArray(R.array.tutorial_quests);
             for (int i=0 ; i < questsInfo.length / 2 ; i += 2){
-                Quest newQuest = questsDbUtils.add(EntryTypes.QUEST.getId(), questsInfo[i], questsInfo[i+1],
-                        null, R.integer.tutorial_quest_reward, 0, 0, 0);
-                quests.add(newQuest);
+                Activity newActivity = activityDbUtils.add(EntryTypes.QUEST.getId(), questsInfo[i], questsInfo[i+1],
+                        R.integer.tutorial_quest_reward, 0, 0, 0, null, null);
+                quests.add(newActivity);
             }
             // Adds the campaign to the db and returns a campaign object
-            Campaign tutorial = campaignDbUtils.add(EntryTypes.CAMPAIGN.getId(), getString(R.string.tutorial_title),
+            Activity tutorial = activityDbUtils.add(EntryTypes.CAMPAIGN.getId(), getString(R.string.tutorial_title),
                     getString(R.string.tutorial_description), R.integer.tutorial_reward, 0,
-                    R.integer.tutorial_max_rank, 0l, 0, quests);
+                    R.integer.tutorial_max_rank, 0, quests, null);
             List<Integer> currentCampaigns = new ArrayList<>();
             currentCampaigns.add(tutorial.getIdentity().getId());
             playerHero.setCurrentCampaigns(currentCampaigns);
@@ -151,7 +147,7 @@ public class QuestProgressOverviewFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(android.app.Activity activity) {
         super.onAttach(activity);
         try {
             listener = (OnFragmentInteractionListener) activity;

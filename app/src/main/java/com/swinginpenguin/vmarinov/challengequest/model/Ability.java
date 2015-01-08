@@ -26,8 +26,14 @@ public class Ability implements Serializable {
     // The target of the creature on which it will be used.
     // Can't be null, -1 if target is self.
     private int targetCreatureId;
+    // Can't be null
+    private Boolean unlocked;
+    // Can't be null
+    private Boolean isActivated;
 
-    public Ability(String name, int level, String affectedCharacterProperty, float effectPercentage, int duration, int damage, int radius, int targetCreatureId) {
+    public Ability(String name, int level, String affectedCharacterProperty, float effectPercentage,
+                   int duration, int damage, int radius, int targetCreatureId, Boolean unlocked,
+                   Boolean isActivated) {
         this.name = name;
         this.level = level;
         this.affectedCharacterProperty = affectedCharacterProperty;
@@ -36,6 +42,8 @@ public class Ability implements Serializable {
         this.damage = damage;
         this.radius = radius;
         this.targetCreatureId = targetCreatureId;
+        this.unlocked = unlocked;
+        this.isActivated = isActivated;
     }
 
     public String getName() {
@@ -102,6 +110,22 @@ public class Ability implements Serializable {
         this.targetCreatureId = targetCreatureId;
     }
 
+    public Boolean getIsActivated() {
+        return isActivated;
+    }
+
+    public void setIsActivated(Boolean isActivated) {
+        this.isActivated = isActivated;
+    }
+
+    public Boolean getUnlocked() {
+        return unlocked;
+    }
+
+    public void setUnlocked(Boolean unlocked) {
+        this.unlocked = unlocked;
+    }
+
     @Override
     public String toString() {
         return "Ability{" +
@@ -113,6 +137,8 @@ public class Ability implements Serializable {
                 ", damage=" + damage +
                 ", radius=" + radius +
                 ", targetCreatureId=" + targetCreatureId +
+                ", unlocked=" + unlocked +
+                ", isActivated=" + isActivated +
                 '}';
     }
 }

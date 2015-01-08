@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpenHelper;
+import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.DbHelper;
 
 import java.util.concurrent.Callable;
 
@@ -16,13 +16,12 @@ public class GetLastIdCallable
         implements Callable<Integer>{
     private final String ORDER = "_id DESC";
     private final String LIMIT = "1";
-    // This is generic so that we can get access to different tables/db.
-    private BaseSQLiteOpenHelper dbHelper;
     private SQLiteDatabase database;
+    private String tableName;
 
     // @ORDER - a WHERE SQL clause which defines which rows are to be selected.
-    public GetLastIdCallable(BaseSQLiteOpenHelper dbHelper){
-        this.dbHelper = dbHelper;
+    public GetLastIdCallable(DbHelper dbHelper, String tableName){
+        this.tableName = tableName;
         database = dbHelper.getReadableDatabase();
     }
 
@@ -31,7 +30,7 @@ public class GetLastIdCallable
         Integer result;
         Cursor queryResult;
         try {
-            queryResult = database.query(dbHelper.tableName, null, null, null, null, null, ORDER, LIMIT);
+            queryResult = database.query(tableName, null, null, null, null, null, ORDER, LIMIT);
             queryResult.moveToLast();
             if (queryResult.getInt(0) > 0) {
                 return queryResult.getInt(0);

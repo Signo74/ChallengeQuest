@@ -1,7 +1,5 @@
 package com.swinginpenguin.vmarinov.challengequest.model;
 
-import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
-
 import java.io.Serializable;
 import java.util.Map;
 
@@ -14,9 +12,9 @@ public class Attribute implements Serializable {
     private int value;
     // Map of affected stats and the percentage by which this attributes affects them per each
     // attribute point. Negative / debilitating effects are achieved by lowering the attribute.
-    private Map<String, Float> statsEffect;
+    private Map<Integer, Float> statsEffect;
 
-    public Attribute(String name, int value, Map<String, Float> statsEffect) {
+    public Attribute(String name, int value, Map<Integer, Float> statsEffect) {
         this.name = name;
         this.value = value;
         this.statsEffect = statsEffect;
@@ -38,11 +36,11 @@ public class Attribute implements Serializable {
         this.value = value;
     }
 
-    public Map<String, Float> getStatsEffect() {
+    public Map<Integer, Float> getStatsEffect() {
         return statsEffect;
     }
 
-    public void setStatsEffect(Map<String, Float> statsEffect) {
+    public void setStatsEffect(Map<Integer, Float> statsEffect) {
         this.statsEffect = statsEffect;
     }
 

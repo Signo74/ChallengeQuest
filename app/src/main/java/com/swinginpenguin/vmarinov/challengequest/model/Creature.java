@@ -24,7 +24,7 @@ public class Creature implements Serializable{
     // Str, Dex, Stam, Cha, Const ...
     private List<Attribute> attributes;
     // Initial value forHealth, speed, crit, hit ... before applying attribute bonuses
-    private Map<String, Float> baseStats;
+    private Map<Integer, Float> baseStats;
     // Heal, spells, stealth ....
     private List<Ability> specialAbilities;
 
@@ -41,7 +41,7 @@ public class Creature implements Serializable{
 
     public Creature(EntryIdentity identity, int experience, int level, int gender, int race,
                     int creatureClass, int subClass, List<Attribute> attributes,
-                    Map<String, Float> baseStats, List<Ability> specialAbilities,
+                    Map<Integer, Float> baseStats, List<Ability> specialAbilities,
                     List<Integer> equippedItems) {
         this.identity = identity;
         this.experience = experience;
@@ -58,7 +58,7 @@ public class Creature implements Serializable{
 
     public Creature(EntryIdentity identity, int experience, int level, int gender, int race,
                     int creatureClass, int subClass, List<Attribute> attributes,
-                    Map<String, Float> baseStats, List<Ability> specialAbilities,
+                    Map<Integer, Float> baseStats, List<Ability> specialAbilities,
                     List<Integer> equippedItems, List<Integer> availableLoot,
                     List<Integer> currentCampaigns, List<Integer> currentQuests,
                     List<Integer> completedCampaigns, List<Integer> completedQuests) {
@@ -140,11 +140,11 @@ public class Creature implements Serializable{
         this.attributes = attributes;
     }
 
-    public void setBaseStats(Map<String, Float> baseStats) {
+    public void setBaseStats(Map<Integer, Float> baseStats) {
         this.baseStats = baseStats;
     }
 
-    public Map<String, Float> getBaseStats() {
+    public Map<Integer, Float> getBaseStats() {
         return baseStats;
     }
 

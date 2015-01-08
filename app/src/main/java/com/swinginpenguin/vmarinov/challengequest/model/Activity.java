@@ -2,30 +2,37 @@ package com.swinginpenguin.vmarinov.challengequest.model;
 
 import com.swinginpenguin.vmarinov.challengequest.model.base.EntryIdentity;
 
+import java.util.List;
+
 /**
  * Created by vmarinov on 10/23/2014.
  */
-public class Chapter {
-    //TODO create and implement IChapterBehaviour
-    //TODO or create a Chapter controller and delegate quest functionality to it.
+public class Activity {
+    //TODO create and implement IQuestBehaviour
+    //TODO or create a Quest controller and delegate quest functionality to it.
     private EntryIdentity identity;
     private int experienceReward;
     private int rank;
     private int maxRank;
-    private long record;
     private int percentageCompleted;
+    // Can be null!
+    private List<Activity> quests;
+    // Can be null!
+    private List<Activity> chapters;
 
-    public Chapter(EntryIdentity identity) {
+    public Activity(EntryIdentity identity) {
         this.identity = identity;
     }
 
-    public Chapter(EntryIdentity identity, int experienceReward, int rank, int maxRank, long record, int percentageCompleted) {
+    public Activity(EntryIdentity identity, int experienceReward, int rank, int maxRank,
+                    int percentageCompleted, List<Activity> quests, List<Activity> chapters) {
         this.identity = identity;
+        this.quests = quests;
+        this.chapters = chapters;
         this.experienceReward = experienceReward;
-        this.percentageCompleted = percentageCompleted;
         this.rank = rank;
         this.maxRank = maxRank;
-        this.record = record;
+        this.percentageCompleted = percentageCompleted;
     }
 
     public EntryIdentity getIdentity() {
@@ -56,14 +63,6 @@ public class Chapter {
         this.maxRank = maxRank;
     }
 
-    public long getRecord() {
-        return record;
-    }
-
-    public void setRecord(long record) {
-        this.record = record;
-    }
-
     public int getPercentageCompleted() {
         return percentageCompleted;
     }
@@ -72,15 +71,32 @@ public class Chapter {
         this.percentageCompleted = percentageCompleted;
     }
 
+    public List<Activity> getQuests() {
+        return quests;
+    }
+
+    public void setQuests(List<Activity> quests) {
+        this.quests = quests;
+    }
+
+    public List<Activity> getChapters() {
+        return chapters;
+    }
+
+    public void setChapters(List<Activity> chapters) {
+        this.chapters = chapters;
+    }
+
     @Override
     public String toString() {
-        return "Chapter{" +
+        return "Activity{" +
                 "identity=" + identity +
                 ", experienceReward=" + experienceReward +
                 ", rank=" + rank +
                 ", maxRank=" + maxRank +
-                ", record=" + record +
                 ", percentageCompleted=" + percentageCompleted +
+                ", quests=" + quests +
+                ", chapters=" + chapters +
                 '}';
     }
 }

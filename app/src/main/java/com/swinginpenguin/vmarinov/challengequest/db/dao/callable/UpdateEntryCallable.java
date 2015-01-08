@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpenHelper;
+import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.DbHelper;
 import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
 
 import java.util.concurrent.Callable;
@@ -16,13 +16,12 @@ import java.util.concurrent.Callable;
 public class UpdateEntryCallable implements Callable<Long> {
 
     private ContentValues values;
-    // This is generic so that we can get access to different tables/db.
-    private BaseSQLiteOpenHelper dbHelper;
     private SQLiteDatabase database;
+    private String tableName;
 
-    public UpdateEntryCallable(ContentValues values, BaseSQLiteOpenHelper dbHelper) {
+    public UpdateEntryCallable(ContentValues values, DbHelper dbHelper, String tableName) {
         this.values = values;
-        this.dbHelper = dbHelper;
+        this.tableName = tableName;
         database = dbHelper.getWritableDatabase();
     }
 
@@ -33,7 +32,7 @@ public class UpdateEntryCallable implements Callable<Long> {
         try {
             database.beginTransaction();
             //TODO get id from values!!!
-            updateCount = new Long(database.update(dbHelper.tableName, values, dbHelper.ID_COLUMN + " = " + 0, null));
+            updateCount = new Long(database.update(tableName, values, DbHelper.ID_COLUMN + " = " + 0, null));
             database.setTransactionSuccessful();
         } catch (Exception ex) {
             Log.e("InsertEntryCallable.call", "Error: " + ex + " was thrown while inserting in DB.");

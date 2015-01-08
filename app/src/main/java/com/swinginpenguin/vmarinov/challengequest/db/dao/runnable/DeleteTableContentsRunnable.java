@@ -4,19 +4,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.base.BaseSQLiteOpenHelper;
+import com.swinginpenguin.vmarinov.challengequest.db.dbhelper.DbHelper;
 
 /**
  * Created by vmarinov on 11/25/2014.
  */
 public class DeleteTableContentsRunnable implements Runnable {
-
-    // This is generic so that we can get access to different tables/db.
-    private BaseSQLiteOpenHelper dbHelper;
     private SQLiteDatabase database;
+    private String tableName;
 
-    public DeleteTableContentsRunnable(BaseSQLiteOpenHelper dbHelper) {
-        this.dbHelper = dbHelper;
+    public DeleteTableContentsRunnable(DbHelper dbHelper, String tableName) {
+        this.tableName = tableName;
         database = dbHelper.getWritableDatabase();
     }
 
@@ -24,11 +22,11 @@ public class DeleteTableContentsRunnable implements Runnable {
     public void run() {
         database.beginTransaction();
         try {
-            database.delete(dbHelper.tableName, null, null);
+            database.delete(tableName, null, null);
             database.setTransactionSuccessful();
         } catch(SQLiteException ex) {
             Log.e("DeleteRunnable.run()", "Exception: " + ex + " was thrown while deleting table:" +
-                  dbHelper.getDatabaseName());
+                    tableName);
         } finally {
             database.endTransaction();
         }

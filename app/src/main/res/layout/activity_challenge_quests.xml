@@ -48,7 +48,6 @@
             android:text="@string/common_label_empty"
             android:visibility="invisible"
             android:onClick="heroButtonClicked"/>
-
         </RelativeLayout>
 
     <Button

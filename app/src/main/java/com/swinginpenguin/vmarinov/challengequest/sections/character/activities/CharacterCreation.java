@@ -23,6 +23,10 @@ import com.swinginpenguin.vmarinov.challengequest.model.base.ErrorCodes;
 import com.swinginpenguin.vmarinov.challengequest.db.utils.CreatureDBUtils;
 import com.swinginpenguin.vmarinov.challengequest.sections.IntentExtraKeys;
 
+import org.w3c.dom.Attr;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +48,7 @@ public class CharacterCreation extends Activity {
     private int _race = CreatureProperties.UNIDENTIFIED.getId();
     private int _heroClass = CreaturesTypes.PLAYER.getId();
     private int _subClass = CreatureProperties.BRAND_NEW_HERO.getId();
+    private List<String> attributeNames = new ArrayList<>();
     private CreatureDBUtils dbUtils;
 
     @Override
@@ -56,6 +61,13 @@ public class CharacterCreation extends Activity {
         genderSelector = (RadioGroup) findViewById(R.id.hero_gender_selector);
         classSelector = (RadioGroup) findViewById(R.id.hero_race_selector);
         skipTutorial = (CheckBox) findViewById(R.id.skip_tutorial);
+
+        attributeNames.add("Strength");
+        attributeNames.add("Dexterity");
+        attributeNames.add("Stamina");
+        attributeNames.add("Wisdom");
+        attributeNames.add("Intelligence");
+        attributeNames.add("Charisma");
     }
 
 
@@ -136,13 +148,28 @@ public class CharacterCreation extends Activity {
         }
         //TODO populate all parameters correctly - Use ClassBaseUtils
         _title = nameInput.getText().toString();
-        List<Attribute> attributes = null;
-        Map<String, Float> stats = null;
-        List<Ability> abilities = null;
-        List<Integer> items = null;
-        List<Integer> loot = null;
+        List<Attribute> attributes = new ArrayList<>();
+        for (int i = CreatureProperties.STRENGTH.ordinal(); i <= CreatureProperties.CHARISMA.ordinal(); i++) {
+            Map<Integer, Float> affectedStats = new HashMap<>();
+            Attribute attribute = new Attribute(CreatureProperties.getNameById(i), 10, affectedStats);
+            attributes.add(attribute);
+        }
+        Map<Integer, Float> stats = new HashMap<>();
+        for (int i = CreatureProperties.HEALTH.getId(); i <= CreatureProperties.CRITICAL_HIT_DAMAGE.getId(); i++) {
+            Float value = 1.5f;
+            stats.put(i, value);
+        }
+        // TODO make it real!
+        Ability first = new Ability("DoStuff", 1, "", 0f, 0, 0, 0, 0, true, true);
+        List<Ability> abilities = new ArrayList<>();
+        abilities.add(first);
+        List<Integer> items = new ArrayList<>();
+        items.add(0);
+        List<Integer> loot = new ArrayList<>();
+        loot.add(0);
         Creature playerHero = dbUtils.add(CreaturesTypes.PLAYER.getId(), _title, _description, 0, 1, _gender, _race,
                 _heroClass, _subClass, attributes, stats, abilities, items, loot);
+        Log.d("##@##", playerHero.toString());
         if (playerHero.getIdentity().getType() != ErrorCodes.DB_ERROR.getErrorCode()) {
             Intent createHeroIntent = new Intent(this, CharacterOverview.class);
             createHeroIntent.putExtra(IntentExtraKeys.PLAYER_HERO_EXTRA.getKey(), playerHero);

@@ -69,4 +69,8 @@ public enum CreatureProperties {
     public int getId() {
         return propertyId;
     }
+
+    public static String getNameById(int id) {
+        return values()[id].name();
+    }
 }

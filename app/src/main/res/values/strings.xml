@@ -12,7 +12,7 @@
     <string name="common_label_level_progress">Current level progress</string>
     <string name="common_label_inventory_title">Inventory:</string>
     <string name="common_button_new_quest">New Quest!</string>
-    <string name="common_label_hero_name_default">HeroNameGoesHere</string>
+    <string name="common_label_hero_name_default"></string>
     <string name="common_label_loading">Loading ...</string>
     <string name="common_button_g_plus">Google+</string>
     <string name="common_button_start">Start</string>
@@ -29,7 +29,7 @@
     <string name="recent_activity">Recent activity</string>
 
     <!-- Start Page -->
-    <string name="start_page_welcome">Welcome\n HeroNameGoesHere </string>
+    <string name="start_page_welcome">Welcome</string>
     <string name="start_page_active_quests">Currently active quests</string>
     <string name="start_page_past_quests">Completed quests</string>
 
